@@ -1,4 +1,4 @@
-<p-card header="Channel Performance">
+<p-card>
   <ng-template pTemplate="header">
     <div class="flex align-items-center justify-content-between p-4">
       <h3 class="text-lg font-semibold m-0">Channel Performance</h3>
@@ -7,26 +7,28 @@
         [(ngModel)]="selectedMetric"
         optionLabel="label"
         optionValue="value"
-        [style]="{'min-width': '150px'}">
+        styleClass="w-auto">
       </p-dropdown>
     </div>
   </ng-template>
   
-  <div class="flex flex-column gap-4">
-    <div class="flex align-items-center justify-content-between" *ngFor="let channel of channelData">
-      <div class="flex align-items-center gap-3">
-        <i class="pi text-xl" [ngClass]="[channel.icon, 'text-' + channel.color + '-500']"></i>
-        <span class="font-medium text-700">{{channel.channel}}</span>
-      </div>
-      <div class="flex align-items-center gap-4 flex-1" style="max-width: 300px;">
-        <div class="progress-bar flex-1">
-          <div class="progress-fill" 
-               [ngClass]="'bg-' + channel.color + '-500'"
-               [style.width.%]="channel.value"></div>
+  <div class="p-4">
+    <div class="flex flex-column gap-4" *ngIf="channelData">
+      <div class="channel-item flex align-items-center gap-3" *ngFor="let channel of channelData">
+        <div class="channel-info flex align-items-center gap-3 flex-shrink-0" style="width: 120px;">
+          <i class="pi text-lg" [ngClass]="[channel.icon, 'text-' + channel.color + '-500']"></i>
+          <span class="font-medium text-700">{{channel.channel}}</span>
         </div>
-        <span class="text-sm font-medium text-900" style="min-width: 3rem; text-align: right;">
+        <div class="flex-1">
+          <div class="progress-bar-container">
+            <div class="progress-bar-fill" 
+                 [ngClass]="'bg-' + channel.color + '-500'"
+                 [style.width.%]="channel.value"></div>
+          </div>
+        </div>
+        <div class="channel-value text-sm font-medium text-900" style="width: 40px; text-align: right;">
           {{channel.value}}%
-        </span>
+        </div>
       </div>
     </div>
   </div>

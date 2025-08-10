@@ -39,6 +39,9 @@
   <section class="kpi-section">
     <div class="kpi-grid">
       <div class="kpi-card" title="Total revenue generated from all campaigns" aria-label="Total revenue metric">
+        <div class="kpi-icon revenue-icon">
+          <i class="pi pi-credit-card"></i>
+        </div>
         <h3 class="kpi-label">Total Revenue</h3>
         <div class="kpi-value">₹50.5L</div>
         <div class="kpi-detail">
@@ -48,6 +51,9 @@
       </div>
       
       <div class="kpi-card" title="Return on investment across all campaigns" aria-label="Campaign ROI metric">
+        <div class="kpi-icon roi-icon">
+          <i class="pi pi-chart-line"></i>
+        </div>
         <h3 class="kpi-label">Campaign ROI</h3>
         <div class="kpi-value">6.0x</div>
         <div class="kpi-detail">
@@ -57,12 +63,18 @@
       </div>
       
       <div class="kpi-card" title="Total messages sent across all channels" aria-label="Messages sent metric">
+        <div class="kpi-icon messages-icon">
+          <i class="pi pi-comments"></i>
+        </div>
         <h3 class="kpi-label">Messages Sent</h3>
         <div class="kpi-value">4.8M</div>
         <div class="kpi-detail">Across all channels</div>
       </div>
       
       <div class="kpi-card" title="Average conversion rate from all campaigns" aria-label="Conversion rate metric">
+        <div class="kpi-icon conversion-icon">
+          <i class="pi pi-target"></i>
+        </div>
         <h3 class="kpi-label">Avg Conversion Rate</h3>
         <div class="kpi-value">10.7%</div>
         <div class="kpi-detail">
@@ -79,10 +91,14 @@
     <!-- Channel Performance & Engagement Heatmap Row -->
     <section class="analytics-row">
       
-      <!-- Channel Performance -->
+      <!-- Channel Performance with Enhanced Features -->
       <div class="chart-panel channel-performance">
         <div class="panel-header">
           <h3>Channel Performance</h3>
+          <div class="ai-suggestion-tooltip" title="AI suggests focusing 60% budget on WhatsApp for optimal ROI">
+            <span class="ai-icon">🤖</span>
+            <span class="suggestion-text">Focus 60% budget on WhatsApp</span>
+          </div>
           <select class="metric-dropdown">
             <option>Conversions</option>
             <option>Revenue</option>
@@ -93,11 +109,30 @@
           <div class="channel-bar" *ngFor="let channel of channelData">
             <div class="channel-info">
               <span class="channel-name">{{channel.name}}</span>
+              <span class="channel-trend" [class.positive]="channel.trend > 0" [class.negative]="channel.trend < 0">
+                {{channel.trend > 0 ? '+' : ''}}{{channel.trend}}%
+              </span>
             </div>
             <div class="bar-container">
               <div class="bar-fill" [style.width.%]="channel.percentage" [style.background-color]="channel.color"></div>
             </div>
-            <div class="channel-value">{{channel.value}}</div>
+            <div class="channel-value">
+              {{channel.value}}
+              <span class="channel-cost">₹{{channel.avgCost}}/msg</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Enhanced Channel Insights -->
+        <div class="channel-insights">
+          <div class="insight-item">
+            <strong>Best Performer:</strong> WhatsApp (42% of revenue)
+          </div>
+          <div class="insight-item">
+            <strong>Cost Leader:</strong> SMS (₹0.02/msg)
+          </div>
+          <div class="insight-item">
+            <strong>Growth Opportunity:</strong> RCS (+28% this month)
           </div>
         </div>
       </div>
@@ -288,57 +323,213 @@
       </div>
     </section>
 
-    <!-- Cost Optimization & Inactive Customers -->
+    <!-- Enhanced Cost Optimization & Customer Intelligence -->
     <section class="cost-optimization-section">
       <div class="section-header">
-        <h3>Cost Optimization & Customer Management</h3>
+        <h3>AI-Powered Cost Optimization</h3>
+        <div class="ai-suggestion-tooltip" title="AI detected ₹2.9L annual savings through intelligent channel allocation">
+          <span class="ai-icon">🤖</span>
+          <span class="suggestion-text">AI found ₹2.9L savings opportunity</span>
+        </div>
       </div>
       
       <div class="cost-panels">
-        <div class="cost-panel cpm-panel">
-          <div class="panel-label">CPM</div>
-          <div class="panel-value">₹180</div>
-          <div class="panel-detail">Per 1000 impressions</div>
-        </div>
-        
-        <div class="cost-panel cpc-panel">
-          <div class="panel-label">CPC</div>
-          <div class="panel-value">₹3.2</div>
-          <div class="panel-detail">Cost per Click</div>
-        </div>
-        
-        <div class="cost-panel cpl-panel">
-          <div class="panel-label">CPL</div>
-          <div class="panel-value">₹52</div>
-          <div class="panel-detail">Cost per Lead</div>
-        </div>
-        
-        <div class="cost-panel inactive-customers-panel">
-          <div class="panel-label">Inactive Customers <span class="warning-badge">⚠️</span></div>
-          <div class="panel-value">24.5K</div>
-          <div class="panel-detail">Not engaged in 30+ days</div>
-          <div class="panel-actions">
-            <button class="exclusion-btn" (click)="createExclusionList()">Create Exclusion List</button>
-            <button class="winback-btn" (click)="createWinbackCampaign()">Win-back Campaign</button>
+        <div class="cost-panel cpm-panel enhanced">
+          <div class="panel-icon">
+            <i class="pi pi-chart-pie"></i>
+          </div>
+          <div class="panel-content">
+            <div class="panel-label">CPM (Cost per Thousand)</div>
+            <div class="panel-value">₹180 <span class="trend negative">-15%</span></div>
+            <div class="panel-detail">Industry avg: ₹245 • You're 27% below</div>
+            <div class="optimization-tip">
+              <strong>AI Recommendation:</strong> Allocate 25% more budget to WhatsApp (₹142 CPM) vs SMS (₹298 CPM)
+            </div>
+            <div class="channel-breakdown">
+              <div class="breakdown-item">WhatsApp: ₹142</div>
+              <div class="breakdown-item">SMS: ₹298</div>
+              <div class="breakdown-item">Email: ₹89</div>
+            </div>
           </div>
         </div>
         
-        <div class="cost-panel opportunity-panel">
-          <div class="panel-label">Opportunity <span class="ai-badge">AI</span></div>
-          <div class="panel-value">₹2.9L</div>
-          <div class="panel-detail">Shift 30% SMS → WhatsApp</div>
+        <div class="cost-panel cpc-panel enhanced">
+          <div class="panel-icon">
+            <i class="pi pi-mouse"></i>
+          </div>
+          <div class="panel-content">
+            <div class="panel-label">CPC (Cost per Click)</div>
+            <div class="panel-value">₹3.2 <span class="trend positive">+8%</span></div>
+            <div class="panel-detail">Best in class: ₹2.1 • Potential: 34% improvement</div>
+            <div class="optimization-tip">
+              <strong>Strategy:</strong> Use interactive buttons in RCS messages for 40% lower CPC
+            </div>
+            <div class="channel-breakdown">
+              <div class="breakdown-item">RCS Interactive: ₹1.9</div>
+              <div class="breakdown-item">WhatsApp CTA: ₹2.8</div>
+              <div class="breakdown-item">Email Links: ₹4.2</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="cost-panel cpl-panel enhanced">
+          <div class="panel-icon">
+            <i class="pi pi-users"></i>
+          </div>
+          <div class="panel-content">
+            <div class="panel-label">CPL (Cost per Lead)</div>
+            <div class="panel-value">₹52 <span class="trend positive">+12%</span></div>
+            <div class="panel-detail">Industry benchmark: ₹74 • You're 30% ahead</div>
+            <div class="optimization-tip">
+              <strong>Advanced Targeting:</strong> Use lookalike audiences for 25% better CPL
+            </div>
+            <div class="channel-breakdown">
+              <div class="breakdown-item">WhatsApp Forms: ₹39</div>
+              <div class="breakdown-item">RCS Surveys: ₹45</div>
+              <div class="breakdown-item">Email Signup: ₹68</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="cost-panel inactive-customers-panel enhanced">
+          <div class="panel-icon">
+            <i class="pi pi-clock"></i>
+          </div>
+          <div class="panel-content">
+            <div class="panel-label">Inactive Customer Intelligence</div>
+            <div class="panel-value">24.5K <span class="warning-badge">30+ days</span></div>
+            <div class="panel-detail">Revenue at risk: ₹8.9L • Win-back potential: 18%</div>
+            <div class="segmentation-insights">
+              <div class="segment-item">
+                <span class="segment-label">High-Value (₹5K+ LTV)</span>
+                <span class="segment-count">3.2K customers</span>
+                <span class="segment-action">Priority reactivation</span>
+              </div>
+              <div class="segment-item">
+                <span class="segment-label">Medium-Value (₹1-5K LTV)</span>
+                <span class="segment-count">12.8K customers</span>
+                <span class="segment-action">Discount campaigns</span>
+              </div>
+              <div class="segment-item">
+                <span class="segment-label">Low-Value (<₹1K LTV)</span>
+                <span class="segment-count">8.5K customers</span>
+                <span class="segment-action">Exclude from paid</span>
+              </div>
+            </div>
+            <div class="panel-actions">
+              <button class="exclusion-btn" (click)="createExclusionList()">Smart Exclusion List</button>
+              <button class="winback-btn" (click)="createWinbackCampaign()">AI Win-back Campaign</button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="cost-panel opportunity-panel enhanced">
+          <div class="panel-icon">
+            <i class="pi pi-trophy"></i>
+          </div>
+          <div class="panel-content">
+            <div class="panel-label">Optimization Opportunity</div>
+            <div class="panel-value highlight">₹2.9L <span class="ai-badge">AI Powered</span></div>
+            <div class="panel-detail">Annual savings potential • 24% budget efficiency gain</div>
+            <div class="opportunity-breakdown">
+              <div class="opportunity-item">
+                <span class="opportunity-action">Channel Rebalancing</span>
+                <span class="opportunity-savings">₹1.8L</span>
+              </div>
+              <div class="opportunity-item">
+                <span class="opportunity-action">Time Optimization</span>
+                <span class="opportunity-savings">₹0.7L</span>
+              </div>
+              <div class="opportunity-item">
+                <span class="opportunity-action">Audience Refinement</span>
+                <span class="opportunity-savings">₹0.4L</span>
+              </div>
+            </div>
+            <div class="panel-actions">
+              <button class="implement-btn">Implement All Recommendations</button>
+              <button class="simulate-btn">Simulate Impact</button>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- AI Cost Suggestions -->
-      <div class="ai-cost-suggestions">
-        <h4>AI Cost Suggestions <span class="new-badge">New</span></h4>
-        <ul class="cost-suggestion-list">
-          <li>Move 30% of SMS budget to WhatsApp to save ~12%.</li>
-          <li>Send-time optimize to 11 AM for +18% conversion.</li>
-          <li>Use RCS rich cards for high-value segments.</li>
-        </ul>
-        <button class="apply-btn">Apply</button>
+      <!-- Advanced Cost Intelligence Dashboard -->
+      <div class="cost-intelligence-grid">
+        <div class="intelligence-panel">
+          <h4>Real-time Cost Efficiency Matrix</h4>
+          <div class="efficiency-matrix">
+            <div class="matrix-headers">
+              <span class="matrix-header">Channel</span>
+              <span class="matrix-header">Current CPM</span>
+              <span class="matrix-header">Efficiency Score</span>
+              <span class="matrix-header">Recommended Action</span>
+            </div>
+            <div class="matrix-row excellent">
+              <span class="channel-name">WhatsApp Business</span>
+              <span class="cost-value">₹142</span>
+              <span class="efficiency-score">94%</span>
+              <span class="action-recommendation">Increase by 15%</span>
+            </div>
+            <div class="matrix-row good">
+              <span class="channel-name">RCS Rich Cards</span>
+              <span class="cost-value">₹198</span>
+              <span class="efficiency-score">89%</span>
+              <span class="action-recommendation">Test creative formats</span>
+            </div>
+            <div class="matrix-row average">
+              <span class="channel-name">Email Campaigns</span>
+              <span class="cost-value">₹89</span>
+              <span class="efficiency-score">72%</span>
+              <span class="action-recommendation">Optimize send times</span>
+            </div>
+            <div class="matrix-row poor">
+              <span class="channel-name">SMS Bulk</span>
+              <span class="cost-value">₹298</span>
+              <span class="efficiency-score">68%</span>
+              <span class="action-recommendation">Reduce by 30%</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="intelligence-panel">
+          <h4>Budget Allocation Simulator</h4>
+          <div class="allocation-simulator">
+            <div class="current-allocation">
+              <h5>Current Distribution</h5>
+              <div class="allocation-chart">
+                <div class="allocation-bar current">
+                  <div class="bar-segment whatsapp" style="width: 35%" title="WhatsApp: 35%">WA</div>
+                  <div class="bar-segment sms" style="width: 25%" title="SMS: 25%">SMS</div>
+                  <div class="bar-segment email" style="width: 20%" title="Email: 20%">EM</div>
+                  <div class="bar-segment push" style="width: 10%" title="Push: 10%">PU</div>
+                  <div class="bar-segment rcs" style="width: 10%" title="RCS: 10%">RCS</div>
+                </div>
+                <div class="allocation-metrics">
+                  <span>Current ROI: 4.2x</span>
+                  <span>Monthly Spend: ₹12.5L</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="recommended-allocation">
+              <h5>AI Recommended Distribution</h5>
+              <div class="allocation-chart">
+                <div class="allocation-bar recommended">
+                  <div class="bar-segment whatsapp" style="width: 45%" title="WhatsApp: 45%">WA</div>
+                  <div class="bar-segment rcs" style="width: 25%" title="RCS: 25%">RCS</div>
+                  <div class="bar-segment email" style="width: 15%" title="Email: 15%">EM</div>
+                  <div class="bar-segment sms" style="width: 10%" title="SMS: 10%">SMS</div>
+                  <div class="bar-segment push" style="width: 5%" title="Push: 5%">PU</div>
+                </div>
+                <div class="allocation-metrics recommended">
+                  <span>Projected ROI: 6.8x</span>
+                  <span>Projected Spend: ₹9.6L</span>
+                  <span class="savings">Monthly Savings: ₹2.9L</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -418,10 +609,84 @@
       </div>
     </section>
 
+    <!-- Campaign Calendar (Moved up with toggle) -->
+    <section class="campaign-calendar-section" [class.collapsed]="!showCampaignCalendar">
+      <div class="section-header">
+        <h3>Upcoming Campaign Calendar</h3>
+        <div class="calendar-controls">
+          <button class="toggle-calendar-btn" (click)="toggleCampaignCalendar()" 
+                  [attr.aria-expanded]="showCampaignCalendar" 
+                  title="{{showCampaignCalendar ? 'Hide' : 'Show'}} campaign calendar">
+            <i class="pi" [class.pi-chevron-down]="!showCampaignCalendar" [class.pi-chevron-up]="showCampaignCalendar"></i>
+            {{showCampaignCalendar ? 'Hide Calendar' : 'Show More Campaigns'}}
+          </button>
+          <select class="month-selector" *ngIf="showCampaignCalendar">
+            <option>August 2025</option>
+            <option>September 2025</option>
+            <option>October 2025</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="upcoming-campaigns" *ngIf="showCampaignCalendar">
+        <div class="campaign-calendar-item">
+          <div class="date-badge">
+            <div class="date-day">19</div>
+            <div class="date-month">Aug</div>
+          </div>
+          <div class="campaign-info">
+            <h4>Raksha Bandhan Campaign</h4>
+            <p>Send brother-sister themed promotions</p>
+            <div class="campaign-tags">
+              <span class="tag">WhatsApp</span>
+              <span class="tag">Email</span>
+            </div>
+          </div>
+          <button class="plan-btn" (click)="planCampaign('Raksha Bandhan')">Plan</button>
+        </div>
+        
+        <div class="campaign-calendar-item">
+          <div class="date-badge">
+            <div class="date-day">29</div>
+            <div class="date-month">Aug</div>
+          </div>
+          <div class="campaign-info">
+            <h4>Ganesh Chaturthi Campaign</h4>
+            <p>Festival-themed notifications</p>
+            <div class="campaign-tags">
+              <span class="tag">Push</span>
+              <span class="tag">SMS</span>
+            </div>
+          </div>
+          <button class="plan-btn" (click)="planCampaign('Ganesh Chaturthi')">Plan</button>
+        </div>
+        
+        <div class="campaign-calendar-item">
+          <div class="date-badge">
+            <div class="date-day">02</div>
+            <div class="date-month">Oct</div>
+          </div>
+          <div class="campaign-info">
+            <h4>Dussehra Campaign</h4>
+            <p>Victory celebrations and offers</p>
+            <div class="campaign-tags">
+              <span class="tag">RCS</span>
+              <span class="tag">WhatsApp</span>
+            </div>
+          </div>
+          <button class="plan-btn" (click)="planCampaign('Dussehra')">Plan</button>
+        </div>
+      </div>
+    </section>
+
     <!-- BSP Performance -->
     <section class="bsp-performance-section">
       <div class="section-header">
-        <h3>BSP Performance</h3>
+        <h3>BSP Performance Comparison</h3>
+        <div class="ai-suggestion-tooltip" title="AI recommends switching to Cloud API for 12% better delivery rates">
+          <span class="ai-icon">🤖</span>
+          <span class="suggestion-text">Switch to Cloud API for +12% delivery improvement</span>
+        </div>
       </div>
       
       <div class="bsp-categories">
@@ -576,70 +841,7 @@
       </div>
     </section>
 
-    <!-- Campaign Calendar -->
-    <section class="campaign-calendar-section">
-      <div class="section-header">
-        <h3>Campaign Calendar</h3>
-        <div class="calendar-controls">
-          <select class="month-selector">
-            <option>August 2025</option>
-            <option>September 2025</option>
-            <option>October 2025</option>
-          </select>
-          <button class="calendar-btn">View Full Calendar</button>
-        </div>
-      </div>
-      
-      <div class="upcoming-campaigns">
-        <div class="campaign-calendar-item">
-          <div class="date-badge">
-            <div class="date-day">19</div>
-            <div class="date-month">Aug</div>
-          </div>
-          <div class="campaign-info">
-            <h4>Raksha Bandhan Campaign</h4>
-            <p>Send brother-sister themed promotions</p>
-            <div class="campaign-tags">
-              <span class="tag">WhatsApp</span>
-              <span class="tag">Email</span>
-            </div>
-          </div>
-          <button class="plan-btn" (click)="planCampaign('Raksha Bandhan')">Plan</button>
-        </div>
-        
-        <div class="campaign-calendar-item">
-          <div class="date-badge">
-            <div class="date-day">29</div>
-            <div class="date-month">Aug</div>
-          </div>
-          <div class="campaign-info">
-            <h4>Ganesh Chaturthi</h4>
-            <p>Festival promotions and greetings</p>
-            <div class="campaign-tags">
-              <span class="tag">Orchestration</span>
-              <span class="tag">RCS</span>
-            </div>
-          </div>
-          <button class="plan-btn" (click)="planCampaign('Ganesh Chaturthi')">Plan</button>
-        </div>
-        
-        <div class="campaign-calendar-item">
-          <div class="date-badge">
-            <div class="date-day">02</div>
-            <div class="date-month">Oct</div>
-          </div>
-          <div class="campaign-info">
-            <h4>Dussehra Sale</h4>
-            <p>Victory celebration offers</p>
-            <div class="campaign-tags">
-              <span class="tag">SMS</span>
-              <span class="tag">Push</span>
-            </div>
-          </div>
-          <button class="plan-btn secondary" (click)="planCampaign('Dussehra')">45 Days</button>
-        </div>
-      </div>
-    </section>
+
 
     <!-- Performance vs Budget Analysis -->
     <section class="performance-budget-section">

@@ -135,11 +135,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   // Channel data for the new design
   channelData = [
-    { name: 'WhatsApp', percentage: 85, value: 20500, color: '#25D366' },
-    { name: 'Email', percentage: 65, value: 15200, color: '#dc3545' },
-    { name: 'SMS', percentage: 45, value: 8900, color: '#007bff' },
-    { name: 'Push', percentage: 25, value: 3400, color: '#fd7e14' },
-    { name: 'RCS', percentage: 20, value: 2100, color: '#6f42c1' }
+    { name: 'WhatsApp', percentage: 85, value: 20500, color: '#25D366', trend: 8, avgCost: '0.08' },
+    { name: 'Email', percentage: 65, value: 15200, color: '#dc3545', trend: -2, avgCost: '0.01' },
+    { name: 'SMS', percentage: 45, value: 8900, color: '#007bff', trend: 5, avgCost: '0.02' },
+    { name: 'Push', percentage: 25, value: 3400, color: '#fd7e14', trend: 12, avgCost: '0.05' },
+    { name: 'RCS', percentage: 20, value: 2100, color: '#6f42c1', trend: 28, avgCost: '0.15' }
   ];
 
   // Heatmap data for the grid
@@ -479,6 +479,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   selectedRegion = 'all-india';
   currentMonth = 'August';
   currentYear = 2025;
+  showCampaignCalendar = false; // Default to collapsed for better UX
   
   upcomingFestivals = [
     {
@@ -695,6 +696,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
   // Campaign calendar methods
   planCampaign(festival: string): void {
     this.showNotification(`Campaign planning started for ${festival}`);
+  }
+  
+  toggleCampaignCalendar(): void {
+    this.showCampaignCalendar = !this.showCampaignCalendar;
+    this.showNotification(this.showCampaignCalendar ? 'Campaign calendar expanded' : 'Campaign calendar collapsed');
   }
   
   // Performance vs Budget methods

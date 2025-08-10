@@ -1,175 +1,217 @@
-<!-- Modern Campaign Manager Dashboard -->
-<div class="dashboard-container">
-  <!-- Enhanced Header Section with Live Status -->
-  <div class="dashboard-header flex align-items-center justify-content-between mb-6 p-4 bg-white border-round-xl shadow-2">
-    <div>
-      <div class="flex align-items-center gap-3 mb-2">
-        <h1 class="text-3xl font-bold text-900 m-0">Campaign Analytics Dashboard</h1>
-        <p-tag 
-          *ngIf="isLiveUpdatesActive" 
-          value="LIVE" 
-          severity="success" 
-          class="animate-pulse">
-        </p-tag>
+<!-- Campaign Manager Dashboard - Clean Professional Layout -->
+<div class="dashboard-container p-4 bg-gray-50 min-h-screen">
+  
+  <!-- Dashboard Header -->
+  <div class="dashboard-header mb-4">
+    <div class="flex justify-content-between align-items-center mb-3">
+      <div>
+        <h1 class="text-3xl font-bold text-900 m-0">Campaign Manager</h1>
+        <p class="text-600 m-0 mt-1">Real-time marketing performance analytics</p>
       </div>
-      <p class="text-lg text-600 m-0 mb-2">Multi-Channel Campaign Performance • Real-time tracking across SMS, WhatsApp, Email, Push & RCS</p>
-      <div class="flex align-items-center gap-4 text-sm text-500">
-        <span><i class="pi pi-chart-line"></i> {{getActiveFeatureCount()}} Active Sections</span>
-        <span><i class="pi pi-database"></i> {{getDataAgeDescription()}}</span>
-        <span *ngIf="getSectionAvailabilityStatus().length > 0"><i class="pi pi-star"></i> {{getSectionAvailabilityStatus().length}} Advanced Features</span>
+      
+      <!-- Control Panel -->
+      <div class="flex gap-3 align-items-center">
+        <p-dropdown 
+          [options]="channelOptions" 
+          [(ngModel)]="selectedChannel"
+          (onChange)="onChannelChange()"
+          optionLabel="label"
+          optionValue="value"
+          styleClass="w-10rem">
+        </p-dropdown>
+        
+        <p-dropdown 
+          [options]="dateRangeOptions" 
+          [(ngModel)]="selectedDateRange"
+          (onChange)="onDateRangeChange()"
+          optionLabel="label"
+          optionValue="value"
+          styleClass="w-10rem">
+        </p-dropdown>
+        
+        <p-button 
+          [label]="isLiveUpdatesActive ? 'Live ON' : 'Live OFF'"
+          [icon]="isLiveUpdatesActive ? 'pi pi-pause' : 'pi pi-play'"
+          [styleClass]="isLiveUpdatesActive ? 'p-button-success p-button-sm' : 'p-button-secondary p-button-sm'"
+          (onClick)="toggleLiveUpdates()">
+        </p-button>
+        
+        <p-button 
+          label="New Campaign" 
+          icon="pi pi-plus"
+          styleClass="p-button-primary p-button-sm"
+          (onClick)="onCreateCampaign()">
+        </p-button>
       </div>
     </div>
-    <div class="flex align-items-center gap-3">
-      <p-dropdown 
-        [options]="channelOptions" 
-        [(ngModel)]="selectedChannel"
-        (onChange)="onChannelChange()"
-        optionLabel="label"
-        optionValue="value"
-        placeholder="All Channels"
-        styleClass="w-auto">
-      </p-dropdown>
-      <p-dropdown 
-        [options]="dateRangeOptions" 
-        [(ngModel)]="selectedDateRange"
-        (onChange)="onDateRangeChange()"
-        optionLabel="label"
-        optionValue="value"
-        styleClass="w-auto">
-      </p-dropdown>
+
+    <!-- Live Notification Banner -->
+    <div 
+      *ngIf="showLiveNotification" 
+      class="bg-green-100 border-green-300 border-1 border-round p-3 mb-3 flex align-items-center gap-3">
+      <i class="pi pi-check-circle text-green-700"></i>
+      <span class="text-green-800 font-medium">{{liveNotification}}</span>
       <p-button 
-        [label]="isLiveUpdatesActive ? 'Live Updates ON' : 'Live Updates OFF'"
-        [icon]="isLiveUpdatesActive ? 'pi pi-pause' : 'pi pi-play'"
-        [styleClass]="isLiveUpdatesActive ? 'p-button-text p-button-success' : 'p-button-text p-button-secondary'"
-        (onClick)="toggleLiveUpdates()">
-      </p-button>
-      <p-button 
-        label="New Campaign" 
-        icon="pi pi-plus"
-        styleClass="p-button-primary"
-        (onClick)="onCreateCampaign()">
+        icon="pi pi-times" 
+        styleClass="p-button-text p-button-sm ml-auto"
+        (onClick)="showLiveNotification = false">
       </p-button>
     </div>
   </div>
 
-  <!-- Live Notification Banner -->
-  <div 
-    *ngIf="showLiveNotification" 
-    class="live-notification bg-green-50 border-green-200 border-1 border-round-lg p-3 mb-4 flex align-items-center gap-3 animate-slideInDown">
-    <i class="pi pi-check-circle text-green-600"></i>
-    <span class="text-green-800 font-medium">{{liveNotification}}</span>
-  </div>
-
-  <!-- Executive Summary - Enhanced KPI Cards -->
-  <div class="mb-6">
+  <!-- Executive KPI Cards Row -->
+  <div class="kpi-section mb-4">
     <app-kpi-cards></app-kpi-cards>
   </div>
 
-  <!-- Live Campaign Notifications (Always visible for real-time updates) -->
-  <div class="mb-6">
+  <!-- Campaign Notifications Section -->
+  <div class="notifications-section mb-4">
     <app-campaign-notifications></app-campaign-notifications>
   </div>
 
-  <!-- Data-Age Based Feature Availability Banner -->
-  <div *ngIf="getSectionAvailabilityStatus().length > 0" class="feature-availability-banner mb-6">
-    <p-panel 
-      header="Advanced Features Available" 
-      styleClass="bg-blue-50 border-blue-200">
-      <div class="flex align-items-center gap-4">
-        <i class="pi pi-star text-blue-600 text-2xl"></i>
-        <div>
-          <p class="m-0 mb-2 font-semibold text-blue-900">{{dataAge}} days of data unlocks:</p>
+  <!-- Main Analytics Grid - Three Equal Columns -->
+  <div class="main-analytics-grid mb-4">
+    <div class="grid">
+      
+      <!-- Left Column: Performance Analytics -->
+      <div class="col-12 lg:col-4">
+        <div class="analytics-column">
+          <h3 class="column-header text-lg font-semibold text-900 mb-3">Performance Analytics</h3>
+          
+          <div class="component-wrapper mb-4">
+            <app-channel-performance></app-channel-performance>
+          </div>
+          
+          <div class="component-wrapper mb-4">
+            <app-heat-map></app-heat-map>
+          </div>
+          
+          <div class="component-wrapper mb-4" *ngIf="dataAge >= 30">
+            <app-journey-orchestration></app-journey-orchestration>
+          </div>
+        </div>
+      </div>
+
+      <!-- Center Column: Campaign Management -->
+      <div class="col-12 lg:col-4">
+        <div class="analytics-column">
+          <h3 class="column-header text-lg font-semibold text-900 mb-3">Campaign Management</h3>
+          
+          <div class="component-wrapper mb-4">
+            <app-campaign-monitoring></app-campaign-monitoring>
+          </div>
+          
+          <div class="component-wrapper mb-4">
+            <app-budget-calculator></app-budget-calculator>
+          </div>
+          
+          <div class="component-wrapper mb-4">
+            <app-bsp-comparison></app-bsp-comparison>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Intelligence & Insights -->
+      <div class="col-12 lg:col-4">
+        <div class="analytics-column">
+          <h3 class="column-header text-lg font-semibold text-900 mb-3">AI Insights</h3>
+          
+          <div class="component-wrapper mb-4">
+            <app-ai-suggestions></app-ai-suggestions>
+          </div>
+          
+          <!-- Progressive Feature Sections -->
+          <div class="component-wrapper mb-4" *ngIf="dataAge >= 30">
+            <app-inactive-customers></app-inactive-customers>
+          </div>
+          
+          <div class="component-wrapper mb-4" *ngIf="dataAge >= 45">
+            <app-festival-calendar></app-festival-calendar>
+          </div>
+          
+          <!-- Advanced Analytics Teaser -->
+          <div class="component-wrapper mb-4" *ngIf="dataAge >= 60">
+            <p-card header="Advanced Analytics" styleClass="advanced-analytics-card">
+              <div class="text-center p-3">
+                <i class="pi pi-chart-bar text-4xl text-purple-600 mb-3 block"></i>
+                <h4 class="text-purple-900 mb-2 font-semibold">Predictive Intelligence</h4>
+                <p class="text-600 mb-3 text-sm">Advanced trend analysis and customer lifetime value prediction</p>
+                <p-button 
+                  label="View Analytics" 
+                  icon="pi pi-arrow-right" 
+                  styleClass="p-button-outlined p-button-sm">
+                </p-button>
+              </div>
+            </p-card>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Feature Availability Banner -->
+  <div *ngIf="getSectionAvailabilityStatus().length > 0" class="feature-banner mb-4">
+    <p-card styleClass="feature-availability-card bg-blue-50">
+      <div class="flex align-items-center gap-3">
+        <i class="pi pi-star-fill text-blue-600 text-xl"></i>
+        <div class="flex-1">
+          <h4 class="text-blue-900 m-0 mb-2 font-semibold">Advanced Features Available</h4>
           <div class="flex flex-wrap gap-2">
             <p-tag 
               *ngFor="let feature of getSectionAvailabilityStatus()" 
               [value]="feature" 
-              severity="info" 
-              class="text-xs">
+              severity="info"
+              styleClass="text-xs">
             </p-tag>
           </div>
         </div>
+        <div class="text-blue-700 font-semibold">{{dataAge}} days data</div>
       </div>
-    </p-panel>
+    </p-card>
   </div>
 
-  <!-- Main Dashboard Grid Layout - Fixed Responsive Design -->
-  <div class="grid" style="margin-left: -0.5rem; margin-right: -0.5rem;">
-    <!-- Left Column - Performance Analytics -->
-    <div class="col-12 lg:col-4" style="padding-left: 0.5rem; padding-right: 0.5rem; margin-bottom: 2rem;">
-      <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-        <app-channel-performance></app-channel-performance>
-        <app-heat-map></app-heat-map>
-        <app-journey-orchestration *ngIf="dataAge >= 30"></app-journey-orchestration>
-      </div>
-    </div>
-
-    <!-- Center Column - Campaign Monitoring -->
-    <div class="col-12 lg:col-4" style="padding-left: 0.5rem; padding-right: 0.5rem; margin-bottom: 2rem;">
-      <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-        <app-campaign-monitoring></app-campaign-monitoring>
-        <app-budget-calculator></app-budget-calculator>
-        <app-bsp-comparison></app-bsp-comparison>
-      </div>
-    </div>
-
-    <!-- Right Column - AI Insights -->
-    <div class="col-12 lg:col-4" style="padding-left: 0.5rem; padding-right: 0.5rem; margin-bottom: 2rem;">
-      <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-        <app-ai-suggestions></app-ai-suggestions>
-        <app-inactive-customers *ngIf="dataAge >= 30"></app-inactive-customers>
-        <app-festival-calendar *ngIf="dataAge >= 45"></app-festival-calendar>
-        
-        <!-- Advanced Analytics Preview -->
-        <div *ngIf="dataAge >= 60">
-          <p-panel header="Advanced Analytics Suite">
-            <div class="text-center p-3">
-              <i class="pi pi-chart-bar text-4xl text-purple-600 mb-3"></i>
-              <h4 class="text-purple-900 mb-2">Predictive Intelligence</h4>
-              <p class="text-600 mb-3 text-sm">Advanced analytics available with 60+ days data</p>
-              <p-button 
-                label="Open Advanced Analytics" 
-                icon="pi pi-external-link" 
-                styleClass="p-button-sm p-button-outlined">
-              </p-button>
-            </div>
-          </p-panel>
+  <!-- Dashboard Footer -->
+  <div class="dashboard-footer">
+    <p-card styleClass="footer-stats-card">
+      <div class="grid text-center">
+        <div class="col-6 md:col-3">
+          <div class="footer-stat">
+            <div class="stat-value text-2xl font-bold text-900">{{totalCampaigns}}</div>
+            <div class="stat-label text-sm text-600">Total Campaigns</div>
+          </div>
+        </div>
+        <div class="col-6 md:col-3">
+          <div class="footer-stat">
+            <div class="stat-value text-2xl font-bold text-green-600">{{totalReach | number}}</div>
+            <div class="stat-label text-sm text-600">Total Reach</div>
+          </div>
+        </div>
+        <div class="col-6 md:col-3">
+          <div class="footer-stat">
+            <div class="stat-value text-2xl font-bold text-blue-600">${{totalSpend | number}}</div>
+            <div class="stat-label text-sm text-600">Total Spend</div>
+          </div>
+        </div>
+        <div class="col-6 md:col-3">
+          <div class="footer-stat">
+            <div class="stat-value text-2xl font-bold text-purple-600">{{dataAge}} days</div>
+            <div class="stat-label text-sm text-600">Data History</div>
+            <div class="text-xs text-500 mt-1">{{getDataAgeDescription()}}</div>
+          </div>
         </div>
       </div>
-    </div>
+    </p-card>
   </div>
 
-  <!-- Footer Statistics - Enhanced with Data Age Indicators -->
-  <div class="dashboard-footer mt-6 p-4 bg-gradient-to-r from-blue-50 to-purple-50 border-round-lg">
-    <div class="grid text-center">
-      <div class="col-6 md:col-3">
-        <div class="text-2xl font-bold text-900">{{totalCampaigns}}</div>
-        <div class="text-sm text-600">Total Campaigns</div>
-      </div>
-      <div class="col-6 md:col-3">
-        <div class="text-2xl font-bold text-green-600">{{totalReach | number}}</div>
-        <div class="text-sm text-600">Total Reach</div>
-      </div>
-      <div class="col-6 md:col-3">
-        <div class="text-2xl font-bold text-blue-600">${{totalSpend | number}}</div>
-        <div class="text-sm text-600">Total Spend</div>
-      </div>
-      <div class="col-6 md:col-3">
-        <div class="text-2xl font-bold text-purple-600">{{dataAge}} days</div>
-        <div class="text-sm text-600">Data History</div>
-        <div class="text-xs text-500 mt-1">{{getDataAgeDescription()}}</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Quick Actions Menu -->
-  <div class="quick-actions-menu fixed bottom-4 right-4">
+  <!-- Floating Action Button -->
+  <div class="fixed bottom-4 right-4 z-5">
     <p-button 
-      icon="pi pi-plus"
-      styleClass="p-button-primary p-button-lg border-round-3"
-      [style]="{'width': '60px', 'height': '60px'}"
-      pTooltip="Quick Actions"
+      icon="pi pi-cog"
+      styleClass="p-button-rounded p-button-help p-button-lg"
+      pTooltip="Dashboard Settings"
       tooltipPosition="left"
       (onClick)="onCreateCampaign()">
     </p-button>
   </div>
+
 </div>

@@ -1,1 +1,51 @@
-<p>journey-orchestration works!</p>
+<p-card>
+  <ng-template pTemplate="header">
+    <div class="flex align-items-center justify-content-between p-4">
+      <h3 class="text-lg font-semibold m-0">Journey Orchestration</h3>
+    </div>
+  </ng-template>
+  
+  <div class="p-4">
+    <div class="journey-flows mb-4">
+      <div class="journey-item flex align-items-center justify-content-between mb-3" 
+           *ngFor="let flow of journeyFlows">
+        <div class="flex align-items-center gap-3">
+          <div class="journey-indicator" [ngClass]="'bg-' + flow.color + '-100'">
+            <i class="pi pi-arrow-right" [ngClass]="'text-' + flow.color + '-600'"></i>
+          </div>
+          <div>
+            <div class="font-medium text-900">{{flow.name}}</div>
+            <div class="text-sm text-600">{{flow.description}}</div>
+          </div>
+        </div>
+        <div class="text-right">
+          <div class="font-semibold" 
+               [ngClass]="flow.status === 'positive' ? 'text-green-600' : 'text-red-600'">
+            {{flow.performance}}
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="journey-stats grid mb-4">
+      <div class="col-6">
+        <div class="text-center">
+          <div class="text-2xl font-bold text-900">{{totalFallbacks | number}}</div>
+          <div class="text-sm text-600">Total Fallbacks</div>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="text-center">
+          <div class="text-2xl font-bold text-green-600">{{successRate}}%</div>
+          <div class="text-sm text-600">Success Rate</div>
+        </div>
+      </div>
+    </div>
+    
+    <p-button 
+      label="View Full Analysis"
+      styleClass="w-full p-button-outlined"
+      (onClick)="viewFullAnalysis()">
+    </p-button>
+  </div>
+</p-card>

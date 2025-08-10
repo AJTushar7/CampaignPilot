@@ -1,1 +1,36 @@
-<p>festival-calendar works!</p>
+<p-card>
+  <ng-template pTemplate="header">
+    <div class="flex align-items-center justify-content-between p-4">
+      <h3 class="text-lg font-semibold m-0">Upcoming Festivals</h3>
+    </div>
+  </ng-template>
+  
+  <div class="p-4">
+    <div class="festival-list mb-4">
+      <div class="festival-item flex align-items-center justify-content-between mb-3"
+           *ngFor="let festival of upcomingFestivals">
+        <div class="flex align-items-center gap-3">
+          <div class="festival-icon" [ngClass]="'bg-' + festival.color + '-100'">
+            <span class="text-xl">{{festival.icon}}</span>
+          </div>
+          <div>
+            <div class="font-semibold text-900">{{festival.name}}</div>
+            <div class="text-sm text-600">{{festival.date}} • {{festival.daysLeft}} days left</div>
+          </div>
+        </div>
+        <div class="text-right">
+          <div class="font-semibold" [ngClass]="'text-' + festival.color + '-600'">
+            {{festival.daysLeft}} days
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <p-button 
+      label="Plan Festival Campaigns"
+      styleClass="w-full p-button-primary"
+      icon="pi pi-calendar-plus"
+      (onClick)="planFestivalCampaigns()">
+    </p-button>
+  </div>
+</p-card>

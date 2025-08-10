@@ -1,0 +1,47 @@
+:host {
+  display: block;
+}
+
+:host ::ng-deep .p-card .p-card-header {
+  padding: 0;
+}
+
+.journey-item {
+  padding: 0.75rem;
+  border-radius: 8px;
+  background: #f8fafc;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: #f1f5f9;
+  }
+}
+
+.journey-indicator {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.journey-stats {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  padding: 1.5rem;
+  color: white;
+  
+  .text-900 {
+    color: white !important;
+  }
+  
+  .text-600 {
+    color: rgba(255, 255, 255, 0.8) !important;
+  }
+  
+  .text-green-600 {
+    color: #22c55e !important;
+  }
+}

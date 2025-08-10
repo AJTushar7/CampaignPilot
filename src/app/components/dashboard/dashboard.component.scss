@@ -1,4 +1,76 @@
-/* Campaign Manager Dashboard - Complete Implementation Following Exact Specifications */
+/* Simple Dashboard Styles for Testing */
+
+.simple-dashboard {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  padding: 2rem;
+  
+  h1 {
+    color: #1e293b;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  
+  .loading-test {
+    max-width: 1200px;
+    margin: 0 auto;
+    
+    h2 {
+      color: #059669;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    
+    p {
+      text-align: center;
+      color: #64748b;
+      margin-bottom: 2rem;
+    }
+  }
+  
+  .test-metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    
+    .metric-card {
+      background: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      
+      h3 {
+        color: #64748b;
+        font-size: 0.875rem;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+      }
+      
+      .metric-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin: 0;
+      }
+    }
+  }
+  
+  .p-button {
+    margin: 2rem auto;
+    display: block;
+  }
+  
+  .status-message {
+    text-align: center;
+    color: #3b82f6;
+    font-weight: 500;
+    margin-top: 2rem;
+  }
+}
 
 .campaign-dashboard {
   min-height: 100vh;

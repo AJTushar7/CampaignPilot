@@ -1,5 +1,41 @@
-<!-- Campaign Manager Dashboard - Following Exact Specifications -->
-<div class="campaign-dashboard">
+<!-- Simple Test Dashboard -->
+<div class="simple-dashboard">
+  <h1>Campaign Manager Dashboard</h1>
+  <div class="loading-test">
+    <h2>Dashboard is Loading...</h2>
+    <p>If you can see this, Angular is working correctly.</p>
+    
+    <div class="test-metrics">
+      <div class="metric-card">
+        <h3>Total Campaigns</h3>
+        <p class="metric-value">{{totalCampaigns}}</p>
+      </div>
+      
+      <div class="metric-card">
+        <h3>Active Campaigns</h3>
+        <p class="metric-value">{{activeCampaigns}}</p>
+      </div>
+      
+      <div class="metric-card">
+        <h3>Total Reach</h3>
+        <p class="metric-value">{{formatNumber(totalReach)}}</p>
+      </div>
+      
+      <div class="metric-card">
+        <h3>Total Spend</h3>
+        <p class="metric-value">₹{{formatNumber(totalSpend)}}</p>
+      </div>
+    </div>
+    
+    <p-button 
+      label="Test PrimeNG Button" 
+      icon="pi pi-check"
+      styleClass="p-button-success"
+      (onClick)="onCreateCampaign()">
+    </p-button>
+    
+    <p class="status-message">Loading full dashboard components...</p>
+  </div>
 
   <!-- Header Section: Total campaigns count + details + "Add New Campaign" button -->
   <header class="dashboard-header">

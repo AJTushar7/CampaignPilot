@@ -108,6 +108,100 @@ export class DashboardComponent implements OnInit, OnDestroy {
   isCardView = true;
   currentCardPage = 0;
   totalCardPages = 4;
+  viewMode = 'cards';
+
+  // Channel data for the new design
+  channelData = [
+    { name: 'WhatsApp', percentage: 85, value: 20500, color: '#25D366' },
+    { name: 'Email', percentage: 65, value: 15200, color: '#dc3545' },
+    { name: 'SMS', percentage: 45, value: 8900, color: '#007bff' },
+    { name: 'Push', percentage: 25, value: 3400, color: '#fd7e14' },
+    { name: 'RCS', percentage: 20, value: 2100, color: '#6f42c1' }
+  ];
+
+  // Heatmap data for the grid
+  heatmapData = [
+    { name: 'Sun', slots: [
+      { value: 6, intensity: 'low' },
+      { value: 12, intensity: 'low' },
+      { value: 38, intensity: 'medium' },
+      { value: 24, intensity: 'low' }
+    ]},
+    { name: 'Mon', slots: [
+      { value: 12, intensity: 'low' },
+      { value: 24, intensity: 'medium' },
+      { value: 36, intensity: 'medium' },
+      { value: 48, intensity: 'high' }
+    ]},
+    { name: 'Tue', slots: [
+      { value: 18, intensity: 'medium' },
+      { value: 36, intensity: 'medium' },
+      { value: 54, intensity: 'high' },
+      { value: 72, intensity: 'high' }
+    ]},
+    { name: 'Wed', slots: [
+      { value: 24, intensity: 'medium' },
+      { value: 48, intensity: 'high' },
+      { value: 72, intensity: 'high' },
+      { value: 58, intensity: 'high' }
+    ]},
+    { name: 'Thu', slots: [
+      { value: 30, intensity: 'medium' },
+      { value: 60, intensity: 'high' },
+      { value: 50, intensity: 'high' },
+      { value: 36, intensity: 'medium' }
+    ]},
+    { name: 'Fri', slots: [
+      { value: 36, intensity: 'medium' },
+      { value: 72, intensity: 'high' },
+      { value: 48, intensity: 'high' },
+      { value: 56, intensity: 'high' }
+    ]},
+    { name: 'Sat', slots: [
+      { value: 42, intensity: 'high' },
+      { value: 64, intensity: 'high' },
+      { value: 36, intensity: 'medium' },
+      { value: 50, intensity: 'high' }
+    ]}
+  ];
+
+  // Time performance data for the heatmap legend
+  timePerformance = [
+    { label: '6 AM', performance: 75 },
+    { label: '12 PM', performance: 85 },
+    { label: '6 PM', performance: 90 }
+  ];
+
+  // Visible campaigns for carousel
+  visibleCampaigns = [
+    {
+      name: 'Diwali Festival Sale',
+      status: 'active',
+      audience: 'Active Buyers',
+      channel: 'WhatsApp',
+      progress: 78,
+      sent: '160,000',
+      total: '200,000'
+    },
+    {
+      name: 'New Model Launch',
+      status: 'active',
+      audience: 'Leads 300',
+      channel: 'Orchestrate',
+      progress: 46,
+      sent: '93,300',
+      total: '200,000'
+    },
+    {
+      name: 'Service Reminder',
+      status: 'completed',
+      audience: 'Service Due 70',
+      channel: 'SMS',
+      progress: 100,
+      sent: '75,000',
+      total: '75,000'
+    }
+  ];
   
   campaigns = [
     {
@@ -478,6 +572,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.isCardView = !this.isCardView;
   }
 
+  setViewMode(mode: string): void {
+    this.viewMode = mode;
+  }
+
   previousCampaigns(): void {
     if (this.currentCardPage > 0) {
       this.currentCardPage--;
@@ -561,6 +659,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
     const red = Math.round(255 * (1 - intensity));
     const green = Math.round(255 * intensity);
     return `rgb(${red}, ${green}, 100)`;
+  }
+
+  getHeatColor(value: number): string {
+    if (value <= 20) return '#e5f3ff';  // Very light blue
+    if (value <= 40) return '#b3d9ff';  // Light blue  
+    if (value <= 60) return '#66b3ff';  // Medium blue
+    if (value <= 80) return '#1a8cff';  // Dark blue
+    return '#0066cc';                   // Very dark blue
   }
 
   getHeatmapTooltip(hour: number, dayIndex: number): string {

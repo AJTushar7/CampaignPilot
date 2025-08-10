@@ -1,0 +1,33 @@
+<p-card header="Campaign Performance Heat Map">
+  <ng-template pTemplate="header">
+    <div class="flex align-items-center justify-content-between p-4">
+      <h3 class="text-lg font-semibold m-0">Campaign Performance Heat Map</h3>
+      <p-dropdown 
+        [options]="metricOptions" 
+        [(ngModel)]="selectedMetric"
+        optionLabel="label"
+        optionValue="value"
+        [style]="{'min-width': '150px'}">
+      </p-dropdown>
+    </div>
+  </ng-template>
+  
+  <div class="heat-map-grid">
+    <div *ngFor="let cell of heatMapData" 
+         [ngClass]="getCellClass(cell.intensity)"
+         [attr.title]="selectedMetric + ': ' + cell.value + '%'">
+      {{cell.value}}
+    </div>
+  </div>
+  
+  <div class="flex align-items-center justify-content-between mt-4 text-xs text-500">
+    <span>Low</span>
+    <div class="flex align-items-center gap-1">
+      <div class="w-1rem h-1rem bg-red-100 border-round"></div>
+      <div class="w-1rem h-1rem bg-orange-100 border-round"></div>
+      <div class="w-1rem h-1rem bg-green-100 border-round"></div>
+      <div class="w-1rem h-1rem bg-green-200 border-round"></div>
+    </div>
+    <span>High</span>
+  </div>
+</p-card>

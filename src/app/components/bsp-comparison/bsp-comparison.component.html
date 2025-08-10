@@ -1,0 +1,93 @@
+<p-card header="BSP Performance Comparison">
+  <ng-template pTemplate="header">
+    <div class="flex align-items-center justify-content-between p-4">
+      <h3 class="text-lg font-semibold m-0">BSP Performance Comparison</h3>
+      <p-dropdown 
+        [options]="metricOptions" 
+        [(ngModel)]="selectedMetric"
+        optionLabel="label"
+        optionValue="value"
+        [style]="{'min-width': '150px'}">
+      </p-dropdown>
+    </div>
+  </ng-template>
+  
+  <div class="overflow-x-auto">
+    <p-table [value]="bspProviders" styleClass="p-datatable-sm">
+      <ng-template pTemplate="header">
+        <tr>
+          <th class="text-left font-medium text-600">Provider</th>
+          <th class="text-left font-medium text-600">SMS</th>
+          <th class="text-left font-medium text-600">WhatsApp</th>
+          <th class="text-left font-medium text-600">Email</th>
+          <th class="text-left font-medium text-600">Push</th>
+          <th class="text-left font-medium text-600">Overall Score</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-provider>
+        <tr class="hover:bg-surface-50">
+          <td>
+            <div class="flex align-items-center gap-2">
+              <div class="w-2rem h-2rem border-round-lg flex align-items-center justify-content-center font-bold text-sm"
+                   [ngClass]="'bg-' + getProviderColor(provider.name) + '-100 text-' + getProviderColor(provider.name) + '-600'">
+                {{getProviderInitials(provider.name)}}
+              </div>
+              <span class="font-medium">{{provider.name}}</span>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="renderProgressBar(provider.smsDeliveryRate) as progress" class="flex align-items-center gap-2">
+              <div class="w-3rem bg-surface-200 border-round-2xl" style="height: 8px;">
+                <div class="border-round-2xl h-full" 
+                     [ngClass]="'bg-' + progress.color + '-500'"
+                     [style.width.%]="progress.value"></div>
+              </div>
+              <span class="text-sm font-medium w-2rem">{{progress.text}}</span>
+            </div>
+            <span *ngIf="!provider.smsDeliveryRate" class="text-400 text-sm">N/A</span>
+          </td>
+          <td>
+            <div *ngIf="renderProgressBar(provider.whatsappDeliveryRate) as progress" class="flex align-items-center gap-2">
+              <div class="w-3rem bg-surface-200 border-round-2xl" style="height: 8px;">
+                <div class="border-round-2xl h-full" 
+                     [ngClass]="'bg-' + progress.color + '-500'"
+                     [style.width.%]="progress.value"></div>
+              </div>
+              <span class="text-sm font-medium w-2rem">{{progress.text}}</span>
+            </div>
+            <span *ngIf="!provider.whatsappDeliveryRate" class="text-400 text-sm">N/A</span>
+          </td>
+          <td>
+            <div *ngIf="renderProgressBar(provider.emailDeliveryRate) as progress" class="flex align-items-center gap-2">
+              <div class="w-3rem bg-surface-200 border-round-2xl" style="height: 8px;">
+                <div class="border-round-2xl h-full" 
+                     [ngClass]="'bg-' + progress.color + '-500'"
+                     [style.width.%]="progress.value"></div>
+              </div>
+              <span class="text-sm font-medium w-2rem">{{progress.text}}</span>
+            </div>
+            <span *ngIf="!provider.emailDeliveryRate" class="text-400 text-sm">N/A</span>
+          </td>
+          <td>
+            <div *ngIf="renderProgressBar(provider.pushDeliveryRate) as progress" class="flex align-items-center gap-2">
+              <div class="w-3rem bg-surface-200 border-round-2xl" style="height: 8px;">
+                <div class="border-round-2xl h-full" 
+                     [ngClass]="'bg-' + progress.color + '-500'"
+                     [style.width.%]="progress.value"></div>
+              </div>
+              <span class="text-sm font-medium w-2rem">{{progress.text}}</span>
+            </div>
+            <span *ngIf="!provider.pushDeliveryRate" class="text-400 text-sm">N/A</span>
+          </td>
+          <td>
+            <p-tag 
+              [value]="provider.overallScore"
+              [ngClass]="getScoreColor(provider.overallScore)"
+              styleClass="text-sm font-medium">
+            </p-tag>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</p-card>

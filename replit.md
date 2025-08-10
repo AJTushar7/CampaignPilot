@@ -1,8 +1,10 @@
 # Overview
 
-This is a **Campaign Manager Dashboard** application designed for multichannel marketing communications. The system provides a comprehensive analytics and management platform for sending communications through various channels including SMS, WhatsApp, Push Notifications, RCS, and Email. The dashboard offers real-time monitoring, performance analytics, budget tracking, AI-powered insights, and orchestration capabilities for marketing campaigns.
+This is a **Campaign Manager Dashboard** application built with Angular 15 and PrimeNG, designed for multichannel marketing communications. The system provides a comprehensive analytics and management platform for sending communications through various channels including SMS, WhatsApp, Push Notifications, RCS, and Email. The dashboard offers real-time monitoring, performance analytics, budget tracking, AI-powered insights, and orchestration capabilities for marketing campaigns.
 
-The application serves as a centralized hub for campaign management with features like KPI monitoring, channel performance analysis, heat maps, campaign tracking, BSP provider comparisons, journey orchestration, and budget vs performance calculations.
+The application serves as a centralized hub for campaign management with features like KPI monitoring, channel performance analysis, heat maps, campaign tracking, BSP provider comparisons, journey orchestration, and budget vs performance calculations. **Status: Successfully deployed and running on Angular 15 with TypeScript components and SCSS styling.**
+
+**Current Status**: Successfully converted to Angular-style application using PrimeNG components and styling. The application now runs as a client-side JavaScript application with PrimeNG UI components and comprehensive dashboard functionality.
 
 # User Preferences
 
@@ -11,19 +13,19 @@ Preferred communication style: Simple, everyday language.
 # System Architecture
 
 ## Frontend Architecture
-- **Framework**: React 18 with TypeScript using Vite as the build tool
-- **UI Library**: shadcn/ui components built on Radix UI primitives
-- **Styling**: Tailwind CSS with custom design system and CSS variables
-- **State Management**: TanStack React Query for server state management
-- **Routing**: Wouter for lightweight client-side routing
-- **Component Structure**: Modular dashboard components with reusable UI elements
+- **Framework**: Angular 15 with TypeScript and Angular CLI
+- **UI Library**: PrimeNG 15.4.1 components with PrimeIcons and PrimeFlex
+- **Styling**: SCSS with PrimeNG theme integration and custom component styles
+- **State Management**: Angular services and component-based state management
+- **Routing**: Angular Router for client-side navigation
+- **Component Structure**: Modular dashboard components with Angular TypeScript architecture
 
 ## Backend Architecture
-- **Runtime**: Node.js with Express.js server
-- **Language**: TypeScript with ES modules
-- **API Design**: RESTful endpoints for campaign and analytics data
-- **Development Setup**: Vite middleware integration for hot module replacement
-- **Data Storage**: In-memory storage implementation with interface-based design for easy migration to persistent storage
+- **Runtime**: Angular development server with hot module replacement
+- **Language**: TypeScript with Angular services and dependency injection
+- **Data Management**: Component-based data handling with TypeScript interfaces
+- **Development Setup**: Angular CLI dev server with live reload
+- **Data Storage**: In-component mock data with TypeScript interfaces for future API integration
 
 ## Database Design
 - **ORM**: Drizzle ORM configured for PostgreSQL
@@ -41,8 +43,8 @@ Preferred communication style: Simple, everyday language.
 ### Monorepo Structure
 The project uses a monorepo approach with shared schemas and types between client and server, enabling type safety across the full stack. This reduces duplication and ensures consistency in data models.
 
-### Component-Based Dashboard
-The dashboard is built using modular components for each analytics section (KPI cards, channel performance, heat maps, etc.), allowing for easy maintenance and feature additions. Each component handles its own data fetching and loading states.
+### Angular Component Architecture
+The dashboard is built using Angular components for each analytics section (KPI cards, channel performance, heat maps, campaign monitoring, AI suggestions, BSP comparison), following Angular best practices with TypeScript interfaces, component lifecycle hooks, and SCSS styling. Each component manages its own state and data binding.
 
 ### Interface-Based Storage
 The storage layer uses TypeScript interfaces, making it easy to switch from the current in-memory implementation to a database-backed solution without changing business logic.

@@ -1,0 +1,32 @@
+<div class="ai-suggestions">
+  <div class="flex align-items-center gap-3 mb-4">
+    <div class="bg-white bg-opacity-20 p-2 border-round-lg">
+      <i class="pi pi-brain text-white text-xl"></i>
+    </div>
+    <div>
+      <h3 class="text-white font-semibold m-0 mb-1">AI Insights & Recommendations</h3>
+      <p class="text-sm text-white opacity-80 m-0">Powered by machine learning analytics</p>
+    </div>
+  </div>
+  
+  <div class="grid">
+    <div class="col-12 md:col-4" *ngFor="let suggestion of suggestions">
+      <div class="suggestion-card">
+        <div class="flex align-items-start gap-3">
+          <div class="p-2 border-round-lg" [ngClass]="'bg-' + suggestion.color + '-50'">
+            <i class="pi text-xl" [ngClass]="[suggestion.icon, 'text-' + suggestion.color + '-600']"></i>
+          </div>
+          <div class="flex-1">
+            <h4 class="font-medium text-900 m-0 mb-2">{{suggestion.title}}</h4>
+            <p class="text-sm text-600 m-0 mb-3">{{suggestion.description}}</p>
+            <p-button 
+              [label]="suggestion.action"
+              styleClass="p-button-text p-button-sm text-primary font-medium p-0"
+              (onClick)="applySuggestion(suggestion)">
+            </p-button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

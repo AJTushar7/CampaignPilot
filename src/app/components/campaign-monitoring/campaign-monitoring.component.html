@@ -1,0 +1,268 @@
+<p-card header="Real-time Campaign Monitoring">
+  <ng-template pTemplate="header">
+    <div class="flex align-items-center justify-content-between p-4">
+      <h3 class="text-lg font-semibold m-0">Real-time Campaign Monitoring</h3>
+      <div class="flex align-items-center gap-4">
+        <p-dropdown 
+          [options]="statusOptions" 
+          [(ngModel)]="selectedStatus"
+          optionLabel="label"
+          optionValue="value"
+          [style]="{'min-width': '120px'}">
+        </p-dropdown>
+        <div class="flex bg-surface-100 border-round-lg p-1">
+          <p-button 
+            label="Cards" 
+            icon="pi pi-th-large"
+            styleClass="p-button-sm"
+            [class]="viewMode === 'cards' ? 'p-button-primary' : 'p-button-outlined'"
+            (onClick)="viewMode = 'cards'">
+          </p-button>
+          <p-button 
+            label="Table" 
+            icon="pi pi-list"
+            styleClass="p-button-sm"
+            [class]="viewMode === 'table' ? 'p-button-primary' : 'p-button-outlined'"
+            (onClick)="viewMode = 'table'">
+          </p-button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <!-- Pagination Controls -->
+  <div class="flex align-items-center justify-content-between mb-4">
+    <div class="flex align-items-center gap-2">
+      <p-button 
+        icon="pi pi-chevron-left"
+        styleClass="p-button-outlined p-button-sm"
+        [disabled]="currentPage === 0"
+        (onClick)="previousPage()">
+      </p-button>
+      <span class="text-sm text-600">
+        {{currentPage * campaignsPerPage + 1}}-{{Math.min((currentPage + 1) * campaignsPerPage, campaigns.length)}} of {{campaigns.length}} campaigns
+      </span>
+      <p-button 
+        icon="pi pi-chevron-right"
+        styleClass="p-button-outlined p-button-sm"
+        [disabled]="currentPage >= totalPages - 1"
+        (onClick)="nextPage()">
+      </p-button>
+    </div>
+    <div class="text-sm text-500 flex align-items-center">
+      <i class="pi pi-clock mr-1"></i>
+      Last updated: 2 min ago
+    </div>
+  </div>
+
+  <!-- Cards View -->
+  <div *ngIf="viewMode === 'cards'" class="grid">
+    <div class="col-12 md:col-6 lg:col-4" *ngFor="let campaign of paginatedCampaigns">
+      <div class="campaign-card">
+        <div class="flex align-items-start justify-content-between mb-4">
+          <div>
+            <h4 class="font-semibold text-900 m-0 mb-1">{{campaign.name}}</h4>
+            <p class="text-sm text-600 m-0">
+              {{campaign.type}} • {{campaign.channels.join(' + ')}}
+            </p>
+          </div>
+          <div class="flex align-items-center gap-2">
+            <p-tag 
+              [value]="campaign.status" 
+              [ngClass]="getStatusClass(campaign.status)"
+              styleClass="text-xs">
+            </p-tag>
+            <p-button 
+              *ngIf="campaign.status === 'active'"
+              icon="pi pi-pause"
+              styleClass="p-button-text p-button-sm"
+              (onClick)="toggleCampaignStatus(campaign)">
+            </p-button>
+            <p-button 
+              *ngIf="campaign.status === 'paused'"
+              icon="pi pi-play"
+              styleClass="p-button-text p-button-sm"
+              (onClick)="toggleCampaignStatus(campaign)">
+            </p-button>
+          </div>
+        </div>
+        
+        <div class="flex flex-column gap-3">
+          <div *ngIf="campaign.status !== 'scheduled'">
+            <div class="flex justify-content-between text-sm mb-2">
+              <span class="text-600">Sent</span>
+              <span class="font-medium">{{campaign.sent | number}}</span>
+            </div>
+            <div class="flex justify-content-between text-sm mb-2">
+              <span class="text-600">Delivered</span>
+              <span class="font-medium">{{campaign.delivered | number}} ({{getDeliveryRate(campaign)}}%)</span>
+            </div>
+            <div class="flex justify-content-between text-sm mb-2">
+              <span class="text-600">Opened</span>
+              <span class="font-medium">{{campaign.opened | number}} ({{getOpenRate(campaign)}}%)</span>
+            </div>
+            <div class="flex justify-content-between text-sm">
+              <span class="text-600">Clicked</span>
+              <span class="font-medium">{{campaign.clicked | number}} ({{getClickRate(campaign)}}%)</span>
+            </div>
+          </div>
+          
+          <div *ngIf="campaign.status === 'scheduled'">
+            <div class="flex justify-content-between text-sm mb-2">
+              <span class="text-600">Target Audience</span>
+              <span class="font-medium">{{campaign.targetAudience | number}}</span>
+            </div>
+            <div class="flex justify-content-between text-sm">
+              <span class="text-600">Estimated Cost</span>
+              <span class="font-medium">${{campaign.cost}}</span>
+            </div>
+            <div *ngIf="campaign.scheduledAt" class="bg-surface-50 border-round-lg p-3 mt-3">
+              <div class="text-xs text-600 mb-1">Scheduled for:</div>
+              <div class="text-sm font-medium text-900">
+                {{campaign.scheduledAt | date:'short'}}
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="campaign.status === 'paused'" class="bg-orange-50 border-round-lg p-3 border-1 border-orange-200">
+            <div class="text-xs text-orange-700 font-medium mb-1 flex align-items-center">
+              <i class="pi pi-pause mr-1"></i>
+              Campaign Paused
+            </div>
+            <div class="text-xs text-orange-600">Paused due to low engagement</div>
+          </div>
+        </div>
+        
+        <div class="mt-4 pt-4 border-top-1 border-200 flex align-items-center justify-content-between">
+          <div class="text-xs text-500">
+            {{campaign.status === 'scheduled' ? 'Created' : 
+              campaign.status === 'paused' ? 'Paused' : 'Started'}}: 
+            <span>
+              {{formatTimeAgo(
+                campaign.status === 'scheduled' ? campaign.createdAt :
+                campaign.status === 'paused' ? (campaign.pausedAt || campaign.createdAt) :
+                (campaign.startedAt || campaign.createdAt)
+              )}}
+            </span>
+          </div>
+          <p-button 
+            label="View Details" 
+            styleClass="p-button-text p-button-sm text-primary"
+            (onClick)="viewCampaignDetails(campaign)">
+          </p-button>
+        </div>
+      </div>
+    </div>
+  </div>
+</p-card>
+
+<!-- Campaign Details Modal -->
+<p-dialog 
+  [(visible)]="showCampaignModal"
+  [modal]="true"
+  [closable]="true"
+  [draggable]="false"
+  [resizable]="false"
+  styleClass="w-11 max-w-4xl"
+  (onHide)="closeCampaignModal()">
+  
+  <ng-template pTemplate="header">
+    <div class="flex align-items-center justify-content-between w-full">
+      <h2 class="text-xl font-bold m-0">{{selectedCampaign?.name}}</h2>
+      <div class="flex align-items-center gap-2">
+        <p-tag 
+          *ngIf="selectedCampaign"
+          [value]="selectedCampaign.status" 
+          [ngClass]="getStatusClass(selectedCampaign.status)">
+        </p-tag>
+      </div>
+    </div>
+  </ng-template>
+
+  <div *ngIf="selectedCampaign">
+    <!-- Campaign Overview Cards -->
+    <div class="grid mb-4">
+      <div class="col-12 md:col-6 lg:col-3">
+        <p-card styleClass="text-center">
+          <div class="text-sm font-medium text-600 flex align-items-center justify-content-center mb-1">
+            <i class="pi pi-users mr-1"></i>
+            Target Audience
+          </div>
+          <div class="text-2xl font-bold">{{selectedCampaign.targetAudience | number}}</div>
+        </p-card>
+      </div>
+      <div class="col-12 md:col-6 lg:col-3">
+        <p-card styleClass="text-center">
+          <div class="text-sm font-medium text-600 flex align-items-center justify-content-center mb-1">
+            <i class="pi pi-dollar mr-1"></i>
+            Total Cost
+          </div>
+          <div class="text-2xl font-bold">${{selectedCampaign.cost}}</div>
+        </p-card>
+      </div>
+      <div class="col-12 md:col-6 lg:col-3">
+        <p-card styleClass="text-center">
+          <div class="text-sm font-medium text-600 flex align-items-center justify-content-center mb-1">
+            <i class="pi pi-chart-bar mr-1"></i>
+            Delivery Rate
+          </div>
+          <div class="text-2xl font-bold">{{getDeliveryRate(selectedCampaign)}}%</div>
+        </p-card>
+      </div>
+      <div class="col-12 md:col-6 lg:col-3">
+        <p-card styleClass="text-center">
+          <div class="text-sm font-medium text-600 flex align-items-center justify-content-center mb-1">
+            <i class="pi pi-chart-line mr-1"></i>
+            Open Rate
+          </div>
+          <div class="text-2xl font-bold">{{getOpenRate(selectedCampaign)}}%</div>
+        </p-card>
+      </div>
+    </div>
+
+    <!-- Campaign Details -->
+    <p-card>
+      <div class="grid">
+        <div class="col-12 md:col-6">
+          <label class="text-sm font-medium text-600 block mb-1">Campaign Type</label>
+          <p class="text-900 m-0">{{selectedCampaign.type}}</p>
+        </div>
+        <div class="col-12 md:col-6">
+          <label class="text-sm font-medium text-600 block mb-1">Channels</label>
+          <p class="text-900 m-0">{{selectedCampaign.channels.join(', ')}}</p>
+        </div>
+        <div class="col-12 md:col-6">
+          <label class="text-sm font-medium text-600 block mb-1">Created</label>
+          <p class="text-900 m-0">{{selectedCampaign.createdAt | date:'medium'}}</p>
+        </div>
+        <div class="col-12 md:col-6" *ngIf="selectedCampaign.startedAt">
+          <label class="text-sm font-medium text-600 block mb-1">Started</label>
+          <p class="text-900 m-0">{{selectedCampaign.startedAt | date:'medium'}}</p>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="mt-4 pt-4 border-top-1 border-200 flex flex-wrap gap-2">
+        <p-button 
+          label="Edit Campaign" 
+          icon="pi pi-pencil"
+          styleClass="p-button-outlined p-button-sm">
+        </p-button>
+        <p-button 
+          *ngIf="selectedCampaign.status === 'active'"
+          label="Pause Campaign" 
+          icon="pi pi-pause"
+          styleClass="p-button-outlined p-button-sm"
+          (onClick)="toggleCampaignStatus(selectedCampaign)">
+        </p-button>
+        <p-button 
+          *ngIf="selectedCampaign.status === 'paused'"
+          label="Resume Campaign" 
+          icon="pi pi-play"
+          styleClass="p-button-outlined p-button-sm"
+          (onClick)="toggleCampaignStatus(selectedCampaign)">
+        </p-button>
+      </div>
+    </p-card>
+  </div>
+</p-dialog>

@@ -1,0 +1,21 @@
+<div class="grid">
+  <div class="col-12 md:col-6 lg:col" *ngFor="let kpi of kpiMetrics">
+    <div class="kpi-card">
+      <div class="flex align-items-center justify-content-between">
+        <div class="flex-1">
+          <p class="kpi-label mb-2">{{kpi.label}}</p>
+          <p class="kpi-value mb-2">{{kpi.value}}</p>
+          <p class="kpi-change flex align-items-center m-0" [ngClass]="getTrendColor(kpi.growth)">
+            <i class="pi mr-1" [ngClass]="getTrendIcon(kpi.growth)"></i>
+            <span>{{kpi.growth}}</span>
+          </p>
+        </div>
+        <div class="p-3 border-round-lg" 
+             [ngClass]="'bg-' + kpi.color + '-50'">
+          <i class="pi text-xl" 
+             [ngClass]="[kpi.icon, 'text-' + kpi.color + '-600']"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

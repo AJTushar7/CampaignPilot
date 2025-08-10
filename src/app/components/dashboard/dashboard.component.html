@@ -1,0 +1,195 @@
+<!-- Dashboard Header -->
+<header class="dashboard-header p-3 shadow-2 bg-white sticky top-0 z-5">
+  <div class="flex align-items-center justify-content-between max-w-7xl mx-auto">
+    <div class="flex align-items-center gap-3">
+      <h1 class="text-2xl font-bold text-900 m-0">Campaign Manager</h1>
+      <p-dropdown 
+        [options]="dateRangeOptions" 
+        [(ngModel)]="selectedDateRange"
+        optionLabel="label"
+        optionValue="value"
+        [style]="{'min-width': '150px'}"
+        styleClass="p-button-outlined">
+        <ng-template pTemplate="selectedItem">
+          <div class="flex align-items-center gap-2">
+            <i class="pi pi-calendar text-600"></i>
+            <span class="text-sm">{{selectedDateRange}}</span>
+          </div>
+        </ng-template>
+      </p-dropdown>
+    </div>
+    <p-button 
+      label="Create Campaign" 
+      icon="pi pi-plus" 
+      (onClick)="onCreateCampaign()">
+    </p-button>
+  </div>
+</header>
+
+<!-- Main Dashboard Content -->
+<main class="dashboard-content">
+  <!-- KPI Cards Section -->
+  <section class="mb-4">
+    <app-kpi-cards></app-kpi-cards>
+  </section>
+
+  <!-- Channel Performance & Heat Map Row -->
+  <section class="grid mb-4">
+    <div class="col-12 lg:col-6">
+      <app-channel-performance></app-channel-performance>
+    </div>
+    <div class="col-12 lg:col-6">
+      <app-heat-map></app-heat-map>
+    </div>
+  </section>
+
+  <!-- Real-time Campaign Monitoring -->
+  <section class="mb-4">
+    <app-campaign-monitoring></app-campaign-monitoring>
+  </section>
+
+  <!-- AI Analytics Suggestions -->
+  <section class="mb-4">
+    <app-ai-suggestions></app-ai-suggestions>
+  </section>
+
+  <!-- BSP Comparison -->
+  <section class="mb-4">
+    <app-bsp-comparison></app-bsp-comparison>
+  </section>
+
+  <!-- Bottom Row: Additional Components -->
+  <section class="grid mb-4">
+    <div class="col-12 lg:col-4">
+      <!-- Orchestration Analysis placeholder -->
+      <p-card header="Journey Orchestration" styleClass="h-full">
+        <div class="flex flex-column gap-3">
+          <div class="flex align-items-center justify-content-between">
+            <span class="text-sm">Email → SMS</span>
+            <span class="text-green-600 font-medium">+34%</span>
+          </div>
+          <div class="flex align-items-center justify-content-between">
+            <span class="text-sm">Push → WhatsApp</span>
+            <span class="text-orange-600 font-medium">+12%</span>
+          </div>
+          <div class="flex align-items-center justify-content-between">
+            <span class="text-sm">SMS → RCS</span>
+            <span class="text-red-600 font-medium">-8%</span>
+          </div>
+          <p-button label="View Full Analysis" styleClass="p-button-outlined w-full mt-3"></p-button>
+        </div>
+      </p-card>
+    </div>
+    
+    <div class="col-12 lg:col-4">
+      <!-- Inactive Customers placeholder -->
+      <p-card header="Inactive Customers" styleClass="h-full">
+        <div class="text-center mb-4">
+          <div class="text-3xl font-bold text-red-600">2,847</div>
+          <div class="text-sm text-600">customers inactive for 30+ days</div>
+        </div>
+        <div class="flex flex-column gap-2">
+          <p-button label="Create Win-back Campaign" styleClass="w-full"></p-button>
+          <p-button label="View Detailed Report" styleClass="p-button-outlined w-full"></p-button>
+        </div>
+      </p-card>
+    </div>
+    
+    <div class="col-12 lg:col-4">
+      <!-- Festival Timeline placeholder -->
+      <p-card header="Upcoming Festivals" styleClass="h-full">
+        <div class="flex flex-column gap-3">
+          <div class="flex align-items-center gap-3 p-3 border-round-lg" style="background: #fef2f2; border: 1px solid #fee2e2;">
+            <div class="text-2xl">🎄</div>
+            <div>
+              <div class="font-medium">Christmas</div>
+              <div class="text-sm text-600">Dec 25 • 12 days left</div>
+            </div>
+          </div>
+          <div class="flex align-items-center gap-3 p-3 border-round-lg" style="background: #fefce8; border: 1px solid #fef3c7;">
+            <div class="text-2xl">🎊</div>
+            <div>
+              <div class="font-medium">New Year</div>
+              <div class="text-sm text-600">Jan 1 • 19 days left</div>
+            </div>
+          </div>
+          <p-button label="Plan Festival Campaigns" styleClass="p-button-outlined w-full mt-2"></p-button>
+        </div>
+      </p-card>
+    </div>
+  </section>
+
+  <!-- Budget vs Performance Calculator -->
+  <section class="mb-4">
+    <p-card header="Budget vs Performance Calculator">
+      <div class="grid">
+        <div class="col-12 lg:col-6">
+          <h4 class="font-medium text-900 mb-4">Budget Planning</h4>
+          <div class="flex flex-column gap-3">
+            <div>
+              <label class="text-sm font-medium text-700 block mb-2">Total Budget ($)</label>
+              <input type="number" pInputText value="10000" class="w-full" />
+            </div>
+            <div class="grid">
+              <div class="col-6">
+                <label class="text-sm font-medium text-700 block mb-2">SMS (%)</label>
+                <input type="number" pInputText value="40" class="w-full" />
+              </div>
+              <div class="col-6">
+                <label class="text-sm font-medium text-700 block mb-2">Email (%)</label>
+                <input type="number" pInputText value="30" class="w-full" />
+              </div>
+            </div>
+            <div class="grid">
+              <div class="col-6">
+                <label class="text-sm font-medium text-700 block mb-2">WhatsApp (%)</label>
+                <input type="number" pInputText value="20" class="w-full" />
+              </div>
+              <div class="col-6">
+                <label class="text-sm font-medium text-700 block mb-2">Push (%)</label>
+                <input type="number" pInputText value="10" class="w-full" />
+              </div>
+            </div>
+            <p-button label="Calculate Projected ROI" styleClass="w-full mt-3"></p-button>
+          </div>
+        </div>
+        
+        <div class="col-12 lg:col-6">
+          <h4 class="font-medium text-900 mb-4">Projected Performance</h4>
+          <div class="bg-surface-50 border-round-lg p-4 flex flex-column gap-3">
+            <div class="flex justify-content-between">
+              <span class="text-sm text-600">Estimated Reach</span>
+              <span class="font-medium">45,000 users</span>
+            </div>
+            <div class="flex justify-content-between">
+              <span class="text-sm text-600">Expected Conversions</span>
+              <span class="font-medium">3,780 (8.4%)</span>
+            </div>
+            <div class="flex justify-content-between">
+              <span class="text-sm text-600">Projected Revenue</span>
+              <span class="font-medium text-green-600">$28,350</span>
+            </div>
+            <div class="flex justify-content-between border-top-1 border-200 pt-3">
+              <span class="text-sm font-medium text-900">Expected ROI</span>
+              <span class="font-bold text-green-600">184%</span>
+            </div>
+          </div>
+          
+          <div class="bg-blue-50 border-1 border-blue-200 border-round-lg p-4 mt-4">
+            <div class="flex align-items-start gap-3">
+              <div class="bg-blue-500 p-2 border-round text-white">
+                <i class="pi pi-lightbulb"></i>
+              </div>
+              <div>
+                <h5 class="font-medium text-blue-900 m-0 mb-2">AI Recommendation</h5>
+                <p class="text-sm text-blue-700 m-0">
+                  Allocate 15% more budget to WhatsApp for 23% higher conversion potential.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </p-card>
+  </section>
+</main>

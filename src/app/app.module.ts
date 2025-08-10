@@ -28,6 +28,11 @@ import { CampaignMonitoringComponent } from './components/campaign-monitoring/ca
 import { AiSuggestionsComponent } from './components/ai-suggestions/ai-suggestions.component';
 import { BspComparisonComponent } from './components/bsp-comparison/bsp-comparison.component';
 import { CampaignDataService } from './services/campaign-data.service';
+import { BudgetCalculatorComponent } from './components/budget-calculator/budget-calculator.component';
+import { JourneyOrchestrationComponent } from './components/journey-orchestration/journey-orchestration.component';
+import { InactiveCustomersComponent } from './components/inactive-customers/inactive-customers.component';
+import { FestivalCalendarComponent } from './components/festival-calendar/festival-calendar.component';
+import { CampaignNotificationsComponent } from './components/campaign-notifications/campaign-notifications.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +43,12 @@ import { CampaignDataService } from './services/campaign-data.service';
     HeatMapComponent,
     CampaignMonitoringComponent,
     AiSuggestionsComponent,
-    BspComparisonComponent
+    BspComparisonComponent,
+    BudgetCalculatorComponent,
+    JourneyOrchestrationComponent,
+    InactiveCustomersComponent,
+    FestivalCalendarComponent,
+    CampaignNotificationsComponent
   ],
   imports: [
     BrowserModule,

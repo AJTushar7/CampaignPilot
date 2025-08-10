@@ -4,7 +4,58 @@ This is a **Campaign Manager Dashboard** application built with Angular 15 and P
 
 The application serves as a centralized hub for campaign management with features like KPI monitoring, channel performance analysis, heat maps, campaign tracking, BSP provider comparisons, journey orchestration, and budget vs performance calculations. **Status: Successfully deployed and running on Angular 15 with TypeScript components and SCSS styling.**
 
-**Current Status**: Successfully converted to Angular-style application using PrimeNG components and styling. The application now runs as a client-side JavaScript application with PrimeNG UI components and comprehensive dashboard functionality.
+**Current Status**: Complete UI revamp in progress to create a modern, sleek, and highly functional dashboard that handles large-scale data (15-20 campaigns daily with 10-15 lac customer records each). The new design will feature intelligent data loading strategies, comprehensive AI suggestions, and advanced analytics sections that scale with data volume (15, 30, 45, 60+ days).
+
+## UI Revamp Plan (August 2025)
+
+**Objective**: Create a world-class campaign manager dashboard that combines beauty, functionality, and performance optimization for handling massive data volumes while providing actionable insights at first glance.
+
+### Key Features Being Implemented:
+1. **Intelligent Data Architecture**: Live data sections + overnight batch processing sections
+2. **Scalable UI Sections**: Automatic section appearance based on data age (15/30/45/60+ days)
+3. **Advanced AI Integration**: Context-aware suggestions in each section
+4. **Budget vs Performance Calculator**: Real-time ROI analysis with projection capabilities
+5. **Campaign Calendar**: Festival/event-based campaign planning
+6. **Journey Orchestration Reporting**: Multi-channel fallback analytics
+7. **Inactive Customer Management**: Win-back campaign suggestions
+8. **Real-time Campaign Status**: Live execution monitoring with notifications
+
+### Modern Design Principles:
+- **Single-page dashboard** with intelligent collapsible sections
+- **Modern card-based layout** with consistent theming
+- **Accessibility-first design** (tabIndex, ARIA labels, keyboard navigation)
+- **Performance optimized** for large datasets
+- **Mobile-responsive** design patterns
+
+### Dashboard Sections Implementation:
+
+**Top Section - Executive Summary**:
+- Enhanced KPI Cards: Total Campaigns, Open Rate, Click Rate, Conversion Rate, Total Spend
+- Time-based filtering with automatic data-age detection
+- Campaign execution status notifications
+
+**Main Grid Layout**:
+- **Left Column**: Channel Performance, Campaign Heat Map, Journey Orchestration
+- **Center Column**: Real-time Campaign Monitoring, Budget vs Performance Calculator
+- **Right Column**: AI Insights & Recommendations, BSP Performance Comparison
+
+**Additional Sections (Data-Age Dependent)**:
+- **Inactive Customers Section**: Appears with 30+ days data
+- **Festival Calendar**: Appears with 45+ days data
+- **Advanced Analytics**: Appears with 60+ days data
+- **Trend Analysis**: Long-term performance insights
+
+**Performance Strategy**:
+- **Live Data**: Campaign status, real-time KPIs, current executions
+- **Batch Data**: Historical analytics, customer behavior, trend analysis
+- **Hybrid Data**: Performance comparisons, AI suggestions, budget calculations
+
+### Technical Implementation Notes:
+- Component-based architecture with lazy loading for large data sections
+- Intelligent caching strategy for batch-processed analytics
+- Real-time WebSocket connections for live campaign monitoring
+- Progressive data loading based on user interaction and data availability
+- Accessibility compliance with WCAG 2.1 AA standards
 
 # User Preferences
 

@@ -1,0 +1,134 @@
+<p-card styleClass="budget-calculator-card">
+  <ng-template pTemplate="header">
+    <div class="flex align-items-center justify-content-between p-4">
+      <h3 class="text-lg font-semibold m-0">Budget vs Performance Calculator</h3>
+      <div class="flex">
+        <p-button 
+          label="Pre-Campaign" 
+          styleClass="p-button-sm"
+          [class]="activeTab === 'pre-campaign' ? 'p-button-primary' : 'p-button-outlined'"
+          (onClick)="setActiveTab('pre-campaign')">
+        </p-button>
+        <p-button 
+          label="Post-Campaign" 
+          styleClass="p-button-sm ml-2"
+          [class]="activeTab === 'post-campaign' ? 'p-button-primary' : 'p-button-outlined'"
+          (onClick)="setActiveTab('post-campaign')">
+        </p-button>
+      </div>
+    </div>
+  </ng-template>
+
+  <div class="p-4">
+    <div class="grid">
+      <!-- Budget Planning Section -->
+      <div class="col-12 md:col-6">
+        <h4 class="text-base font-semibold mb-3">Budget Planning</h4>
+        
+        <div class="field mb-4">
+          <label for="totalBudget" class="text-sm font-medium text-600 block mb-2">Total Budget</label>
+          <p-inputNumber 
+            id="totalBudget"
+            [(ngModel)]="budgetPlan.totalBudget"
+            mode="currency" 
+            currency="USD"
+            locale="en-US"
+            [style]="{'width': '100%'}"
+            (onInput)="onBudgetChange()">
+          </p-inputNumber>
+        </div>
+
+        <div class="grid">
+          <div class="col-6">
+            <div class="field">
+              <label class="text-sm font-medium text-600 block mb-2">SMS (%)</label>
+              <p-inputNumber 
+                [(ngModel)]="budgetPlan.smsPercentage"
+                [style]="{'width': '100%'}"
+                suffix="%"
+                (onInput)="onBudgetChange()">
+              </p-inputNumber>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="field">
+              <label class="text-sm font-medium text-600 block mb-2">Email (%)</label>
+              <p-inputNumber 
+                [(ngModel)]="budgetPlan.emailPercentage"
+                [style]="{'width': '100%'}"
+                suffix="%"
+                (onInput)="onBudgetChange()">
+              </p-inputNumber>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="field">
+              <label class="text-sm font-medium text-600 block mb-2">WhatsApp (%)</label>
+              <p-inputNumber 
+                [(ngModel)]="budgetPlan.whatsappPercentage"
+                [style]="{'width': '100%'}"
+                suffix="%"
+                (onInput)="onBudgetChange()">
+              </p-inputNumber>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="field">
+              <label class="text-sm font-medium text-600 block mb-2">Push (%)</label>
+              <p-inputNumber 
+                [(ngModel)]="budgetPlan.pushPercentage"
+                [style]="{'width': '100%'}"
+                suffix="%"
+                [min]="0"
+                [max]="100"
+                (onInput)="onBudgetChange()">
+              </p-inputNumber>
+            </div>
+          </div>
+        </div>
+
+        <p-button 
+          label="Calculate Projected ROI"
+          styleClass="w-full p-button-primary"
+          (onClick)="calculateProjectedROI()">
+        </p-button>
+      </div>
+
+      <!-- Projected Performance Section -->
+      <div class="col-12 md:col-6">
+        <h4 class="text-base font-semibold mb-3">Projected Performance</h4>
+        
+        <div class="performance-metrics">
+          <div class="metric-row flex align-items-center justify-content-between mb-3">
+            <span class="text-sm text-600">Estimated Reach</span>
+            <span class="font-semibold">{{projectedPerformance.estimatedReach | number}} users</span>
+          </div>
+          
+          <div class="metric-row flex align-items-center justify-content-between mb-3">
+            <span class="text-sm text-600">Expected Conversions</span>
+            <span class="font-semibold">{{projectedPerformance.expectedConversions | number}} ({{projectedPerformance.conversionRate}}%)</span>
+          </div>
+          
+          <div class="metric-row flex align-items-center justify-content-between mb-3">
+            <span class="text-sm text-600">Projected Revenue</span>
+            <span class="font-semibold text-green-600">${{projectedPerformance.projectedRevenue | number}}</span>
+          </div>
+          
+          <div class="metric-row flex align-items-center justify-content-between mb-4">
+            <span class="text-sm text-600">Expected ROI</span>
+            <span class="font-semibold text-green-600">{{projectedPerformance.expectedROI}}%</span>
+          </div>
+        </div>
+
+        <!-- AI Recommendation -->
+        <div class="ai-recommendation bg-blue-50 border-round-lg p-3">
+          <div class="flex align-items-center gap-2 mb-2">
+            <i class="pi pi-lightbulb text-blue-600"></i>
+            <span class="font-semibold text-blue-900">{{aiRecommendation.title}}</span>
+          </div>
+          <p class="text-sm text-blue-800 m-0">{{aiRecommendation.message}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</p-card>

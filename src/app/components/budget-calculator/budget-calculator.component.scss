@@ -1,0 +1,64 @@
+:host {
+  display: block;
+}
+
+:host ::ng-deep .p-card .p-card-header {
+  padding: 0;
+}
+
+.budget-calculator-card {
+  height: 100%;
+}
+
+.performance-metrics {
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.metric-row {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #e2e8f0;
+  
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.ai-recommendation {
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: #3b82f6;
+  }
+}
+
+:host ::ng-deep .p-inputnumber-input {
+  text-align: right;
+}
+
+:host ::ng-deep .field {
+  margin-bottom: 1rem;
+}
+
+:host ::ng-deep .p-button-group .p-button {
+  border-radius: 0;
+  
+  &:first-child {
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+  }
+  
+  &:last-child {
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+  }
+}

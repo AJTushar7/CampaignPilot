@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CampaignDataService, ChannelData } from '../services/campaign-data.service';
+import { CampaignDataService, ChannelData } from '../../services/campaign-data.service';
 
 @Component({
   selector: 'app-channel-performance',

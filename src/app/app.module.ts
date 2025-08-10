@@ -27,6 +27,7 @@ import { HeatMapComponent } from './components/heat-map/heat-map.component';
 import { CampaignMonitoringComponent } from './components/campaign-monitoring/campaign-monitoring.component';
 import { AiSuggestionsComponent } from './components/ai-suggestions/ai-suggestions.component';
 import { BspComparisonComponent } from './components/bsp-comparison/bsp-comparison.component';
+import { CampaignDataService } from './services/campaign-data.service';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,7 @@ import { BspComparisonComponent } from './components/bsp-comparison/bsp-comparis
     PanelModule,
     TagModule
   ],
-  providers: [],
+  providers: [CampaignDataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

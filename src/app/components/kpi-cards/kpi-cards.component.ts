@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CampaignDataService, KpiMetric } from '../services/campaign-data.service';
+import { CampaignDataService, KpiMetric } from '../../services/campaign-data.service';
 
 @Component({
   selector: 'app-kpi-cards',

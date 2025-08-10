@@ -1,26 +1,63 @@
-<!-- Modern Dashboard Layout -->
+<!-- Modern Campaign Manager Dashboard -->
 <div class="dashboard-container">
-  <!-- Header Section with Enhanced Design -->
-  <div class="dashboard-header flex align-items-center justify-content-between mb-6 p-4 bg-white border-round-lg shadow-2">
+  <!-- Enhanced Header Section with Live Status -->
+  <div class="dashboard-header flex align-items-center justify-content-between mb-6 p-4 bg-white border-round-xl shadow-2">
     <div>
-      <h1 class="text-3xl font-bold text-900 m-0 mb-2">Campaign Manager</h1>
-      <p class="text-lg text-600 m-0">Monitor and manage your multichannel marketing campaigns</p>
+      <div class="flex align-items-center gap-3 mb-2">
+        <h1 class="text-3xl font-bold text-900 m-0">Campaign Analytics Dashboard</h1>
+        <p-tag 
+          *ngIf="isLiveUpdatesActive" 
+          value="LIVE" 
+          severity="success" 
+          class="animate-pulse">
+        </p-tag>
+      </div>
+      <p class="text-lg text-600 m-0 mb-2">Multi-Channel Campaign Performance • Real-time tracking across SMS, WhatsApp, Email, Push & RCS</p>
+      <div class="flex align-items-center gap-4 text-sm text-500">
+        <span><i class="pi pi-chart-line"></i> {{getActiveFeatureCount()}} Active Sections</span>
+        <span><i class="pi pi-database"></i> {{getDataAgeDescription()}}</span>
+        <span *ngIf="getSectionAvailabilityStatus().length > 0"><i class="pi pi-star"></i> {{getSectionAvailabilityStatus().length}} Advanced Features</span>
+      </div>
     </div>
     <div class="flex align-items-center gap-3">
       <p-dropdown 
+        [options]="channelOptions" 
+        [(ngModel)]="selectedChannel"
+        (onChange)="onChannelChange()"
+        optionLabel="label"
+        optionValue="value"
+        placeholder="All Channels"
+        styleClass="w-auto">
+      </p-dropdown>
+      <p-dropdown 
         [options]="dateRangeOptions" 
         [(ngModel)]="selectedDateRange"
+        (onChange)="onDateRangeChange()"
         optionLabel="label"
         optionValue="value"
         styleClass="w-auto">
       </p-dropdown>
       <p-button 
-        label="Create Campaign" 
+        [label]="isLiveUpdatesActive ? 'Live Updates ON' : 'Live Updates OFF'"
+        [icon]="isLiveUpdatesActive ? 'pi pi-pause' : 'pi pi-play'"
+        [styleClass]="isLiveUpdatesActive ? 'p-button-text p-button-success' : 'p-button-text p-button-secondary'"
+        (onClick)="toggleLiveUpdates()">
+      </p-button>
+      <p-button 
+        label="New Campaign" 
         icon="pi pi-plus"
-        styleClass="p-button-primary p-button-lg"
+        styleClass="p-button-primary"
         (onClick)="onCreateCampaign()">
       </p-button>
     </div>
+  </div>
+
+  <!-- Live Notification Banner -->
+  <div 
+    *ngIf="showLiveNotification" 
+    class="live-notification bg-green-50 border-green-200 border-1 border-round-lg p-3 mb-4 flex align-items-center gap-3 animate-slideInDown">
+    <i class="pi pi-check-circle text-green-600"></i>
+    <span class="text-green-800 font-medium">{{liveNotification}}</span>
   </div>
 
   <!-- Executive Summary - Enhanced KPI Cards -->
@@ -33,92 +70,74 @@
     <app-campaign-notifications></app-campaign-notifications>
   </div>
 
-  <!-- Main Dashboard Grid Layout - 3 Column Responsive Design -->
+  <!-- Data-Age Based Feature Availability Banner -->
+  <div *ngIf="getSectionAvailabilityStatus().length > 0" class="feature-availability-banner mb-6">
+    <p-panel 
+      header="Advanced Features Available" 
+      styleClass="bg-blue-50 border-blue-200">
+      <div class="flex align-items-center gap-4">
+        <i class="pi pi-star text-blue-600 text-2xl"></i>
+        <div>
+          <p class="m-0 mb-2 font-semibold text-blue-900">{{dataAge}} days of data unlocks:</p>
+          <div class="flex flex-wrap gap-2">
+            <p-tag 
+              *ngFor="let feature of getSectionAvailabilityStatus()" 
+              [value]="feature" 
+              severity="info" 
+              class="text-xs">
+            </p-tag>
+          </div>
+        </div>
+      </div>
+    </p-panel>
+  </div>
+
+  <!-- Main Dashboard Grid Layout - Modern 3 Column Responsive Design -->
   <div class="grid dashboard-main-grid">
-    <!-- Left Column - Performance Analytics & Journey Orchestration -->
+    <!-- Left Column - Performance Analytics & Channel Intelligence -->
     <div class="col-12 lg:col-4">
       <div class="flex flex-column gap-4">
         <app-channel-performance></app-channel-performance>
         <app-heat-map></app-heat-map>
-        <app-journey-orchestration></app-journey-orchestration>
+        <app-journey-orchestration *ngIf="dataAge >= 30"></app-journey-orchestration>
       </div>
     </div>
 
-    <!-- Center Column - Campaign Monitoring & Budget Calculator -->
+    <!-- Center Column - Campaign Monitoring & Budget Intelligence -->
     <div class="col-12 lg:col-4">
       <div class="flex flex-column gap-4">
         <app-campaign-monitoring></app-campaign-monitoring>
         <app-budget-calculator></app-budget-calculator>
+        <app-bsp-comparison></app-bsp-comparison>
       </div>
     </div>
 
-    <!-- Right Column - AI Insights & Advanced Features -->
+    <!-- Right Column - AI Insights & Customer Intelligence -->
     <div class="col-12 lg:col-4">
       <div class="flex flex-column gap-4">
         <app-ai-suggestions></app-ai-suggestions>
-        <app-bsp-comparison></app-bsp-comparison>
         
-        <!-- Data-dependent sections that appear based on data age -->
+        <!-- Progressive data-based sections -->
         <app-inactive-customers *ngIf="dataAge >= 30"></app-inactive-customers>
         <app-festival-calendar *ngIf="dataAge >= 45"></app-festival-calendar>
-      </div>
-    </div>
-  </div>
-
-  <!-- Advanced Analytics Section (60+ days data) -->
-  <div class="advanced-analytics-section mt-6" *ngIf="dataAge >= 60">
-    <div class="mb-4">
-      <h2 class="text-2xl font-bold text-900 mb-2">Advanced Analytics</h2>
-      <p class="text-600">Long-term insights and trend analysis with historical data</p>
-    </div>
-    
-    <div class="grid">
-      <div class="col-12 md:col-6">
-        <p-card>
-          <ng-template pTemplate="header">
-            <div class="p-4">
-              <h3 class="text-lg font-semibold m-0">Trend Analysis</h3>
+        
+        <!-- Advanced Analytics Preview (60+ days) -->
+        <div *ngIf="dataAge >= 60" class="advanced-analytics-preview">
+          <p-panel 
+            header="Advanced Analytics Suite" 
+            styleClass="bg-purple-50 border-purple-200">
+            <div class="text-center p-4">
+              <i class="pi pi-chart-bar text-purple-600 text-4xl mb-3"></i>
+              <h4 class="text-purple-900 mb-2">Predictive Intelligence Active</h4>
+              <p class="text-purple-700 mb-3 text-sm">Advanced trend analysis, customer lifetime value prediction, and ROI forecasting available</p>
+              <p-button 
+                label="Open Advanced Analytics" 
+                icon="pi pi-external-link" 
+                styleClass="p-button-sm p-button-outlined">
+              </p-button>
             </div>
-          </ng-template>
-          <div class="p-4 text-center">
-            <i class="pi pi-chart-line text-4xl text-blue-500 mb-3"></i>
-            <div class="text-600 mb-3">60+ day performance trends and predictions</div>
-            <div class="grid text-center">
-              <div class="col-6">
-                <div class="text-xl font-bold text-green-600">+23%</div>
-                <div class="text-xs text-600">Conversion Growth</div>
-              </div>
-              <div class="col-6">
-                <div class="text-xl font-bold text-blue-600">-12%</div>
-                <div class="text-xs text-600">Cost Reduction</div>
-              </div>
-            </div>
-          </div>
-        </p-card>
-      </div>
-      
-      <div class="col-12 md:col-6">
-        <p-card>
-          <ng-template pTemplate="header">
-            <div class="p-4">
-              <h3 class="text-lg font-semibold m-0">Customer Lifetime Value</h3>
-            </div>
-          </ng-template>
-          <div class="p-4 text-center">
-            <i class="pi pi-users text-4xl text-green-500 mb-3"></i>
-            <div class="text-600 mb-3">CLV analysis with historical data</div>
-            <div class="grid text-center">
-              <div class="col-6">
-                <div class="text-xl font-bold text-green-600">$245</div>
-                <div class="text-xs text-600">Avg CLV</div>
-              </div>
-              <div class="col-6">
-                <div class="text-xl font-bold text-purple-600">18.5mo</div>
-                <div class="text-xs text-600">Avg Lifetime</div>
-              </div>
-            </div>
-          </div>
-        </p-card>
+          </p-panel>
+        </div>
       </div>
     </div>
   </div>

@@ -34,6 +34,21 @@ export class KpiCardsComponent implements OnInit {
   }
 
   getTrendColor(growth: string): string {
-    return growth.indexOf('+') === 0 ? 'text-success' : 'text-danger';
+    return growth.indexOf('+') === 0 ? 'text-green-600' : 'text-red-600';
+  }
+
+  getProgressWidth(index: number): number {
+    // Simulate progress based on growth values
+    const progressValues = [85, 92, 78, 88, 95];
+    return progressValues[index] || 75;
+  }
+
+  getLastUpdateTime(): string {
+    const now = new Date();
+    return now.toLocaleTimeString('en-US', { 
+      hour: '2-digit', 
+      minute: '2-digit',
+      second: '2-digit'
+    });
   }
 }

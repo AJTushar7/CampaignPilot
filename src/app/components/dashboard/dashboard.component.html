@@ -92,44 +92,40 @@
     </p-panel>
   </div>
 
-  <!-- Main Dashboard Grid Layout - Modern 3 Column Responsive Design -->
-  <div class="grid dashboard-main-grid">
-    <!-- Left Column - Performance Analytics & Channel Intelligence -->
-    <div class="col-12 lg:col-4">
-      <div class="flex flex-column gap-4">
+  <!-- Main Dashboard Grid Layout - Fixed Responsive Design -->
+  <div class="grid" style="margin-left: -0.5rem; margin-right: -0.5rem;">
+    <!-- Left Column - Performance Analytics -->
+    <div class="col-12 lg:col-4" style="padding-left: 0.5rem; padding-right: 0.5rem; margin-bottom: 2rem;">
+      <div style="display: flex; flex-direction: column; gap: 1.5rem;">
         <app-channel-performance></app-channel-performance>
         <app-heat-map></app-heat-map>
         <app-journey-orchestration *ngIf="dataAge >= 30"></app-journey-orchestration>
       </div>
     </div>
 
-    <!-- Center Column - Campaign Monitoring & Budget Intelligence -->
-    <div class="col-12 lg:col-4">
-      <div class="flex flex-column gap-4">
+    <!-- Center Column - Campaign Monitoring -->
+    <div class="col-12 lg:col-4" style="padding-left: 0.5rem; padding-right: 0.5rem; margin-bottom: 2rem;">
+      <div style="display: flex; flex-direction: column; gap: 1.5rem;">
         <app-campaign-monitoring></app-campaign-monitoring>
         <app-budget-calculator></app-budget-calculator>
         <app-bsp-comparison></app-bsp-comparison>
       </div>
     </div>
 
-    <!-- Right Column - AI Insights & Customer Intelligence -->
-    <div class="col-12 lg:col-4">
-      <div class="flex flex-column gap-4">
+    <!-- Right Column - AI Insights -->
+    <div class="col-12 lg:col-4" style="padding-left: 0.5rem; padding-right: 0.5rem; margin-bottom: 2rem;">
+      <div style="display: flex; flex-direction: column; gap: 1.5rem;">
         <app-ai-suggestions></app-ai-suggestions>
-        
-        <!-- Progressive data-based sections -->
         <app-inactive-customers *ngIf="dataAge >= 30"></app-inactive-customers>
         <app-festival-calendar *ngIf="dataAge >= 45"></app-festival-calendar>
         
-        <!-- Advanced Analytics Preview (60+ days) -->
-        <div *ngIf="dataAge >= 60" class="advanced-analytics-preview">
-          <p-panel 
-            header="Advanced Analytics Suite" 
-            styleClass="bg-purple-50 border-purple-200">
-            <div class="text-center p-4">
-              <i class="pi pi-chart-bar text-purple-600 text-4xl mb-3"></i>
-              <h4 class="text-purple-900 mb-2">Predictive Intelligence Active</h4>
-              <p class="text-purple-700 mb-3 text-sm">Advanced trend analysis, customer lifetime value prediction, and ROI forecasting available</p>
+        <!-- Advanced Analytics Preview -->
+        <div *ngIf="dataAge >= 60">
+          <p-panel header="Advanced Analytics Suite">
+            <div class="text-center p-3">
+              <i class="pi pi-chart-bar text-4xl text-purple-600 mb-3"></i>
+              <h4 class="text-purple-900 mb-2">Predictive Intelligence</h4>
+              <p class="text-600 mb-3 text-sm">Advanced analytics available with 60+ days data</p>
               <p-button 
                 label="Open Advanced Analytics" 
                 icon="pi pi-external-link" 

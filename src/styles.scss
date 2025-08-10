@@ -247,6 +247,74 @@ body {
   }
 }
 
+/* Dashboard Grid Layout Fixes */
+.dashboard-main-grid {
+  margin-left: -0.5rem;
+  margin-right: -0.5rem;
+}
+
+.dashboard-main-grid > div {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+/* Component spacing fixes */
+.custom-card {
+  margin-bottom: 1.5rem;
+  min-height: 200px;
+}
+
+.kpi-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Ensure proper card spacing */
+p-card {
+  display: block;
+  height: 100%;
+}
+
+p-card .p-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+p-card .p-card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Panel styling improvements */
+p-panel .p-panel-content {
+  padding: 1rem;
+}
+
+/* Grid system improvements */
+@media (max-width: 991px) {
+  .dashboard-main-grid .col-12.lg\\:col-4 {
+    margin-bottom: 2rem;
+  }
+}
+
+/* Loading skeleton improvements */
+.skeleton-loader {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
 /* Utility classes for Angular templates */
 .text-center { text-align: center; }
 .text-right { text-align: right; }
@@ -260,3 +328,5 @@ body {
 .mb-2 { margin-bottom: 0.5rem; }
 .mb-3 { margin-bottom: 0.75rem; }
 .mb-4 { margin-bottom: 1rem; }
+.h-full { height: 100%; }
+.min-h-200 { min-height: 200px; }

@@ -1,74 +1,67 @@
-<!-- Enhanced KPI Cards with Modern Design -->
-<div class="grid">
-  <div class="col-12 sm:col-6 lg:col" *ngFor="let kpi of kpiMetrics; let i = index">
-    <div class="kpi-card custom-card h-full p-4" 
-         [class]="'border-l-4 border-' + kpi.color + '-500'"
-         style="transition: all 0.3s ease; cursor: pointer;"
-         (mouseenter)="$event.currentTarget.style.transform = 'translateY(-4px)'"
-         (mouseleave)="$event.currentTarget.style.transform = 'translateY(0)'">
-      
-      <!-- KPI Card Header -->
-      <div class="flex align-items-center justify-content-between mb-3">
-        <div class="kpi-icon-wrapper" 
-             [class]="'bg-' + kpi.color + '-50 border-round-full p-3'">
-          <i class="pi text-xl" [ngClass]="[kpi.icon, 'text-' + kpi.color + '-600']"></i>
+<!-- Enhanced KPI Cards with Fixed Layout -->
+<div class="grid" style="margin-left: -0.5rem; margin-right: -0.5rem;">
+  <div class="col-12 sm:col-6 lg:col-2" 
+       *ngFor="let kpi of kpiMetrics; let i = index"
+       style="padding-left: 0.5rem; padding-right: 0.5rem; margin-bottom: 1rem;">
+    
+    <p-card styleClass="h-full">
+      <div class="p-4">
+        <!-- KPI Card Header -->
+        <div class="flex align-items-center justify-content-between mb-3">
+          <div [class]="'bg-' + kpi.color + '-50 border-round-full p-2'" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+            <i class="pi" [ngClass]="[kpi.icon, 'text-' + kpi.color + '-600']"></i>
+          </div>
+          <div class="flex align-items-center gap-1" [ngClass]="getTrendColor(kpi.growth)">
+            <i class="pi text-xs" [ngClass]="getTrendIcon(kpi.growth)"></i>
+            <span class="text-xs font-bold">{{kpi.growth}}</span>
+          </div>
         </div>
-        <div class="flex align-items-center gap-1" [ngClass]="getTrendColor(kpi.growth)">
-          <i class="pi text-sm font-bold" [ngClass]="getTrendIcon(kpi.growth)"></i>
-          <span class="text-sm font-bold">{{kpi.growth}}</span>
-        </div>
-      </div>
 
-      <!-- KPI Data -->
-      <div class="kpi-content">
-        <div class="kpi-value text-3xl font-bold mb-2" 
-             [class]="'text-' + kpi.color + '-700'">
-          {{kpi.value}}
-        </div>
-        <div class="kpi-label text-sm font-medium text-600 mb-2">
-          {{kpi.label}}
-        </div>
-        
-        <!-- Progress Visualization -->
-        <div class="progress-visualization mt-3">
-          <div class="progress-bar bg-surface-200 border-round" style="height: 4px;">
-            <div class="progress-fill border-round transition-all transition-duration-500" 
-                 [class]="'bg-' + kpi.color + '-500'"
-                 [style]="{'width': getProgressWidth(i) + '%'}">
+        <!-- KPI Data -->
+        <div class="kpi-content">
+          <div class="kpi-value text-2xl font-bold mb-1 text-900">
+            {{kpi.value}}
+          </div>
+          <div class="kpi-label text-sm text-600">
+            {{kpi.label}}
+          </div>
+          
+          <!-- Simple Progress Bar -->
+          <div class="mt-2">
+            <div class="bg-surface-200 border-round" style="height: 3px; width: 100%;">
+              <div class="border-round" 
+                   [class]="'bg-' + kpi.color + '-500'"
+                   [style]="{'width': getProgressWidth(i) + '%', 'height': '100%'}">
+              </div>
             </div>
           </div>
-          <div class="flex justify-content-between mt-1">
-            <span class="text-xs text-500">Last Period</span>
-            <span class="text-xs text-500">Current</span>
-          </div>
         </div>
       </div>
-
-      <!-- Hover Effect Overlay -->
-      <div class="absolute inset-0 bg-gradient-to-r opacity-0 hover:opacity-5 transition-opacity"
-           [class]="'from-' + kpi.color + '-500 to-' + kpi.color + '-600'">
-      </div>
-    </div>
+    </p-card>
   </div>
 </div>
 
 <!-- Real-time Update Indicator -->
 <div class="flex align-items-center justify-content-center gap-2 mt-3 text-xs text-500" *ngIf="!loading">
-  <i class="pi pi-circle-fill text-green-500 animate-pulse"></i>
+  <i class="pi pi-circle-fill text-green-500"></i>
   <span>Live data • Updated {{getLastUpdateTime()}}</span>
 </div>
 
 <!-- Loading State -->
-<div *ngIf="loading" class="grid">
-  <div class="col-12 sm:col-6 lg:col" *ngFor="let i of [1,2,3,4,5]">
-    <div class="kpi-card custom-card h-full p-4">
-      <div class="flex align-items-center justify-content-between mb-3">
-        <div class="bg-surface-300 border-round-full" style="width: 48px; height: 48px;"></div>
-        <div class="bg-surface-300 border-round" style="width: 60px; height: 20px;"></div>
+<div *ngIf="loading" class="grid" style="margin-left: -0.5rem; margin-right: -0.5rem;">
+  <div class="col-12 sm:col-6 lg:col-2" 
+       *ngFor="let i of [1,2,3,4,5]"
+       style="padding-left: 0.5rem; padding-right: 0.5rem; margin-bottom: 1rem;">
+    <p-card styleClass="h-full">
+      <div class="p-4">
+        <div class="flex align-items-center justify-content-between mb-3">
+          <div class="bg-surface-300 border-round-full skeleton-loader" style="width: 40px; height: 40px;"></div>
+          <div class="bg-surface-300 border-round skeleton-loader" style="width: 60px; height: 20px;"></div>
+        </div>
+        <div class="bg-surface-300 border-round mb-2 skeleton-loader" style="width: 100px; height: 32px;"></div>
+        <div class="bg-surface-300 border-round mb-2 skeleton-loader" style="width: 80px; height: 16px;"></div>
+        <div class="bg-surface-300 border-round skeleton-loader" style="width: 100%; height: 3px;"></div>
       </div>
-      <div class="bg-surface-300 border-round mb-2" style="width: 100px; height: 36px;"></div>
-      <div class="bg-surface-300 border-round mb-2" style="width: 80px; height: 16px;"></div>
-      <div class="bg-surface-300 border-round" style="width: 100%; height: 4px;"></div>
-    </div>
+    </p-card>
   </div>
 </div>

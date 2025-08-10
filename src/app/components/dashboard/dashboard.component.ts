@@ -61,6 +61,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   loadAvailableSections(): void {
     this.availableSections = this.campaignDataService.getAvailableSections();
+    
+    // Show notification about newly available features when data age changes
+    const newFeatures = this.getSectionAvailabilityStatus();
+    if (newFeatures.length > 0 && this.dataAge >= 30) {
+      this.showLiveNotification = true;
+      this.liveNotification = `${newFeatures.length} advanced features now available!`;
+      setTimeout(() => {
+        this.showLiveNotification = false;
+      }, 4000);
+    }
   }
 
   updateDataAge(): void {
@@ -145,4 +155,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     if (this.dataAge >= 60) count += 2;
     return count;
   }
+
+
 }

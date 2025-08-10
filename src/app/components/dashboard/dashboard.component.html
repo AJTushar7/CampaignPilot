@@ -6,39 +6,69 @@
     <div class="header-content">
       <div class="title-section">
         <h1 class="dashboard-title">Campaign Analytics Dashboard</h1>
-        <p class="dashboard-subtitle">Real-time multichannel performance and cost insights</p>
+        <p class="dashboard-subtitle">Multi-Channel Campaign Performance • Real-time tracking across SMS, WhatsApp, Email, Push & RCS</p>
+        
+        <!-- Live Notifications -->
+        <div class="live-notifications" *ngIf="showLiveNotification">
+          <div class="notification-item" [class.active]="showLiveNotification">
+            <span class="live-indicator">●</span>
+            <span class="notification-text">Live Updates Active</span>
+            <span class="notification-message">{{liveNotification}}</span>
+          </div>
+        </div>
       </div>
       <div class="header-actions">
-        <button class="new-campaign-btn">+ New Campaign</button>
+        <select class="channel-selector" [(ngModel)]="selectedChannel" (change)="onChannelChange()" 
+                title="Select channel to filter dashboard data" aria-label="Channel filter dropdown">
+          <option value="all">All Channels</option>
+          <option value="whatsapp">WhatsApp</option>
+          <option value="sms">SMS</option>
+          <option value="email">Email</option>
+          <option value="push">Push</option>
+          <option value="rcs">RCS</option>
+        </select>
+        <button class="new-campaign-btn" (click)="onCreateCampaign()" 
+                title="Create a new marketing campaign" aria-label="Create new campaign">
+          + New Campaign
+        </button>
       </div>
     </div>
   </header>
 
-  <!-- KPI Cards Row -->
+  <!-- KPI Cards Row - Exact match to provided design -->
   <section class="kpi-section">
     <div class="kpi-grid">
-      <div class="kpi-card">
-        <h3 class="kpi-label">Total Campaigns</h3>
-        <div class="kpi-value">148</div>
-        <div class="kpi-detail">12 active • 5 scheduled</div>
-      </div>
-      
-      <div class="kpi-card">
-        <h3 class="kpi-label">Total Spend</h3>
-        <div class="kpi-value">₹12.5L</div>
-        <div class="kpi-detail">6 Months</div>
-      </div>
-      
-      <div class="kpi-card">
+      <div class="kpi-card" title="Total revenue generated from all campaigns" aria-label="Total revenue metric">
         <h3 class="kpi-label">Total Revenue</h3>
         <div class="kpi-value">₹50.5L</div>
-        <div class="kpi-detail">vs last month +18.5%</div>
+        <div class="kpi-detail">
+          <span class="trend-indicator positive">+18.5%</span>
+          <span class="trend-period">vs last month</span>
+        </div>
       </div>
       
-      <div class="kpi-card">
-        <h3 class="kpi-label">Avg Conversion</h3>
+      <div class="kpi-card" title="Return on investment across all campaigns" aria-label="Campaign ROI metric">
+        <h3 class="kpi-label">Campaign ROI</h3>
+        <div class="kpi-value">6.0x</div>
+        <div class="kpi-detail">
+          <span class="trend-indicator positive">+2.1x</span>
+          <span class="trend-period">improvement</span>
+        </div>
+      </div>
+      
+      <div class="kpi-card" title="Total messages sent across all channels" aria-label="Messages sent metric">
+        <h3 class="kpi-label">Messages Sent</h3>
+        <div class="kpi-value">4.8M</div>
+        <div class="kpi-detail">Across all channels</div>
+      </div>
+      
+      <div class="kpi-card" title="Average conversion rate from all campaigns" aria-label="Conversion rate metric">
+        <h3 class="kpi-label">Avg Conversion Rate</h3>
         <div class="kpi-value">10.7%</div>
-        <div class="kpi-detail">+3.2% from target</div>
+        <div class="kpi-detail">
+          <span class="trend-indicator positive">+3.2%</span>
+          <span class="trend-period">from target</span>
+        </div>
       </div>
     </div>
   </section>
@@ -135,30 +165,36 @@
     </section>
 
     <!-- Real-time Campaign Monitoring -->
-    <section class="monitoring-section">
+    <section class="monitoring-section" aria-label="Real-time campaign monitoring dashboard">
       <div class="section-header">
         <h3>Real-time Campaign Monitoring</h3>
+        <div class="ai-suggestion-tooltip" title="AI Suggestion: Consider pausing low-performing campaigns to optimize budget allocation">
+          <span class="ai-icon">🤖</span>
+          <span class="suggestion-text">AI suggests pausing 2 underperforming campaigns</span>
+        </div>
         <div class="controls">
-          <select class="time-filter">
-            <option>Last 7 days</option>
-            <option>Last 30 days</option>
+          <select class="time-filter" [(ngModel)]="selectedTimeFilter" (change)="onTimeFilterChange()" 
+                  title="Filter campaigns by time period" aria-label="Time period filter">
+            <option *ngFor="let option of timeFilterOptions" [value]="option.value">{{option.label}}</option>
           </select>
-          <select class="status-filter">
-            <option>All statuses</option>
-            <option>Active</option>
-            <option>Completed</option>
+          <select class="status-filter" [(ngModel)]="selectedStatusFilter" (change)="onStatusFilterChange()"
+                  title="Filter campaigns by status" aria-label="Campaign status filter">
+            <option *ngFor="let option of statusFilterOptions" [value]="option.value">{{option.label}}</option>
           </select>
-          <div class="view-toggle">
-            <button [class.active]="viewMode === 'cards'" (click)="setViewMode('cards')">Cards</button>
-            <button [class.active]="viewMode === 'table'" (click)="setViewMode('table')">Table</button>
+          <div class="view-toggle" role="tablist" aria-label="View mode selection">
+            <button [class.active]="viewMode === 'cards'" (click)="setViewMode('cards')" role="tab" 
+                    [attr.aria-selected]="viewMode === 'cards'" title="Card view">Cards</button>
+            <button [class.active]="viewMode === 'table'" (click)="setViewMode('table')" role="tab"
+                    [attr.aria-selected]="viewMode === 'table'" title="Table view">Table</button>
           </div>
         </div>
       </div>
 
-      <!-- Campaign Cards -->
-      <div class="campaign-carousel">
+      <!-- Cards View -->
+      <div class="campaign-carousel" *ngIf="viewMode === 'cards'">
         <div class="carousel-nav">
-          <button class="nav-btn prev" (click)="previousCampaigns()">‹</button>
+          <button class="nav-btn prev" (click)="previousCampaigns()" [disabled]="currentCardPage === 0" 
+                  title="Previous campaigns" aria-label="Navigate to previous campaigns">‹</button>
         </div>
         
         <div class="campaign-cards">
@@ -179,7 +215,12 @@
               </div>
               
               <div class="action-buttons">
-                <button class="action-btn secondary" *ngIf="campaign.status === 'active'">Pause</button>
+                <button class="action-btn pause" *ngIf="campaign.status === 'active'" (click)="pauseCampaign(campaign.name)"
+                        title="Pause this campaign">Pause</button>
+                <button class="action-btn resume" *ngIf="campaign.status === 'paused'" (click)="resumeCampaign(campaign.name)"
+                        title="Resume this campaign">Resume</button>
+                <button class="action-btn retry" *ngIf="campaign.status === 'failed'" (click)="showRetryCostModal(campaign)"
+                        title="Retry failed messages">Retry (₹{{calculateRetryCost(campaign)}})</button>
                 <button class="action-btn secondary">Error Analysis</button>
                 <button class="action-btn primary">Optimize</button>
               </div>
@@ -188,15 +229,69 @@
         </div>
         
         <div class="carousel-nav">
-          <button class="nav-btn next" (click)="nextCampaigns()">›</button>
+          <button class="nav-btn next" (click)="nextCampaigns()" [disabled]="currentCardPage >= totalCardPages - 1"
+                  title="Next campaigns" aria-label="Navigate to next campaigns">›</button>
         </div>
+      </div>
+      
+      <!-- Table View -->
+      <div class="campaign-table-container" *ngIf="viewMode === 'table'">
+        <table class="campaign-table" role="table" aria-label="Campaign monitoring data table">
+          <thead>
+            <tr role="row">
+              <th role="columnheader" scope="col">Campaign</th>
+              <th role="columnheader" scope="col">Status</th>
+              <th role="columnheader" scope="col">Channel</th>
+              <th role="columnheader" scope="col">Progress</th>
+              <th role="columnheader" scope="col">Sent/Total</th>
+              <th role="columnheader" scope="col">Cost</th>
+              <th role="columnheader" scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let campaign of allCampaigns" role="row">
+              <td role="gridcell">
+                <div class="campaign-name">{{campaign.name}}</div>
+                <div class="campaign-audience">{{campaign.audience}}</div>
+              </td>
+              <td role="gridcell">
+                <span class="status-badge" [class]="'status-' + campaign.status">{{campaign.status}}</span>
+              </td>
+              <td role="gridcell">{{campaign.channel}}</td>
+              <td role="gridcell">
+                <div class="table-progress">
+                  <div class="progress-bar">
+                    <div class="progress-fill" [style.width.%]="campaign.progress"></div>
+                  </div>
+                  <span class="progress-text">{{campaign.progress}}%</span>
+                </div>
+              </td>
+              <td role="gridcell">{{campaign.sent}} / {{campaign.total}}</td>
+              <td role="gridcell">₹{{getCampaignCost(campaign)}}</td>
+              <td role="gridcell">
+                <div class="table-actions">
+                  <button class="action-btn-sm pause" *ngIf="campaign.status === 'active'" 
+                          (click)="pauseCampaign(campaign.name)" title="Pause campaign">Pause</button>
+                  <button class="action-btn-sm resume" *ngIf="campaign.status === 'paused'" 
+                          (click)="resumeCampaign(campaign.name)" title="Resume campaign">Resume</button>
+                  <button class="action-btn-sm retry" *ngIf="campaign.status === 'failed'" 
+                          (click)="showRetryCostModal(campaign)" title="Retry failed messages">
+                    Retry (₹{{calculateRetryCost(campaign)}})
+                  </button>
+                  <button class="action-btn-sm details" (click)="viewCampaignDetails(campaign.name)" 
+                          title="View campaign details">Details</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </section>
 
-    <!-- Cost Optimization Panels -->
+    <!-- Cost Optimization & Inactive Customers -->
     <section class="cost-optimization-section">
       <div class="section-header">
-        <h3>Cost Optimization Panels</h3>
+        <h3>Cost Optimization & Customer Management</h3>
       </div>
       
       <div class="cost-panels">
@@ -218,10 +313,20 @@
           <div class="panel-detail">Cost per Lead</div>
         </div>
         
+        <div class="cost-panel inactive-customers-panel">
+          <div class="panel-label">Inactive Customers <span class="warning-badge">⚠️</span></div>
+          <div class="panel-value">24.5K</div>
+          <div class="panel-detail">Not engaged in 30+ days</div>
+          <div class="panel-actions">
+            <button class="exclusion-btn" (click)="createExclusionList()">Create Exclusion List</button>
+            <button class="winback-btn" (click)="createWinbackCampaign()">Win-back Campaign</button>
+          </div>
+        </div>
+        
         <div class="cost-panel opportunity-panel">
           <div class="panel-label">Opportunity <span class="ai-badge">AI</span></div>
           <div class="panel-value">₹2.9L</div>
-          <div class="panel-detail">Shift 30% SMS — WhatsApp</div>
+          <div class="panel-detail">Shift 30% SMS → WhatsApp</div>
         </div>
       </div>
 
@@ -465,6 +570,171 @@
               <strong>Navratri 2025</strong>
               <span class="opportunity-date">Start Sep 2025</span>
               <button class="plan-btn secondary">50 Days</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Campaign Calendar -->
+    <section class="campaign-calendar-section">
+      <div class="section-header">
+        <h3>Campaign Calendar</h3>
+        <div class="calendar-controls">
+          <select class="month-selector">
+            <option>August 2025</option>
+            <option>September 2025</option>
+            <option>October 2025</option>
+          </select>
+          <button class="calendar-btn">View Full Calendar</button>
+        </div>
+      </div>
+      
+      <div class="upcoming-campaigns">
+        <div class="campaign-calendar-item">
+          <div class="date-badge">
+            <div class="date-day">19</div>
+            <div class="date-month">Aug</div>
+          </div>
+          <div class="campaign-info">
+            <h4>Raksha Bandhan Campaign</h4>
+            <p>Send brother-sister themed promotions</p>
+            <div class="campaign-tags">
+              <span class="tag">WhatsApp</span>
+              <span class="tag">Email</span>
+            </div>
+          </div>
+          <button class="plan-btn" (click)="planCampaign('Raksha Bandhan')">Plan</button>
+        </div>
+        
+        <div class="campaign-calendar-item">
+          <div class="date-badge">
+            <div class="date-day">29</div>
+            <div class="date-month">Aug</div>
+          </div>
+          <div class="campaign-info">
+            <h4>Ganesh Chaturthi</h4>
+            <p>Festival promotions and greetings</p>
+            <div class="campaign-tags">
+              <span class="tag">Orchestration</span>
+              <span class="tag">RCS</span>
+            </div>
+          </div>
+          <button class="plan-btn" (click)="planCampaign('Ganesh Chaturthi')">Plan</button>
+        </div>
+        
+        <div class="campaign-calendar-item">
+          <div class="date-badge">
+            <div class="date-day">02</div>
+            <div class="date-month">Oct</div>
+          </div>
+          <div class="campaign-info">
+            <h4>Dussehra Sale</h4>
+            <p>Victory celebration offers</p>
+            <div class="campaign-tags">
+              <span class="tag">SMS</span>
+              <span class="tag">Push</span>
+            </div>
+          </div>
+          <button class="plan-btn secondary" (click)="planCampaign('Dussehra')">45 Days</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Performance vs Budget Analysis -->
+    <section class="performance-budget-section">
+      <div class="section-header">
+        <h3>Performance vs Budget Analysis</h3>
+        <div class="analysis-controls">
+          <select [(ngModel)]="selectedCampaignForAnalysis" (change)="onCampaignAnalysisChange()" class="campaign-selector">
+            <option *ngFor="let option of campaignAnalysisOptions" [value]="option.value">{{option.label}}</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="performance-comparison" *ngIf="selectedCampaignForAnalysis">
+        <div class="comparison-grid">
+          <!-- Pre-optimization -->
+          <div class="comparison-card pre-optimization">
+            <h4>Pre-Optimization</h4>
+            <div class="metrics">
+              <div class="metric-item">
+                <span class="metric-label">Total Cost</span>
+                <span class="metric-value">₹{{formatNumber(campaignPerformanceData.preCost)}}</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-label">Revenue</span>
+                <span class="metric-value">₹{{formatNumber(campaignPerformanceData.preRevenue)}}</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-label">Conversion Rate</span>
+                <span class="metric-value">{{campaignPerformanceData.preConversion}}%</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-label">ROI</span>
+                <span class="metric-value">{{campaignPerformanceData.preROI}}%</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Arrow -->
+          <div class="optimization-arrow">
+            <div class="arrow-icon">→</div>
+            <div class="optimization-label">AI Optimization</div>
+          </div>
+          
+          <!-- Post-optimization -->
+          <div class="comparison-card post-optimization">
+            <h4>Post-Optimization</h4>
+            <div class="metrics">
+              <div class="metric-item">
+                <span class="metric-label">Total Cost</span>
+                <span class="metric-value savings">₹{{formatNumber(campaignPerformanceData.postCost)}}</span>
+                <span class="change negative">-{{((campaignPerformanceData.preCost - campaignPerformanceData.postCost) / campaignPerformanceData.preCost * 100).toFixed(1)}}%</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-label">Revenue</span>
+                <span class="metric-value growth">₹{{formatNumber(campaignPerformanceData.postRevenue)}}</span>
+                <span class="change positive">+{{((campaignPerformanceData.postRevenue - campaignPerformanceData.preRevenue) / campaignPerformanceData.preRevenue * 100).toFixed(1)}}%</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-label">Conversion Rate</span>
+                <span class="metric-value growth">{{campaignPerformanceData.postConversion}}%</span>
+                <span class="change positive">+{{(campaignPerformanceData.postConversion - campaignPerformanceData.preConversion).toFixed(1)}}</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-label">ROI</span>
+                <span class="metric-value growth">{{campaignPerformanceData.postROI}}%</span>
+                <span class="change positive">+{{(campaignPerformanceData.postROI - campaignPerformanceData.preROI).toFixed(0)}}%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Key Insights -->
+        <div class="optimization-insights">
+          <h4>Key Optimization Results</h4>
+          <div class="insights-grid">
+            <div class="insight-card">
+              <div class="insight-icon savings">💰</div>
+              <div class="insight-content">
+                <div class="insight-value">₹{{formatNumber(campaignPerformanceData.preCost - campaignPerformanceData.postCost)}}</div>
+                <div class="insight-label">Cost Saved</div>
+              </div>
+            </div>
+            <div class="insight-card">
+              <div class="insight-icon revenue">📈</div>
+              <div class="insight-content">
+                <div class="insight-value">₹{{formatNumber(campaignPerformanceData.postRevenue - campaignPerformanceData.preRevenue)}}</div>
+                <div class="insight-label">Additional Revenue</div>
+              </div>
+            </div>
+            <div class="insight-card">
+              <div class="insight-icon efficiency">⚡</div>
+              <div class="insight-content">
+                <div class="insight-value">{{((campaignPerformanceData.postRevenue - campaignPerformanceData.preRevenue + campaignPerformanceData.preCost - campaignPerformanceData.postCost) / campaignPerformanceData.preCost * 100).toFixed(0)}}%</div>
+                <div class="insight-label">Overall Improvement</div>
+              </div>
             </div>
           </div>
         </div>

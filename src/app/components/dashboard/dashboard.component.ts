@@ -38,6 +38,32 @@ export class DashboardComponent implements OnInit, OnDestroy {
   isDarkMode = false;
   isRefreshing = false;
   
+  // Live notifications
+  showLiveNotification = true;
+  liveNotification = 'Campaign "Flash Sale" completed with 12.4% conversion rate • 2m ago';
+  
+  // Campaign monitoring
+  viewMode: 'cards' | 'table' = 'cards';
+  selectedTimeFilter = 'today';
+  selectedStatusFilter = 'all';
+  currentCardPage = 0;
+  totalCardPages = 2;
+  
+  timeFilterOptions = [
+    { label: 'Last Hour', value: 'hour' },
+    { label: 'Today', value: 'today' },
+    { label: 'Yesterday', value: 'yesterday' },
+    { label: 'Last 7 Days', value: '7d' }
+  ];
+  
+  statusFilterOptions = [
+    { label: 'All Status', value: 'all' },
+    { label: 'Active', value: 'active' },
+    { label: 'Paused', value: 'paused' },
+    { label: 'Completed', value: 'completed' },
+    { label: 'Failed', value: 'failed' }
+  ];
+  
   // Campaign summary data
   totalCampaigns = 18;
   activeCampaigns = 12;
@@ -106,9 +132,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   
   // Campaign monitoring data
   isCardView = true;
-  currentCardPage = 0;
-  totalCardPages = 4;
-  viewMode = 'cards';
 
   // Channel data for the new design
   channelData = [
@@ -172,8 +195,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     { label: '6 PM', performance: 90 }
   ];
 
-  // Visible campaigns for carousel
-  visibleCampaigns = [
+  // All campaigns data
+  allCampaigns = [
     {
       name: 'Diwali Festival Sale',
       status: 'active',
@@ -181,7 +204,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
       channel: 'WhatsApp',
       progress: 78,
       sent: '160,000',
-      total: '200,000'
+      total: '200,000',
+      dateCreated: '2025-08-05'
     },
     {
       name: 'New Model Launch',
@@ -190,7 +214,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
       channel: 'Orchestrate',
       progress: 46,
       sent: '93,300',
-      total: '200,000'
+      total: '200,000',
+      dateCreated: '2025-08-08'
     },
     {
       name: 'Service Reminder',
@@ -199,9 +224,43 @@ export class DashboardComponent implements OnInit, OnDestroy {
       channel: 'SMS',
       progress: 100,
       sent: '75,000',
-      total: '75,000'
+      total: '75,000',
+      dateCreated: '2025-08-03'
+    },
+    {
+      name: 'Summer Sale Alert',
+      status: 'paused',
+      audience: 'All Users',
+      channel: 'Email',
+      progress: 25,
+      sent: '50,000',
+      total: '200,000',
+      dateCreated: '2025-07-28'
+    },
+    {
+      name: 'Weekly Newsletter',
+      status: 'completed',
+      audience: 'Subscribers',
+      channel: 'Email',
+      progress: 100,
+      sent: '180,000',
+      total: '180,000',
+      dateCreated: '2025-07-20'
+    },
+    {
+      name: 'Product Update',
+      status: 'active',
+      audience: 'Premium Users',
+      channel: 'Push',
+      progress: 89,
+      sent: '45,000',
+      total: '50,000',
+      dateCreated: '2025-08-09'
     }
   ];
+  
+  // Visible campaigns for carousel (filtered)
+  visibleCampaigns = [];
   
   campaigns = [
     {
@@ -490,9 +549,27 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
   ];
 
-  // Notification system
-  showLiveNotification = false;
-  liveNotification = '';
+  // Notification system - already declared above
+  
+  // Performance vs Budget data
+  selectedCampaignForAnalysis = '';
+  campaignAnalysisOptions = [
+    { label: 'Select Campaign', value: '' },
+    { label: 'Diwali Festival Sale', value: 'diwali-sale' },
+    { label: 'New Model Launch', value: 'model-launch' },
+    { label: 'Service Reminder', value: 'service-reminder' }
+  ];
+  
+  campaignPerformanceData = {
+    preCost: 25000,
+    postCost: 18500,
+    preRevenue: 85000,
+    postRevenue: 122000,
+    preConversion: 8.5,
+    postConversion: 12.3,
+    preROI: 240,
+    postROI: 559
+  };
   
   constructor(private campaignDataService: CampaignDataService) {}
 
@@ -500,6 +577,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.updateDataAge();
     this.calculateProjections();
     this.startLiveUpdatesSimulation();
+    this.filterCampaigns();
   }
 
   ngOnDestroy(): void {
@@ -572,8 +650,107 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.isCardView = !this.isCardView;
   }
 
-  setViewMode(mode: string): void {
+  setViewMode(mode: 'cards' | 'table'): void {
     this.viewMode = mode;
+  }
+  
+  onTimeFilterChange(): void {
+    this.filterCampaigns();
+  }
+  
+  onStatusFilterChange(): void {
+    this.filterCampaigns();
+  }
+  
+  filterCampaigns(): void {
+    let filtered = [...this.allCampaigns];
+    
+    // Filter by status
+    if (this.selectedStatusFilter !== 'all-statuses') {
+      filtered = filtered.filter(campaign => campaign.status === this.selectedStatusFilter);
+    }
+    
+    // Filter by date (simple simulation based on dateCreated)
+    const now = new Date();
+    if (this.selectedTimeFilter === 'last-7-days') {
+      const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+      filtered = filtered.filter(campaign => new Date(campaign.dateCreated) >= sevenDaysAgo);
+    } else if (this.selectedTimeFilter === 'last-30-days') {
+      const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+      filtered = filtered.filter(campaign => new Date(campaign.dateCreated) >= thirtyDaysAgo);
+    }
+    
+    this.visibleCampaigns = filtered.slice(0, 3); // Show first 3 for carousel
+  }
+  
+  // Inactive customer methods
+  createExclusionList(): void {
+    this.showNotification('Exclusion list created for 24.5K inactive customers');
+  }
+  
+  createWinbackCampaign(): void {
+    this.showNotification('Win-back campaign template created for inactive customers');
+  }
+  
+  // Campaign calendar methods
+  planCampaign(festival: string): void {
+    this.showNotification(`Campaign planning started for ${festival}`);
+  }
+  
+  // Performance vs Budget methods
+  onCampaignAnalysisChange(): void {
+    if (this.selectedCampaignForAnalysis) {
+      this.loadCampaignPerformanceData();
+    }
+  }
+  
+  // Enhanced functionality methods
+  showRetryCostModal(campaign: any): void {
+    const cost = this.calculateRetryCost(campaign);
+    this.showNotification(`Retry cost for "${campaign.name}": ₹${cost}. Proceeding with retry...`);
+  }
+  
+  calculateRetryCost(campaign: any): number {
+    const failedMessages = campaign.total - campaign.sent;
+    const costPerMessage = 0.5; // Sample cost
+    return Math.round(failedMessages * costPerMessage);
+  }
+  
+  getCampaignCost(campaign: any): number {
+    return Math.round(campaign.sent * 0.5); // Sample calculation
+  }
+  
+  updateVisibleCampaigns(): void {
+    const startIndex = this.currentCardPage * 3;
+    const endIndex = startIndex + 3;
+    this.visibleCampaigns = this.allCampaigns.slice(startIndex, endIndex);
+  }
+  
+  loadCampaignPerformanceData(): void {
+    // Simulate different data based on selected campaign
+    if (this.selectedCampaignForAnalysis === 'diwali-sale') {
+      this.campaignPerformanceData = {
+        preCost: 32000,
+        postCost: 24500,
+        preRevenue: 98000,
+        postRevenue: 145000,
+        preConversion: 9.2,
+        postConversion: 14.8,
+        preROI: 206,
+        postROI: 491
+      };
+    } else if (this.selectedCampaignForAnalysis === 'model-launch') {
+      this.campaignPerformanceData = {
+        preCost: 18000,
+        postCost: 15200,
+        preRevenue: 65000,
+        postRevenue: 89000,
+        preConversion: 6.8,
+        postConversion: 11.2,
+        preROI: 261,
+        postROI: 485
+      };
+    }
   }
 
   previousCampaigns(): void {
@@ -614,20 +791,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
            rate >= 85 ? 'delivery-good' : 'delivery-poor';
   }
 
-  resumeCampaign(campaignId: number): void {
-    const campaign = this.campaigns.find(c => c.id === campaignId);
-    if (campaign) {
-      campaign.status = 'Running';
-      this.showNotification(`Campaign "${campaign.name}" resumed successfully!`);
-    }
+  resumeCampaign(campaignName: string): void {
+    this.showNotification(`Campaign "${campaignName}" has been resumed`);
   }
 
-  pauseCampaign(campaignId: number): void {
-    const campaign = this.campaigns.find(c => c.id === campaignId);
-    if (campaign) {
-      campaign.status = 'Paused';
-      this.showNotification(`Campaign "${campaign.name}" paused successfully!`);
-    }
+  pauseCampaign(campaignName: string): void {
+    this.showNotification(`Campaign "${campaignName}" has been paused`);
   }
 
   retryCampaign(campaignId: number): void {
@@ -638,9 +807,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
   }
 
-  viewCampaignDetails(campaignId: number): void {
-    console.log('Viewing campaign details for ID:', campaignId);
-    // Future implementation: open campaign details modal
+  viewCampaignDetails(campaignName: string): void {
+    this.showNotification(`Opening details for campaign: ${campaignName}`);
   }
 
   // Heatmap methods

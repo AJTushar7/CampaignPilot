@@ -1,825 +1,475 @@
-<!-- Simple Test Dashboard -->
-<div class="simple-dashboard">
-  <h1>Campaign Manager Dashboard</h1>
-  <div class="loading-test">
-    <h2>Dashboard is Loading...</h2>
-    <p>If you can see this, Angular is working correctly.</p>
-    
-    <div class="test-metrics">
-      <div class="metric-card">
-        <h3>Total Campaigns</h3>
-        <p class="metric-value">{{totalCampaigns}}</p>
-      </div>
-      
-      <div class="metric-card">
-        <h3>Active Campaigns</h3>
-        <p class="metric-value">{{activeCampaigns}}</p>
-      </div>
-      
-      <div class="metric-card">
-        <h3>Total Reach</h3>
-        <p class="metric-value">{{formatNumber(totalReach)}}</p>
-      </div>
-      
-      <div class="metric-card">
-        <h3>Total Spend</h3>
-        <p class="metric-value">₹{{formatNumber(totalSpend)}}</p>
-      </div>
-    </div>
-    
-    <p-button 
-      label="Test PrimeNG Button" 
-      icon="pi pi-check"
-      styleClass="p-button-success"
-      (onClick)="onCreateCampaign()">
-    </p-button>
-    
-    <p class="status-message">Loading full dashboard components...</p>
-  </div>
-
-  <!-- Header Section: Total campaigns count + details + "Add New Campaign" button -->
+<!-- Campaign Analytics Dashboard - Exact Clone from Design -->
+<div class="campaign-analytics-dashboard">
+  
+  <!-- Header Section -->
   <header class="dashboard-header">
-    <div class="header-container">
-      <div class="header-left">
-        <h1 class="dashboard-title">
-          <i class="pi pi-chart-line title-icon"></i>
-          Campaign Manager
-        </h1>
-        <div class="campaign-summary">
-          <div class="summary-item">
-            <span class="summary-label">Total Campaigns:</span>
-            <span class="summary-value">{{totalCampaigns}}</span>
-          </div>
-          <div class="summary-item">
-            <span class="summary-label">Active:</span>
-            <span class="summary-value active">{{activeCampaigns}}</span>
-          </div>
-          <div class="summary-item">
-            <span class="summary-label">Total Reach:</span>
-            <span class="summary-value">{{formatNumber(totalReach)}}</span>
-          </div>
-          <div class="summary-item">
-            <span class="summary-label">Total Spend:</span>
-            <span class="summary-value">₹{{formatNumber(totalSpend)}}</span>
-          </div>
-        </div>
+    <div class="header-content">
+      <div class="title-section">
+        <h1 class="dashboard-title">Campaign Analytics Dashboard</h1>
+        <p class="dashboard-subtitle">Real-time multichannel performance and cost insights</p>
       </div>
-      
-      <div class="header-controls">
-        <p-dropdown 
-          [options]="dateRangeOptions" 
-          [(ngModel)]="selectedDateRange"
-          placeholder="Select Range"
-          optionLabel="label"
-          optionValue="value"
-          (onChange)="onDateRangeChange()"
-          styleClass="range-dropdown">
-        </p-dropdown>
-        
-        <p-dropdown 
-          [options]="channelOptions" 
-          [(ngModel)]="selectedChannel"
-          placeholder="All Channels"
-          optionLabel="label"
-          optionValue="value"
-          (onChange)="onChannelChange()"
-          styleClass="channel-dropdown">
-        </p-dropdown>
-        
-        <p-button 
-          label="Add New Campaign" 
-          icon="pi pi-plus"
-          styleClass="p-button-success add-campaign-btn"
-          (onClick)="onCreateCampaign()">
-        </p-button>
+      <div class="header-actions">
+        <button class="new-campaign-btn">+ New Campaign</button>
       </div>
-    </div>
-    
-    <!-- Live Status Indicator -->
-    <div class="live-status" *ngIf="isLiveUpdatesActive">
-      <div class="live-dot"></div>
-      <span>Live Updates Active</span>
     </div>
   </header>
 
-  <main class="dashboard-content">
+  <!-- KPI Cards Row -->
+  <section class="kpi-section">
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <h3 class="kpi-label">Total Campaigns</h3>
+        <div class="kpi-value">148</div>
+        <div class="kpi-detail">12 active • 5 scheduled</div>
+      </div>
+      
+      <div class="kpi-card">
+        <h3 class="kpi-label">Total Spend</h3>
+        <div class="kpi-value">₹12.5L</div>
+        <div class="kpi-detail">6 Months</div>
+      </div>
+      
+      <div class="kpi-card">
+        <h3 class="kpi-label">Total Revenue</h3>
+        <div class="kpi-value">₹50.5L</div>
+        <div class="kpi-detail">vs last month +18.5%</div>
+      </div>
+      
+      <div class="kpi-card">
+        <h3 class="kpi-label">Avg Conversion</h3>
+        <div class="kpi-value">10.7%</div>
+        <div class="kpi-detail">+3.2% from target</div>
+      </div>
+    </div>
+  </section>
 
-    <!-- Row 1: Channel Performance (left) | Heatmap with percentages (right) -->
-    <section class="dashboard-row row-1">
-      <div class="row-container">
-        <div class="left-panel">
-          <div class="section-card channel-performance-card">
-            <div class="card-header">
-              <h3 class="section-title">Channel Performance</h3>
-              <div class="header-controls">
-                <p-button 
-                  icon="pi pi-refresh"
-                  styleClass="p-button-outlined p-button-sm"
-                  (onClick)="refreshChannelData()"
-                  [loading]="isRefreshing">
-                </p-button>
-              </div>
+  <!-- Main Content Grid -->
+  <div class="main-content">
+    
+    <!-- Channel Performance & Engagement Heatmap Row -->
+    <section class="analytics-row">
+      
+      <!-- Channel Performance -->
+      <div class="chart-panel channel-performance">
+        <div class="panel-header">
+          <h3>Channel Performance</h3>
+          <select class="metric-dropdown">
+            <option>Conversions</option>
+            <option>Revenue</option>
+            <option>ROI</option>
+          </select>
+        </div>
+        <div class="channel-chart">
+          <div class="channel-bar" *ngFor="let channel of channelData">
+            <div class="channel-info">
+              <span class="channel-name">{{channel.name}}</span>
             </div>
-            <div class="channel-performance-content">
-              <div class="channel-metrics-grid">
-                <div class="channel-metric" *ngFor="let channel of channelMetrics">
-                  <div class="metric-header">
-                    <i [class]="channel.icon" [style.color]="channel.color"></i>
-                    <span class="metric-name">{{channel.name}}</span>
-                  </div>
-                  <div class="metric-stats">
-                    <div class="stat-item">
-                      <span class="stat-label">Delivery Rate</span>
-                      <span class="stat-value" [class]="channel.deliveryRate >= 95 ? 'good' : channel.deliveryRate >= 85 ? 'average' : 'poor'">
-                        {{channel.deliveryRate}}%
-                      </span>
-                    </div>
-                    <div class="stat-item">
-                      <span class="stat-label">Open Rate</span>
-                      <span class="stat-value" [class]="channel.openRate >= 25 ? 'good' : channel.openRate >= 15 ? 'average' : 'poor'">
-                        {{channel.openRate}}%
-                      </span>
-                    </div>
-                    <div class="stat-item">
-                      <span class="stat-label">CTR</span>
-                      <span class="stat-value" [class]="channel.ctr >= 5 ? 'good' : channel.ctr >= 2 ? 'average' : 'poor'">
-                        {{channel.ctr}}%
-                      </span>
-                    </div>
-                    <div class="stat-item">
-                      <span class="stat-label">Cost/Msg</span>
-                      <span class="stat-value">₹{{channel.costPerMessage}}</span>
-                    </div>
-                  </div>
-                </div>
+            <div class="bar-container">
+              <div class="bar-fill" [style.width.%]="channel.percentage" [style.background-color]="channel.color"></div>
+            </div>
+            <div class="channel-value">{{channel.value}}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Engagement Heatmap -->
+      <div class="chart-panel engagement-heatmap">
+        <div class="panel-header">
+          <h3>Engagement Heatmap</h3>
+        </div>
+        
+        <div class="heatmap-container">
+          <!-- Time Headers -->
+          <div class="heatmap-header">
+            <div class="time-slot">12 AM</div>
+            <div class="time-slot">6 AM</div>
+            <div class="time-slot">12 PM</div>
+            <div class="time-slot">6 PM</div>
+          </div>
+          
+          <!-- Heatmap Grid -->
+          <div class="heatmap-grid">
+            <div class="heatmap-row" *ngFor="let day of heatmapData">
+              <div class="day-label">{{day.name}}</div>
+              <div class="heat-cell" 
+                   *ngFor="let slot of day.slots" 
+                   [class]="'heat-' + slot.intensity"
+                   [style.background-color]="getHeatColor(slot.value)">
+                {{slot.value}}%
               </div>
             </div>
           </div>
-        </div>
-        
-        <div class="right-panel">
-          <div class="section-card heatmap-card">
-            <div class="card-header">
-              <h3 class="section-title">Engagement Heatmap</h3>
-              <div class="header-controls">
-                <p-dropdown 
-                  [options]="heatmapViews" 
-                  [(ngModel)]="selectedHeatmapView"
-                  placeholder="View Type"
-                  optionLabel="label"
-                  optionValue="value"
-                  styleClass="p-dropdown-sm">
-                </p-dropdown>
-              </div>
-            </div>
-            <div class="heatmap-content">
-              <div class="heatmap-grid">
-                <div class="heatmap-header">
-                  <div class="time-label">Hour</div>
-                  <div class="day-label" *ngFor="let day of weekDays">{{day}}</div>
-                </div>
-                <div class="heatmap-row" *ngFor="let hour of hours">
-                  <div class="hour-label">{{hour}}:00</div>
-                  <div class="heatmap-cell" 
-                       *ngFor="let day of weekDays; let dayIndex = index"
-                       [style.background-color]="getHeatmapColor(getEngagementRate(hour, dayIndex))">
-                    <span class="engagement-percentage">{{getEngagementRate(hour, dayIndex)}}%</span>
-                  </div>
-                </div>
-              </div>
-              <div class="heatmap-legend">
-                <span class="legend-label">Low</span>
+          
+          <!-- Heatmap Legend -->
+          <div class="heatmap-legend">
+            <div class="legend-item">
+              <span class="legend-label">Low</span>
+              <div class="legend-bar">
                 <div class="legend-gradient"></div>
-                <span class="legend-label">High</span>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Row 2: Real-time Campaign Monitoring (3 cards in carousel with navigation + table view toggle) -->
-    <section class="dashboard-row row-2">
-      <div class="section-card monitoring-card">
-        <div class="card-header">
-          <h3 class="section-title">Real-time Campaign Monitoring</h3>
-          <div class="header-controls">
-            <div class="view-toggle">
-              <p-button 
-                icon="pi pi-th-large"
-                [styleClass]="isCardView ? 'p-button-sm p-button-primary' : 'p-button-sm p-button-outlined'"
-                (onClick)="toggleViewMode()"
-                label="Cards">
-              </p-button>
-              <p-button 
-                icon="pi pi-list"
-                [styleClass]="!isCardView ? 'p-button-sm p-button-primary' : 'p-button-sm p-button-outlined'"
-                (onClick)="toggleViewMode()"
-                label="Table">
-              </p-button>
-            </div>
-            <p-button 
-              icon="pi pi-refresh"
-              styleClass="p-button-outlined p-button-sm"
-              (onClick)="refreshCampaignData()"
-              [loading]="isRefreshing">
-            </p-button>
-          </div>
-        </div>
-        
-        <!-- Card View -->
-        <div class="campaign-cards-view" *ngIf="isCardView">
-          <div class="cards-navigation">
-            <p-button 
-              icon="pi pi-chevron-left"
-              styleClass="p-button-outlined p-button-sm nav-btn"
-              (onClick)="previousCampaigns()"
-              [disabled]="currentCardPage === 0">
-            </p-button>
-            <span class="page-indicator">{{currentCardPage + 1}} of {{totalCardPages}}</span>
-            <p-button 
-              icon="pi pi-chevron-right"
-              styleClass="p-button-outlined p-button-sm nav-btn"
-              (onClick)="nextCampaigns()"
-              [disabled]="currentCardPage === totalCardPages - 1">
-            </p-button>
-          </div>
-          
-          <div class="campaigns-grid">
-            <div class="campaign-card" *ngFor="let campaign of getCurrentPageCampaigns()">
-              <div class="campaign-header">
-                <div class="campaign-info">
-                  <h4 class="campaign-name">{{campaign.name}}</h4>
-                  <p-tag 
-                    [value]="campaign.status" 
-                    [severity]="getCampaignStatusSeverity(campaign.status)">
-                  </p-tag>
-                </div>
-                <div class="campaign-actions">
-                  <p-button 
-                    icon="pi pi-play" 
-                    *ngIf="campaign.status === 'Paused'"
-                    styleClass="p-button-success p-button-sm"
-                    (onClick)="resumeCampaign(campaign.id)">
-                  </p-button>
-                  <p-button 
-                    icon="pi pi-pause" 
-                    *ngIf="campaign.status === 'Running'"
-                    styleClass="p-button-warning p-button-sm"
-                    (onClick)="pauseCampaign(campaign.id)">
-                  </p-button>
-                  <p-button 
-                    icon="pi pi-redo" 
-                    *ngIf="campaign.errorCount > 0"
-                    styleClass="p-button-info p-button-sm"
-                    (onClick)="retryCampaign(campaign.id)">
-                  </p-button>
-                </div>
-              </div>
-              
-              <div class="campaign-details">
-                <div class="detail-row">
-                  <span class="detail-label">Segment:</span>
-                  <span class="detail-value">{{campaign.segment}}</span>
-                </div>
-                <div class="detail-row">
-                  <span class="detail-label">Channel:</span>
-                  <span class="detail-value">{{campaign.channel}}</span>
-                </div>
-                <div class="detail-row">
-                  <span class="detail-label">Audience:</span>
-                  <span class="detail-value">{{formatNumber(campaign.audienceSize)}}</span>
-                </div>
-              </div>
-              
-              <div class="campaign-progress">
-                <div class="progress-header">
-                  <span class="progress-label">Progress</span>
-                  <span class="progress-percentage">{{campaign.progressPercentage}}%</span>
-                </div>
-                <p-progressBar 
-                  [value]="campaign.progressPercentage"
-                  [style]="{'height': '8px'}"
-                  [styleClass]="getProgressBarClass(campaign.status)">
-                </p-progressBar>
-                <div class="progress-stats">
-                  <span class="stat">Sent: {{formatNumber(campaign.sent)}}</span>
-                  <span class="stat">Delivered: {{formatNumber(campaign.delivered)}}</span>
-                  <span class="stat" *ngIf="campaign.errorCount > 0" style="color: #e74c3c;">
-                    Errors: {{formatNumber(campaign.errorCount)}}
-                  </span>
-                </div>
-              </div>
-              
-              <!-- AI Suggestions for each campaign -->
-              <div class="campaign-ai-suggestions" *ngIf="campaign.aiSuggestions.length > 0">
-                <div class="ai-header">
-                  <i class="pi pi-sparkles ai-icon"></i>
-                  <span>AI Insights</span>
-                </div>
-                <div class="ai-suggestion" *ngFor="let suggestion of campaign.aiSuggestions.slice(0, 2)">
-                  <i [class]="suggestion.icon" [style.color]="suggestion.color"></i>
-                  <span class="suggestion-text">{{suggestion.text}}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Table View -->
-        <div class="campaign-table-view" *ngIf="!isCardView">
-          <p-table [value]="campaigns" [responsive]="true" [scrollable]="true" scrollHeight="400px">
-            <ng-template pTemplate="header">
-              <tr>
-                <th>Campaign</th>
-                <th>Status</th>
-                <th>Channel</th>
-                <th>Audience</th>
-                <th>Progress</th>
-                <th>Delivery Rate</th>
-                <th>Errors</th>
-                <th>Actions</th>
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-campaign>
-              <tr>
-                <td>
-                  <div class="campaign-name-cell">
-                    <strong>{{campaign.name}}</strong>
-                    <small class="text-muted">{{campaign.segment}}</small>
-                  </div>
-                </td>
-                <td>
-                  <p-tag 
-                    [value]="campaign.status" 
-                    [severity]="getCampaignStatusSeverity(campaign.status)">
-                  </p-tag>
-                </td>
-                <td>{{campaign.channel}}</td>
-                <td>{{formatNumber(campaign.audienceSize)}}</td>
-                <td>
-                  <div class="progress-cell">
-                    <p-progressBar [value]="campaign.progressPercentage" [style]="{'height': '4px'}"></p-progressBar>
-                    <span class="progress-text">{{campaign.progressPercentage}}%</span>
-                  </div>
-                </td>
-                <td>
-                  <span [class]="getDeliveryRateClass(campaign.deliveryRate)">
-                    {{campaign.deliveryRate}}%
-                  </span>
-                </td>
-                <td>
-                  <span *ngIf="campaign.errorCount > 0" class="error-count">
-                    {{formatNumber(campaign.errorCount)}}
-                  </span>
-                  <span *ngIf="campaign.errorCount === 0">-</span>
-                </td>
-                <td>
-                  <div class="action-buttons">
-                    <p-button 
-                      icon="pi pi-play" 
-                      *ngIf="campaign.status === 'Paused'"
-                      styleClass="p-button-success p-button-sm"
-                      (onClick)="resumeCampaign(campaign.id)">
-                    </p-button>
-                    <p-button 
-                      icon="pi pi-pause" 
-                      *ngIf="campaign.status === 'Running'"
-                      styleClass="p-button-warning p-button-sm"
-                      (onClick)="pauseCampaign(campaign.id)">
-                    </p-button>
-                    <p-button 
-                      icon="pi pi-eye" 
-                      styleClass="p-button-info p-button-sm"
-                      (onClick)="viewCampaignDetails(campaign.id)">
-                    </p-button>
-                  </div>
-                </td>
-              </tr>
-            </ng-template>
-          </p-table>
-        </div>
-      </div>
-    </section>
-
-    <!-- Row 3: Cost Optimization Panels -->
-    <section class="dashboard-row row-3">
-      <div class="section-card cost-optimization-card">
-        <div class="card-header">
-          <h3 class="section-title">Cost Optimization Analysis</h3>
-          <div class="header-controls">
-            <p-dropdown 
-              [options]="optimizationViews" 
-              [(ngModel)]="selectedOptimizationView"
-              placeholder="View Type"
-              optionLabel="label"
-              optionValue="value"
-              styleClass="p-dropdown-sm">
-            </p-dropdown>
-          </div>
-        </div>
-        
-        <div class="cost-panels-grid">
-          <div class="cost-panel cpm-panel">
-            <div class="panel-header">
-              <i class="pi pi-chart-bar panel-icon"></i>
-              <h4>CPM Analysis</h4>
-            </div>
-            <div class="panel-content">
-              <div class="main-metric">
-                <span class="metric-value">₹{{costMetrics.cpm}}</span>
-                <span class="metric-change" [class]="costMetrics.cpmChange < 0 ? 'positive' : 'negative'">
-                  {{costMetrics.cpmChange > 0 ? '+' : ''}}{{costMetrics.cpmChange}}%
-                </span>
-              </div>
-              <div class="channel-breakdown">
-                <div class="breakdown-item" *ngFor="let item of cpmBreakdown">
-                  <span class="channel-name">{{item.channel}}</span>
-                  <span class="channel-value">₹{{item.value}}</span>
-                </div>
-              </div>
-              <div class="ai-recommendation">
-                <i class="pi pi-lightbulb"></i>
-                <span>Switch 20% traffic from WhatsApp to SMS to save ₹2,400/day</span>
-              </div>
-            </div>
-          </div>
-          
-          <div class="cost-panel cpc-panel">
-            <div class="panel-header">
-              <i class="pi pi-mouse panel-icon"></i>
-              <h4>CPC Analysis</h4>
-            </div>
-            <div class="panel-content">
-              <div class="main-metric">
-                <span class="metric-value">₹{{costMetrics.cpc}}</span>
-                <span class="metric-change" [class]="costMetrics.cpcChange < 0 ? 'positive' : 'negative'">
-                  {{costMetrics.cpcChange > 0 ? '+' : ''}}{{costMetrics.cpcChange}}%
-                </span>
-              </div>
-              <div class="channel-breakdown">
-                <div class="breakdown-item" *ngFor="let item of cpcBreakdown">
-                  <span class="channel-name">{{item.channel}}</span>
-                  <span class="channel-value">₹{{item.value}}</span>
-                </div>
-              </div>
-              <div class="ai-recommendation">
-                <i class="pi pi-lightbulb"></i>
-                <span>Optimize send times to improve click rates by 15%</span>
-              </div>
-            </div>
-          </div>
-          
-          <div class="cost-panel cpl-panel">
-            <div class="panel-header">
-              <i class="pi pi-users panel-icon"></i>
-              <h4>CPL Analysis</h4>
-            </div>
-            <div class="panel-content">
-              <div class="main-metric">
-                <span class="metric-value">₹{{costMetrics.cpl}}</span>
-                <span class="metric-change" [class]="costMetrics.cplChange < 0 ? 'positive' : 'negative'">
-                  {{costMetrics.cplChange > 0 ? '+' : ''}}{{costMetrics.cplChange}}%
-                </span>
-              </div>
-              <div class="channel-breakdown">
-                <div class="breakdown-item" *ngFor="let item of cplBreakdown">
-                  <span class="channel-name">{{item.channel}}</span>
-                  <span class="channel-value">₹{{item.value}}</span>
-                </div>
-              </div>
-              <div class="ai-recommendation">
-                <i class="pi pi-lightbulb"></i>
-                <span>A/B test subject lines to reduce cost per lead by 25%</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Row 4: Orchestration Analysis -->
-    <section class="dashboard-row row-4">
-      <div class="section-card orchestration-card">
-        <div class="card-header">
-          <h3 class="section-title">Multi-Channel Orchestration Analysis</h3>
-        </div>
-        
-        <div class="orchestration-content">
-          <div class="fallback-analysis">
-            <div class="fallback-flow">
-              <div class="flow-step" *ngFor="let step of orchestrationFlow; let i = index">
-                <div class="step-number">{{i + 1}}</div>
-                <div class="step-content">
-                  <div class="step-header">
-                    <i [class]="step.icon" [style.color]="step.color"></i>
-                    <span class="step-channel">{{step.channel}}</span>
-                  </div>
-                  <div class="step-stats">
-                    <div class="stat">
-                      <span class="stat-label">Attempts</span>
-                      <span class="stat-value">{{formatNumber(step.attempts)}}</span>
-                    </div>
-                    <div class="stat">
-                      <span class="stat-label">Success Rate</span>
-                      <span class="stat-value" [class]="step.successRate >= 85 ? 'good' : 'poor'">{{step.successRate}}%</span>
-                    </div>
-                    <div class="stat">
-                      <span class="stat-label">Fallback Rate</span>
-                      <span class="stat-value">{{step.fallbackRate}}%</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="flow-arrow" *ngIf="i < orchestrationFlow.length - 1">
-                  <i class="pi pi-arrow-right"></i>
-                </div>
-              </div>
+              <span class="legend-label">High</span>
+              <span class="legend-note">(Avg by slot)</span>
             </div>
             
-            <div class="fallback-insights">
-              <h4>Key Insights</h4>
-              <div class="insight-list">
-                <div class="insight-item">
-                  <i class="pi pi-info-circle text-blue-500"></i>
-                  <span>{{orchestrationInsights.primarySuccess}}% messages delivered on first attempt</span>
-                </div>
-                <div class="insight-item">
-                  <i class="pi pi-exclamation-triangle text-orange-500"></i>
-                  <span>{{orchestrationInsights.fallbackUsage}}% required fallback to secondary channel</span>
-                </div>
-                <div class="insight-item">
-                  <i class="pi pi-check-circle text-green-500"></i>
-                  <span>Overall delivery rate: {{orchestrationInsights.overallDelivery}}%</span>
-                </div>
+            <!-- Time Performance Chart -->
+            <div class="time-performance">
+              <div class="time-bar" *ngFor="let time of timePerformance">
+                <div class="time-label">{{time.label}}</div>
+                <div class="performance-bar" [style.width.%]="time.performance"></div>
               </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Suggestions -->
+        <div class="ai-suggestions">
+          <h4>AI Suggestions</h4>
+          <ul class="suggestion-list">
+            <li>Peak engagement at Wed 6 PM (~58%). Schedule high-value promos there.</li>
+            <li>Avoid Sun 12 AM (6%). Use as fallback or A/B test creatives.</li>
+            <li>Timezone hint: skew toward noon/evening slots for metrics A/B test AM for Tier-2/3</li>
+          </ul>
+        </div>
+      </div>
+      
+    </section>
+
+    <!-- Real-time Campaign Monitoring -->
+    <section class="monitoring-section">
+      <div class="section-header">
+        <h3>Real-time Campaign Monitoring</h3>
+        <div class="controls">
+          <select class="time-filter">
+            <option>Last 7 days</option>
+            <option>Last 30 days</option>
+          </select>
+          <select class="status-filter">
+            <option>All statuses</option>
+            <option>Active</option>
+            <option>Completed</option>
+          </select>
+          <div class="view-toggle">
+            <button [class.active]="viewMode === 'cards'" (click)="setViewMode('cards')">Cards</button>
+            <button [class.active]="viewMode === 'table'" (click)="setViewMode('table')">Table</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Campaign Cards -->
+      <div class="campaign-carousel">
+        <div class="carousel-nav">
+          <button class="nav-btn prev" (click)="previousCampaigns()">‹</button>
+        </div>
+        
+        <div class="campaign-cards">
+          <div class="campaign-card" *ngFor="let campaign of visibleCampaigns">
+            <div class="card-header">
+              <h4 class="campaign-name">{{campaign.name}}</h4>
+              <span class="status-badge" [class]="'status-' + campaign.status">{{campaign.status}}</span>
+            </div>
+            
+            <div class="campaign-details">
+              <p class="campaign-meta">{{campaign.audience}} • {{campaign.channel}}</p>
+              
+              <div class="progress-section">
+                <div class="progress-bar">
+                  <div class="progress-fill" [style.width.%]="campaign.progress"></div>
+                </div>
+                <div class="progress-text">{{campaign.sent}} / {{campaign.total}} sent ({{campaign.progress}}%)</div>
+              </div>
+              
+              <div class="action-buttons">
+                <button class="action-btn secondary" *ngIf="campaign.status === 'active'">Pause</button>
+                <button class="action-btn secondary">Error Analysis</button>
+                <button class="action-btn primary">Optimize</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="carousel-nav">
+          <button class="nav-btn next" (click)="nextCampaigns()">›</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cost Optimization Panels -->
+    <section class="cost-optimization-section">
+      <div class="section-header">
+        <h3>Cost Optimization Panels</h3>
+      </div>
+      
+      <div class="cost-panels">
+        <div class="cost-panel cpm-panel">
+          <div class="panel-label">CPM</div>
+          <div class="panel-value">₹180</div>
+          <div class="panel-detail">Per 1000 impressions</div>
+        </div>
+        
+        <div class="cost-panel cpc-panel">
+          <div class="panel-label">CPC</div>
+          <div class="panel-value">₹3.2</div>
+          <div class="panel-detail">Cost per Click</div>
+        </div>
+        
+        <div class="cost-panel cpl-panel">
+          <div class="panel-label">CPL</div>
+          <div class="panel-value">₹52</div>
+          <div class="panel-detail">Cost per Lead</div>
+        </div>
+        
+        <div class="cost-panel opportunity-panel">
+          <div class="panel-label">Opportunity <span class="ai-badge">AI</span></div>
+          <div class="panel-value">₹2.9L</div>
+          <div class="panel-detail">Shift 30% SMS — WhatsApp</div>
+        </div>
+      </div>
+
+      <!-- AI Cost Suggestions -->
+      <div class="ai-cost-suggestions">
+        <h4>AI Cost Suggestions <span class="new-badge">New</span></h4>
+        <ul class="cost-suggestion-list">
+          <li>Move 30% of SMS budget to WhatsApp to save ~12%.</li>
+          <li>Send-time optimize to 11 AM for +18% conversion.</li>
+          <li>Use RCS rich cards for high-value segments.</li>
+        </ul>
+        <button class="apply-btn">Apply</button>
+      </div>
+    </section>
+
+    <!-- Orchestration Analysis -->
+    <section class="orchestration-section">
+      <div class="section-header">
+        <h3>Orchestration Analysis</h3>
+      </div>
+      
+      <div class="orchestration-panels">
+        <div class="orchestration-panel">
+          <div class="panel-header">
+            <h4>WhatsApp → SMS</h4>
+            <span class="recommendation-badge">Recommended</span>
+          </div>
+          <div class="orchestration-metrics">
+            <div class="metric">
+              <span class="metric-label">Success</span>
+              <div class="metric-bar">
+                <div class="metric-fill" style="width: 82%"></div>
+              </div>
+              <span class="metric-value">82.3%</span>
+            </div>
+            <div class="metric">
+              <span class="metric-label">Fallback Rate</span>
+              <div class="metric-bar">
+                <div class="metric-fill" style="width: 18%"></div>
+              </div>
+              <span class="metric-value">18.4%</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="orchestration-panel">
+          <div class="panel-header">
+            <h4>Email → Push</h4>
+          </div>
+          <div class="orchestration-metrics">
+            <div class="metric">
+              <span class="metric-label">Success</span>
+              <div class="metric-bar">
+                <div class="metric-fill" style="width: 88%"></div>
+              </div>
+              <span class="metric-value">88.1%</span>
+            </div>
+            <div class="metric">
+              <span class="metric-label">Fallback Rate</span>
+              <div class="metric-bar">
+                <div class="metric-fill" style="width: 13%"></div>
+              </div>
+              <span class="metric-value">12.6%</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="orchestration-panel">
+          <div class="panel-header">
+            <h4>RCS → WhatsApp → SMS</h4>
+          </div>
+          <div class="orchestration-metrics">
+            <div class="metric">
+              <span class="metric-label">Success</span>
+              <div class="metric-bar">
+                <div class="metric-fill" style="width: 84%"></div>
+              </div>
+              <span class="metric-value">84.2%</span>
+            </div>
+            <div class="metric">
+              <span class="metric-label">Fallback Rate</span>
+              <div class="metric-bar">
+                <div class="metric-fill" style="width: 26%"></div>
+              </div>
+              <span class="metric-value">26.1%</span>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Row 5: BSP Performance -->
-    <section class="dashboard-row row-5">
-      <div class="section-card bsp-performance-card">
-        <div class="card-header">
-          <h3 class="section-title">BSP Performance Comparison</h3>
-        </div>
-        
-        <div class="bsp-comparison-grid">
-          <div class="bsp-card" *ngFor="let bsp of getSelectedBSPs()">
-            <div class="bsp-header">
-              <div class="bsp-logo">
-                <i [class]="bsp.icon" [style.color]="bsp.color"></i>
-              </div>
+    <!-- BSP Performance -->
+    <section class="bsp-performance-section">
+      <div class="section-header">
+        <h3>BSP Performance</h3>
+      </div>
+      
+      <div class="bsp-categories">
+        <!-- WhatsApp BSPs -->
+        <div class="bsp-category">
+          <h4>WhatsApp BSPs</h4>
+          <div class="bsp-list">
+            <div class="bsp-item recommended">
               <div class="bsp-info">
-                <h4 class="bsp-name">{{bsp.name}}</h4>
-                <span class="bsp-type">{{bsp.type}}</span>
+                <span class="bsp-name">Cloud API</span>
+                <span class="bsp-badge">Recommended</span>
+                <span class="bsp-price">₹0.08 / msg</span>
               </div>
-              <div class="bsp-rating">
-                <span class="rating-stars">★★★★★</span>
+              <div class="bsp-metrics">
+                <span class="metric">Delivery 97.8%</span>
+                <span class="metric">Engagement 82.1%</span>
               </div>
+              <button class="select-btn selected">Select</button>
             </div>
             
-            <div class="bsp-metrics">
-              <div class="metric-row">
-                <span class="metric-label">Delivery Rate</span>
-                <span class="metric-value" [class]="bsp.deliveryRate >= 95 ? 'excellent' : bsp.deliveryRate >= 85 ? 'good' : 'poor'">
-                  {{bsp.deliveryRate}}%
-                </span>
+            <div class="bsp-item">
+              <div class="bsp-info">
+                <span class="bsp-name">MM Lite</span>
+                <span class="bsp-price">₹0.055 / msg</span>
               </div>
-              <div class="metric-row">
-                <span class="metric-label">Response Time</span>
-                <span class="metric-value">{{bsp.responseTime}}ms</span>
+              <div class="bsp-metrics">
+                <span class="metric">Delivery 94.2%</span>
+                <span class="metric">Engagement 78.3%</span>
               </div>
-              <div class="metric-row">
-                <span class="metric-label">Cost/Message</span>
-                <span class="metric-value">₹{{bsp.costPerMessage}}</span>
-              </div>
-              <div class="metric-row">
-                <span class="metric-label">Uptime</span>
-                <span class="metric-value" [class]="bsp.uptime >= 99.9 ? 'excellent' : bsp.uptime >= 99 ? 'good' : 'poor'">
-                  {{bsp.uptime}}%
-                </span>
-              </div>
+              <button class="select-btn">Select</button>
             </div>
-            
-            <div class="bsp-recommendation" *ngIf="bsp.recommendation">
-              <div class="recommendation-header">
-                <i class="pi pi-thumbs-up recommendation-icon"></i>
-                <span>Recommendation</span>
-              </div>
-              <p class="recommendation-text">{{bsp.recommendation}}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Row 6: Festival Timeline (Progressive Feature - shows when dataAge >= 45) -->
-    <section class="dashboard-row row-6" *ngIf="dataAge >= 45">
-      <div class="section-card festival-card">
-        <div class="card-header">
-          <h3 class="section-title">Festival Timeline & Seasonal Insights</h3>
-          <div class="header-controls">
-            <p-tag value="Auto-detected" severity="info"></p-tag>
           </div>
         </div>
         
-        <div class="festival-timeline">
-          <div class="timeline-header">
-            <h4>Upcoming Festivals & Optimal Campaign Windows</h4>
-          </div>
-          
-          <div class="festival-calendar">
-            <div class="festival-item" *ngFor="let festival of upcomingFestivals">
-              <div class="festival-date">
-                <div class="date-day">{{festival.date | date:'dd'}}</div>
-                <div class="date-month">{{festival.date | date:'MMM'}}</div>
+        <!-- RCS BSPs -->
+        <div class="bsp-category">
+          <h4>RCS BSPs</h4>
+          <div class="bsp-list">
+            <div class="bsp-item recommended">
+              <div class="bsp-info">
+                <span class="bsp-name">Karix</span>
+                <span class="bsp-badge">Recommended</span>
+                <span class="bsp-price">₹0.15 / msg</span>
               </div>
-              <div class="festival-details">
-                <h5 class="festival-name">{{festival.name}}</h5>
-                <p class="festival-description">{{festival.description}}</p>
-                <div class="festival-metrics">
-                  <span class="metric">Expected Engagement: +{{festival.expectedEngagement}}%</span>
-                  <span class="metric">Optimal Window: {{festival.optimalWindow}}</span>
-                </div>
+              <div class="bsp-metrics">
+                <span class="metric">Delivery 92.1%</span>
+                <span class="metric">Engagement 75.4%</span>
               </div>
-              <div class="festival-actions">
-                <p-button 
-                  label="Plan Campaign"
-                  icon="pi pi-calendar-plus"
-                  styleClass="p-button-sm p-button-outlined"
-                  (onClick)="planFestivalCampaign(festival.id)">
-                </p-button>
-              </div>
+              <button class="select-btn selected">Select</button>
             </div>
-          </div>
-          
-          <div class="seasonal-insights">
-            <h4>Seasonal Performance Analysis</h4>
-            <div class="insights-grid">
-              <div class="insight-card">
-                <i class="pi pi-trending-up insight-icon"></i>
-                <div class="insight-content">
-                  <h5>Best Performing Period</h5>
-                  <p>Festival season shows 45% higher engagement rates</p>
-                </div>
+            
+            <div class="bsp-item">
+              <div class="bsp-info">
+                <span class="bsp-name">TCL</span>
+                <span class="bsp-price">₹0.12 / msg</span>
               </div>
-              <div class="insight-card">
-                <i class="pi pi-clock insight-icon"></i>
-                <div class="insight-content">
-                  <h5>Optimal Timing</h5>
-                  <p>Send campaigns 3-5 days before major festivals</p>
-                </div>
+              <div class="bsp-metrics">
+                <span class="metric">Delivery 89.3%</span>
+                <span class="metric">Engagement 71.8%</span>
               </div>
-              <div class="insight-card">
-                <i class="pi pi-dollar insight-icon"></i>
-                <div class="insight-content">
-                  <h5>Cost Impact</h5>
-                  <p>Festival campaigns generate 2.3x better ROI</p>
-                </div>
-              </div>
+              <button class="select-btn">Select</button>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Row 7: Budget vs Performance Calculator -->
-    <section class="dashboard-row row-7">
-      <div class="section-card budget-calculator-card">
-        <div class="card-header">
-          <h3 class="section-title">Budget vs Performance Calculator</h3>
-          <div class="header-controls">
-            <p-button 
-              icon="pi pi-save"
-              label="Save Scenario"
-              styleClass="p-button-outlined p-button-sm"
-              (onClick)="saveBudgetScenario()">
-            </p-button>
+    <!-- Festival Performance Timeline -->
+    <section class="festival-section">
+      <div class="section-header">
+        <h3>Festival Performance Timeline</h3>
+        <div class="filter-tabs">
+          <button class="tab-btn active">Revenue</button>
+          <button class="tab-btn">Conversion</button>
+          <button class="tab-btn">Roi</button>
+        </div>
+      </div>
+      
+      <div class="festival-timeline">
+        <div class="festival-card">
+          <div class="festival-icon">🪔</div>
+          <div class="festival-info">
+            <h4>Diwali</h4>
+            <div class="festival-value">₹8.7L</div>
+            <div class="festival-metrics">24.8% conversion • 12.4x ROI</div>
           </div>
         </div>
         
-        <div class="budget-calculator">
-          <div class="calculator-inputs">
-            <div class="input-group">
-              <label>Campaign Budget (₹)</label>
-              <input 
-                type="number"
-                [(ngModel)]="budgetScenario.budget"
-                (input)="calculateProjections()"
-                class="p-inputtext budget-input"
-                placeholder="Enter budget">
+        <div class="festival-card">
+          <div class="festival-icon">🎭</div>
+          <div class="festival-info">
+            <h4>Navratri</h4>
+            <div class="festival-value">₹5.2L</div>
+            <div class="festival-metrics">18.5% conversion • 8.7x ROI</div>
+          </div>
+        </div>
+        
+        <div class="festival-card">
+          <div class="festival-icon">🎨</div>
+          <div class="festival-info">
+            <h4>Holi</h4>
+            <div class="festival-value">₹4.1L</div>
+            <div class="festival-metrics">17.8% conversion • 6.8x ROI</div>
+          </div>
+        </div>
+        
+        <div class="festival-card">
+          <div class="festival-icon">🇮🇳</div>
+          <div class="festival-info">
+            <h4>Independence Day</h4>
+            <div class="festival-value">₹3.8L</div>
+            <div class="festival-metrics">16.2% conversion • 5.4x ROI</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Festival Insights -->
+      <div class="festival-insights">
+        <div class="insights-section">
+          <h4>Peak Performance Insights</h4>
+          <div class="insight-grid">
+            <div class="insight-item">
+              <strong>Best Month:</strong> Oct
+              <span class="insight-value">46.2% revenue</span>
             </div>
-            
-            <div class="input-group">
-              <label>Target Audience</label>
-              <input 
-                type="number"
-                [(ngModel)]="budgetScenario.audience"
-                (input)="calculateProjections()"
-                class="p-inputtext audience-input"
-                placeholder="Enter audience size">
+            <div class="insight-item">
+              <strong>Peak Hour:</strong> 11 AM
+              <span class="insight-value">24.8% conversion</span>
             </div>
-            
-            <div class="input-group">
-              <label>Primary Channel</label>
-              <p-dropdown 
-                [options]="channelOptions" 
-                [(ngModel)]="budgetScenario.primaryChannel"
-                optionLabel="label"
-                optionValue="value"
-                (onChange)="calculateProjections()">
-              </p-dropdown>
-            </div>
-            
-            <div class="input-group">
-              <label>Campaign Duration: {{budgetScenario.duration}} days</label>
-              <input 
-                type="range" 
-                [(ngModel)]="budgetScenario.duration"
-                (input)="calculateProjections()"
-                min="1" 
-                max="30" 
-                class="duration-slider">
+            <div class="insight-item">
+              <strong>Best Days:</strong> Weekend
+              <span class="insight-value">+42% engagement</span>
             </div>
           </div>
-          
-          <div class="calculator-projections">
-            <h4>Projected Results</h4>
-            <div class="projections-grid">
-              <div class="projection-card">
-                <i class="pi pi-send projection-icon"></i>
-                <div class="projection-content">
-                  <h5>Messages Sent</h5>
-                  <span class="projection-value">{{formatNumber(projections.messagesSent)}}</span>
-                  <span class="projection-detail">Coverage: {{projections.coverage}}%</span>
-                </div>
-              </div>
-              
-              <div class="projection-card">
-                <i class="pi pi-eye projection-icon"></i>
-                <div class="projection-content">
-                  <h5>Expected Opens</h5>
-                  <span class="projection-value">{{formatNumber(projections.expectedOpens)}}</span>
-                  <span class="projection-detail">Rate: {{projections.openRate}}%</span>
-                </div>
-              </div>
-              
-              <div class="projection-card">
-                <i class="pi pi-mouse projection-icon"></i>
-                <div class="projection-content">
-                  <h5>Expected Clicks</h5>
-                  <span class="projection-value">{{formatNumber(projections.expectedClicks)}}</span>
-                  <span class="projection-detail">CTR: {{projections.clickRate}}%</span>
-                </div>
-              </div>
-              
-              <div class="projection-card">
-                <i class="pi pi-chart-line projection-icon"></i>
-                <div class="projection-content">
-                  <h5>Expected Conversions</h5>
-                  <span class="projection-value">{{formatNumber(projections.expectedConversions)}}</span>
-                  <span class="projection-detail">Rate: {{projections.conversionRate}}%</span>
-                </div>
-              </div>
-              
-              <div class="projection-card">
-                <i class="pi pi-dollar projection-icon"></i>
-                <div class="projection-content">
-                  <h5>Projected ROI</h5>
-                  <span class="projection-value roi-value" [class]="projections.roi >= 200 ? 'excellent' : projections.roi >= 100 ? 'good' : 'poor'">
-                    {{projections.roi}}%
-                  </span>
-                  <span class="projection-detail">Revenue: ₹{{formatNumber(projections.projectedRevenue)}}</span>
-                </div>
-              </div>
+        </div>
+        
+        <div class="opportunities-section">
+          <h4>Upcoming Opportunities</h4>
+          <div class="opportunity-list">
+            <div class="opportunity-item">
+              <strong>Independence Day 2025</strong>
+              <span class="opportunity-date">15 Aug, 2025</span>
+              <button class="plan-btn">Plan Campaign</button>
             </div>
-            
-            <div class="optimization-suggestions">
-              <h5>AI Optimization Suggestions</h5>
-              <div class="suggestion-list">
-                <div class="suggestion-item" *ngFor="let suggestion of optimizationSuggestions">
-                  <i [class]="suggestion.icon" [style.color]="suggestion.color"></i>
-                  <span class="suggestion-text">{{suggestion.text}}</span>
-                  <span class="suggestion-impact">{{suggestion.impact}}</span>
-                </div>
-              </div>
+            <div class="opportunity-item">
+              <strong>Navratri 2025</strong>
+              <span class="opportunity-date">Start Sep 2025</span>
+              <button class="plan-btn secondary">50 Days</button>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-  </main>
-
-  <!-- Floating Action Button -->
-  <div class="floating-action">
-    <p-button 
-      icon="pi pi-plus"
-      styleClass="p-button-rounded p-button-success p-button-lg fab"
-      (onClick)="onCreateCampaign()">
-    </p-button>
   </div>
-
 </div>

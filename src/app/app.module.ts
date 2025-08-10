@@ -18,6 +18,13 @@ import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { PanelModule } from 'primeng/panel';
 import { TagModule } from 'primeng/tag';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { SliderModule } from 'primeng/slider';
+import { BadgeModule } from 'primeng/badge';
+import { RatingModule } from 'primeng/rating';
+import { MessagesModule } from 'primeng/messages';
+import { TooltipModule } from 'primeng/tooltip';
 
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
@@ -66,7 +73,14 @@ import { CampaignNotificationsComponent } from './components/campaign-notificati
     ToastModule,
     ToolbarModule,
     PanelModule,
-    TagModule
+    TagModule,
+    MultiSelectModule,
+    InputNumberModule,
+    SliderModule,
+    BadgeModule,
+    RatingModule,
+    MessagesModule,
+    TooltipModule
   ],
   providers: [CampaignDataService],
   bootstrap: [AppComponent]

@@ -5,69 +5,123 @@
       <span class="card-title">BSP Performance</span>
     </div>
     <div class="header-right">
-      <i class="pi pi-circle-fill optimize-dot"></i>
-      <span class="optimize-text">Optimize</span>
+      <button class="optimize-button">
+        <i class="pi pi-cog"></i>
+        <span>Optimize</span>
+      </button>
     </div>
   </div>
   
   <div class="channel-tabs">
-    <button class="channel-tab active" data-channel="sms">SMS</button>
-    <button class="channel-tab" data-channel="whatsapp">WHATSAPP</button>
-    <button class="channel-tab" data-channel="email">EMAIL</button>
-    <button class="channel-tab" data-channel="push">PUSH</button>
-    <button class="channel-tab" data-channel="rcs">RCS</button>
+    <button class="channel-tab active" data-channel="sms">
+      <i class="pi pi-mobile"></i>
+      <span>SMS</span>
+    </button>
+    <button class="channel-tab" data-channel="whatsapp">
+      <i class="pi pi-whatsapp"></i>
+      <span>WHATSAPP</span>
+    </button>
+    <button class="channel-tab" data-channel="email">
+      <i class="pi pi-envelope"></i>
+      <span>EMAIL</span>
+    </button>
+    <button class="channel-tab" data-channel="push">
+      <i class="pi pi-bell"></i>
+      <span>PUSH</span>
+    </button>
+    <button class="channel-tab" data-channel="rcs">
+      <i class="pi pi-comment"></i>
+      <span>RCS</span>
+    </button>
+  </div>
+  
+  <div class="performance-summary">
+    <div class="summary-metrics">
+      <div class="metric-highlight">
+        <span class="metric-value blue">94%</span>
+        <span class="metric-label">Best Delivery</span>
+      </div>
+      <div class="metric-highlight">
+        <span class="metric-value">₹0.1</span>
+        <span class="metric-label">Lowest Cost</span>
+      </div>
+      <div class="metric-highlight">
+        <span class="metric-value orange">1</span>
+        <span class="metric-label">Recommended</span>
+      </div>
+    </div>
   </div>
   
   <div class="providers-section">
     <!-- Airtel IQ Provider -->
     <div class="provider-card best-provider">
       <div class="provider-header">
-        <span class="provider-name">Airtel IQ</span>
-        <span class="provider-badge">Best</span>
-      </div>
-      <div class="provider-stats">
-        <div class="stat-item">
-          <span class="stat-value blue">94%</span>
-          <span class="stat-label">Best Delivery</span>
+        <div class="provider-info">
+          <span class="provider-name">Airtel IQ</span>
+          <i class="pi pi-star-fill provider-icon"></i>
         </div>
-        <div class="stat-item">
-          <span class="stat-value">₹0.1</span>
-          <span class="stat-label">Lowest Cost</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-value recommended">↑</span>
-          <span class="stat-label">Recommended</span>
+        <div class="provider-badges">
+          <span class="badge excellent">excellent</span>
+          <span class="badge best">Best</span>
         </div>
       </div>
-      <div class="performance-score">
-        <span class="score-label">Performance Score</span>
-        <span class="score-value">NaN%</span>
+      <div class="provider-metrics">
+        <div class="metric-row">
+          <div class="metric">
+            <span class="metric-value">94%</span>
+            <span class="metric-label">Delivery</span>
+          </div>
+          <div class="metric">
+            <span class="metric-value">₹0.12</span>
+            <span class="metric-label">Cost</span>
+          </div>
+          <div class="metric">
+            <span class="metric-value">%</span>
+            <span class="metric-label">Uptime</span>
+          </div>
+        </div>
+        <div class="performance-bar">
+          <div class="performance-fill" style="width: 94%"></div>
+        </div>
+        <div class="performance-score">
+          <span class="score-label">Performance Score</span>
+          <span class="score-value">NaN%</span>
+        </div>
       </div>
     </div>
 
     <!-- Jio Platform Provider -->
     <div class="provider-card">
       <div class="provider-header">
-        <span class="provider-name">Jio Platform</span>
-        <span class="provider-status good">good</span>
-      </div>
-      <div class="provider-stats">
-        <div class="stat-item">
-          <span class="stat-value">91%</span>
-          <span class="stat-label">Delivery</span>
+        <div class="provider-info">
+          <span class="provider-name">Jio Platform</span>
         </div>
-        <div class="stat-item">
-          <span class="stat-value">₹0.14</span>
-          <span class="stat-label">Cost</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-value">%</span>
-          <span class="stat-label">Uptime</span>
+        <div class="provider-badges">
+          <span class="badge good">good</span>
         </div>
       </div>
-      <div class="performance-score">
-        <span class="score-label">Performance Score</span>
-        <span class="score-value">NaN%</span>
+      <div class="provider-metrics">
+        <div class="metric-row">
+          <div class="metric">
+            <span class="metric-value">91%</span>
+            <span class="metric-label">Delivery</span>
+          </div>
+          <div class="metric">
+            <span class="metric-value">₹0.14</span>
+            <span class="metric-label">Cost</span>
+          </div>
+          <div class="metric">
+            <span class="metric-value">%</span>
+            <span class="metric-label">Uptime</span>
+          </div>
+        </div>
+        <div class="performance-bar">
+          <div class="performance-fill" style="width: 91%"></div>
+        </div>
+        <div class="performance-score">
+          <span class="score-label">Performance Score</span>
+          <span class="score-value">NaN%</span>
+        </div>
       </div>
     </div>
   </div>

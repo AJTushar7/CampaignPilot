@@ -276,11 +276,15 @@
       <div class="campaign-carousel-three-cards" *ngIf="visibleCampaignCards.length > 0">
         <div class="campaign-card" *ngFor="let campaign of visibleCampaignCards.slice(currentCardPage * 3, (currentCardPage + 1) * 3); let i = index; trackBy: trackByCampaignName">
           <div class="card-header">
-            <div class="campaign-icon" [class]="campaign.statusClass">
-              <i [class]="campaign.icon"></i>
+            <div class="campaign-info">
+              <div class="campaign-icon" [class]="campaign.statusClass">
+                <i [class]="campaign.icon"></i>
+              </div>
+              <div class="campaign-details">
+                <h4 class="campaign-name">{{campaign.name}}</h4>
+                <div class="campaign-channel">{{campaign.channel}}</div>
+              </div>
             </div>
-            <h4 class="campaign-name">{{campaign.name}}</h4>
-            <div class="campaign-channel">{{campaign.channel}}</div>
             <div class="campaign-status" [class]="campaign.statusClass">
               <i [class]="campaign.statusIcon"></i>
               {{campaign.status}}
@@ -295,14 +299,33 @@
               <span class="progress-value">{{campaign.progressPercentage}}%</span>
             </div>
             <div class="metrics-grid">
-              <div class="metric">
-                <span class="metric-value">{{campaign.sent}}</span>
-                <span class="metric-label">Sent</span>
+              <div class="metric-row">
+                <div class="metric-item">
+                  <span class="metric-value">{{campaign.sent}}</span>
+                  <span class="metric-label">Sent</span>
+                </div>
+                <div class="metric-item">
+                  <span class="metric-value">{{campaign.target}}</span>
+                  <span class="metric-label">Target</span>
+                </div>
               </div>
-              <div class="metric">
-                <span class="metric-value">{{campaign.target}}</span>
-                <span class="metric-label">Target</span>
+              <div class="metric-row">
+                <div class="metric-item">
+                  <span class="metric-value">{{campaign.spent}}</span>
+                  <span class="metric-label">Spent</span>
+                </div>
+                <div class="metric-item">
+                  <span class="metric-value">{{campaign.conversions}}</span>
+                  <span class="metric-label">Conversions</span>
+                </div>
               </div>
+            </div>
+            <div class="budget-usage">
+              <span class="budget-label">Budget Usage</span>
+              <div class="budget-bar-container">
+                <div class="budget-bar" [style.width.%]="campaign.budgetUsagePercentage"></div>
+              </div>
+              <span class="budget-value">{{campaign.budgetUsagePercentage}}%</span>
               <div class="metric">
                 <span class="metric-value">{{campaign.spent}}</span>
                 <span class="metric-label">Spent</span>

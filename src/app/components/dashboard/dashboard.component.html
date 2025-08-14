@@ -284,6 +284,115 @@
         </div>
       </div>
     </div>
+    
+    <!-- AI Insights Section -->
+    <div class="ai-insights-section">
+      <div class="insights-card">
+        <div class="insights-header">
+          <h3 class="insights-title">
+            <i class="pi pi-lightbulb"></i>
+            Smart Insights
+          </h3>
+        </div>
+        <div class="insights-content">
+          <div class="insight-item priority">
+            <div class="insight-icon high">
+              <i class="pi pi-exclamation-triangle"></i>
+            </div>
+            <div class="insight-text">
+              <strong>Budget Alert:</strong> WhatsApp campaigns using 85% budget faster than expected
+            </div>
+            <button class="insight-action">Optimize</button>
+          </div>
+          <div class="insight-item opportunity">
+            <div class="insight-icon medium">
+              <i class="pi pi-star"></i>
+            </div>
+            <div class="insight-text">
+              <strong>Opportunity:</strong> SMS performance up 23% - consider reallocating budget
+            </div>
+            <button class="insight-action">Apply</button>
+          </div>
+          <div class="insight-item recommendation">
+            <div class="insight-icon low">
+              <i class="pi pi-clock"></i>
+            </div>
+            <div class="insight-text">
+              <strong>Timing:</strong> Best engagement window: 6-8 PM for next campaign
+            </div>
+            <button class="insight-action">Schedule</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Weekly Campaign Overview -->
+  <section class="weekly-overview-section">
+    <div class="overview-header">
+      <div class="overview-title">
+        <i class="pi pi-calendar"></i>
+        <span>Weekly Campaign Overview</span>
+      </div>
+      <div class="overview-controls">
+        <button class="collapse-button" (click)="toggleWeeklyOverview()">
+          <span>{{weeklyOverviewExpanded ? 'Collapse' : 'Expand'}}</span>
+          <i [class]="weeklyOverviewExpanded ? 'pi pi-chevron-up' : 'pi pi-chevron-down'"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Collapsed View -->
+    <div class="overview-content collapsed" *ngIf="!weeklyOverviewExpanded">
+      <div class="week-summary">
+        <div class="week-days-row">
+          <div class="day-card" *ngFor="let day of weekDays">
+            <div class="day-header-collapsed">
+              <span class="day-name">{{day.name}}</span>
+              <span class="day-number">{{day.number}}</span>
+            </div>
+            <div class="campaign-total">{{day.campaignCount}}</div>
+          </div>
+        </div>
+        <div class="summary-footer">
+          <div class="summary-stats">
+            <span class="stat">{{totalActiveCampaigns}} Active</span>
+            <span class="stat">{{totalScheduledCampaigns}} Scheduled</span>
+          </div>
+          <div class="total-campaigns">Total: {{totalWeeklyCampaigns}} campaigns this week</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Expanded View -->
+    <div class="overview-content expanded" *ngIf="weeklyOverviewExpanded">
+      <div class="week-details">
+        <div class="week-days-expanded">
+          <div class="day-card-expanded" *ngFor="let day of weekDays">
+            <div class="day-header-expanded">
+              <div class="day-date">
+                <span class="day-name">{{day.name}}</span>
+                <span class="day-number">{{day.number}}</span>
+              </div>
+              <div class="campaign-count">{{day.campaignCount}} campaigns</div>
+            </div>
+            <div class="status-breakdown">
+              <div class="status-item live">{{day.live}} Live</div>
+              <div class="status-item scheduled">{{day.scheduled}} Scheduled</div>
+              <div class="status-item paused" *ngIf="day.paused > 0">{{day.paused}} Paused</div>
+            </div>
+            <div class="traffic-indicator" [class]="day.status.toLowerCase()">{{day.status}}</div>
+          </div>
+        </div>
+        <div class="summary-footer-expanded">
+          <div class="summary-stats">
+            <span class="stat">{{totalActiveCampaigns}} Active</span>
+            <span class="stat">{{totalScheduledCampaigns}} Scheduled</span>
+          </div>
+          <div class="total-campaigns">Total: {{totalWeeklyCampaigns}} campaigns this week</div>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- Real-time Campaign Monitor -->

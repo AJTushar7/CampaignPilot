@@ -11,14 +11,13 @@
       <div class="header-controls">
         <div class="control-group">
           <label>Channel:</label>
-          <select class="control-select">
-            <option>All Channels</option>
-            <option>WhatsApp</option>
-            <option>SMS</option>
-            <option>Email</option>
-            <option>Push</option>
-            <option>RCS</option>
-          </select>
+          <p-dropdown [options]="channelOptions" 
+                     [(ngModel)]="selectedChannel"
+                     optionLabel="label" 
+                     optionValue="value"
+                     placeholder="All Channels"
+                     [style]="{'min-width': '140px'}">
+          </p-dropdown>
         </div>
         <div class="search-container">
           <i class="pi pi-search"></i>
@@ -26,11 +25,13 @@
         </div>
         <div class="control-group">
           <i class="pi pi-calendar"></i>
-          <select class="control-select">
-            <option>Last 30 Days</option>
-            <option>Last 7 Days</option>
-            <option>Last 90 Days</option>
-          </select>
+          <p-dropdown [options]="dateRangeOptions" 
+                     [(ngModel)]="selectedDateRange"
+                     optionLabel="label" 
+                     optionValue="value"
+                     placeholder="Last 30 Days"
+                     [style]="{'min-width': '140px'}">
+          </p-dropdown>
         </div>
       </div>
     </div>
@@ -58,11 +59,6 @@
               <span class="day-number-collapsed">{{day.number}}</span>
             </div>
             <div class="campaign-count-collapsed">{{day.campaignCount}}</div>
-            <div class="status-dots-mini">
-              <span class="mini-dot live" *ngFor="let i of getLimitedDotsArray(day.live, 1)" title="Live"></span>
-              <span class="mini-dot scheduled" *ngFor="let i of getLimitedDotsArray(day.scheduled, 1)" title="Scheduled"></span>
-              <span class="mini-dot paused" *ngFor="let i of getLimitedDotsArray(day.paused, 1)" title="Paused"></span>
-            </div>
           </div>
         </div>
         <div class="summary-stats">
@@ -91,19 +87,10 @@
           </div>
           <div class="day-content">
             <div class="campaign-count">{{day.campaignCount}} campaigns</div>
-            <div class="campaign-dots">
-              <div class="dot-row">
-                <span class="campaign-dot live" *ngFor="let i of getLimitedDotsArray(day.live, 3)"></span>
-                <span class="dot-label">{{day.live}} Live</span>
-              </div>
-              <div class="dot-row">
-                <span class="campaign-dot scheduled" *ngFor="let i of getLimitedDotsArray(day.scheduled, 3)"></span>
-                <span class="dot-label">{{day.scheduled}} Scheduled</span>
-              </div>
-              <div class="dot-row">
-                <span class="campaign-dot paused" *ngFor="let i of getLimitedDotsArray(day.paused, 2)"></span>
-                <span class="dot-label">{{day.paused}} Paused</span>
-              </div>
+            <div class="campaign-status-breakdown">
+              <div class="status-line">{{day.live}} Live</div>
+              <div class="status-line">{{day.scheduled}} Scheduled</div>
+              <div class="status-line">{{day.paused}} Paused</div>
             </div>
             <div class="day-status">{{day.status}}</div>
           </div>
@@ -131,7 +118,7 @@
     <div class="kpi-grid">
       <div class="kpi-card">
         <div class="kpi-header">
-          <div class="kpi-icon">
+          <div class="kpi-icon blue">
             <i class="pi pi-chart-line"></i>
           </div>
           <div class="kpi-trend positive">+12.5%</div>
@@ -143,7 +130,7 @@
 
       <div class="kpi-card">
         <div class="kpi-header">
-          <div class="kpi-icon">
+          <div class="kpi-icon green">
             <i class="pi pi-users"></i>
           </div>
           <div class="kpi-trend negative">-8.2%</div>
@@ -155,7 +142,7 @@
 
       <div class="kpi-card">
         <div class="kpi-header">
-          <div class="kpi-icon">
+          <div class="kpi-icon orange">
             <i class="pi pi-dollar"></i>
           </div>
           <div class="kpi-trend positive">+15.3%</div>
@@ -167,7 +154,7 @@
 
       <div class="kpi-card">
         <div class="kpi-header">
-          <div class="kpi-icon">
+          <div class="kpi-icon purple">
             <i class="pi pi-percentage"></i>
           </div>
           <div class="kpi-trend negative">-5.7%</div>
@@ -176,13 +163,10 @@
         <div class="kpi-value">3.2%</div>
         <div class="kpi-subtitle">Industry avg: 2.8%</div>
       </div>
-    </div>
 
-    <!-- Second Row of KPI Cards -->
-    <div class="kpi-grid secondary">
       <div class="kpi-card">
         <div class="kpi-header">
-          <div class="kpi-icon">
+          <div class="kpi-icon teal">
             <i class="pi pi-chart-bar"></i>
           </div>
           <div class="kpi-trend positive">+3.2%</div>
@@ -194,8 +178,8 @@
 
       <div class="kpi-card">
         <div class="kpi-header">
-          <div class="kpi-icon">
-            <i class="pi pi-bolt"></i>
+          <div class="kpi-icon yellow">
+            <i class="pi pi-flash"></i>
           </div>
           <div class="kpi-trend negative">-7.8%</div>
         </div>
@@ -206,7 +190,7 @@
 
       <div class="kpi-card">
         <div class="kpi-header">
-          <div class="kpi-icon">
+          <div class="kpi-icon indigo">
             <i class="pi pi-trending-up"></i>
           </div>
           <div class="kpi-trend positive">+18.9%</div>
@@ -218,7 +202,7 @@
 
       <div class="kpi-card">
         <div class="kpi-header">
-          <div class="kpi-icon">
+          <div class="kpi-icon red">
             <i class="pi pi-play"></i>
           </div>
           <div class="kpi-trend positive">+25%</div>
@@ -230,172 +214,107 @@
     </div>
   </section>
 
-  <!-- Channel Performance & Engagement Analytics Row -->
-  <section class="analytics-row">
+  <!-- Analytics Row -->
+  <section class="analytics-section">
     <div class="analytics-grid">
-      <!-- Channel Performance Section -->
-      <div class="channel-performance-card">
+      <!-- Channel Performance -->
+      <div class="analytics-card channel-performance">
         <div class="card-header">
-          <div class="header-title">
+          <h3 class="card-title">
             <i class="pi pi-chart-bar"></i>
-            <span>Channel Performance</span>
-          </div>
-          <select class="performance-filter">
-            <option>Conversions</option>
-            <option>Click Rate</option>
-            <option>Open Rate</option>
-          </select>
+            Channel Performance
+          </h3>
+          <p-dropdown [options]="performanceMetrics" 
+                     [(ngModel)]="selectedPerformanceMetric"
+                     optionLabel="label" 
+                     optionValue="value"
+                     placeholder="Conversions">
+          </p-dropdown>
         </div>
-        
-        <div class="channel-metrics">
-          <div class="channel-item" *ngFor="let channel of channelData">
+        <div class="channel-bars">
+          <div class="channel-bar" *ngFor="let channel of channelPerformanceData">
             <div class="channel-info">
-              <div class="channel-icon" [style.background-color]="channel.color">
-                <i class="pi pi-{{ getChannelIcon(channel.name) }}"></i>
+              <div class="channel-icon" [class]="channel.iconClass">
+                <i [class]="channel.icon"></i>
               </div>
-              <div class="channel-details">
-                <div class="channel-name">{{channel.name}}</div>
-                <div class="channel-value">{{channel.value | number}}</div>
-              </div>
+              <span class="channel-name">{{channel.name}}</span>
             </div>
-            <div class="channel-performance">
-              <div class="performance-bar">
-                <div class="performance-fill" [style.width.%]="channel.percentage" [style.background-color]="channel.color"></div>
-              </div>
-              <div class="performance-stats">
-                <span class="percentage">{{channel.percentage}}%</span>
-                <span class="trend" [class.positive]="channel.trend > 0" [class.negative]="channel.trend < 0">
-                  {{channel.trend > 0 ? '+' : ''}}{{channel.trend}}%
-                </span>
-              </div>
+            <div class="bar-container">
+              <div class="progress-bar" [style.width.%]="channel.percentage" [class]="channel.colorClass"></div>
             </div>
+            <span class="channel-value">{{channel.value}}</span>
           </div>
         </div>
-
-        <!-- Additional KPIs for Channel Performance -->
-        <div class="channel-kpis">
-          <div class="kpi-summary-row">
-            <div class="kpi-summary-item">
-              <div class="kpi-summary-icon">
-                <i class="pi pi-users"></i>
-              </div>
-              <div class="kpi-summary-data">
-                <div class="kpi-summary-value">156</div>
-                <div class="kpi-summary-label">Total Campaigns</div>
-              </div>
-            </div>
-            <div class="kpi-summary-item">
-              <div class="kpi-summary-icon">
-                <i class="pi pi-percentage"></i>
-              </div>
-              <div class="kpi-summary-data">
-                <div class="kpi-summary-value">1.5%</div>
-                <div class="kpi-summary-label">Avg Conversion</div>
-              </div>
-            </div>
-            <div class="kpi-summary-item">
-              <div class="kpi-summary-icon">
-                <i class="pi pi-dollar"></i>
-              </div>
-              <div class="kpi-summary-data">
-                <div class="kpi-summary-value">₹660K</div>
-                <div class="kpi-summary-label">Total Spend</div>
-              </div>
-            </div>
+        <div class="performance-summary">
+          <div class="summary-stat">
+            <span class="stat-number">156</span>
+            <span class="stat-label">Total Campaigns</span>
+          </div>
+          <div class="summary-stat">
+            <span class="stat-number">1.5%</span>
+            <span class="stat-label">Avg Conversion</span>
+          </div>
+          <div class="summary-stat highlight">
+            <span class="stat-number">₹660K</span>
+            <span class="stat-label">Total Spend</span>
           </div>
         </div>
       </div>
 
-      <!-- Engagement Heatmap Section -->
-      <div class="engagement-heatmap-card">
+      <!-- Engagement Heatmap -->
+      <div class="analytics-card engagement-heatmap">
         <div class="card-header">
-          <div class="header-title">
-            <i class="pi pi-th"></i>
-            <span>Engagement Heatmap</span>
+          <h3 class="card-title">
+            <i class="pi pi-th-large"></i>
+            Engagement Heatmap
+          </h3>
+          <button class="link-button">Live Data</button>
+        </div>
+        <div class="heatmap-content">
+          <div class="time-labels">
+            <span>12 AM</span>
+            <span>6 AM</span>
+            <span>12 PM</span>
+            <span>6 PM</span>
           </div>
-          <button class="live-data-btn">
-            <i class="pi pi-circle-fill"></i>
-            Live Data
-          </button>
+          <div class="heatmap-grid">
+            <div class="day-row" *ngFor="let day of heatmapData">
+              <span class="day-label">{{day.name}}</span>
+              <div class="hour-cells">
+                <div class="hour-cell" 
+                     *ngFor="let hour of day.hours" 
+                     [class]="'intensity-' + hour.intensity"
+                     [title]="hour.percentage + '%'">
+                  <span class="cell-value">{{hour.percentage}}%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="heatmap-legend">
+            <span>Low</span>
+            <div class="legend-gradient"></div>
+            <span>High (Avg by slot)</span>
+          </div>
         </div>
         
-        <div class="heatmap-container">
-          <div class="heatmap-grid compact">
-            <div class="heatmap-header">
-              <div class="time-slot">12 AM</div>
-              <div class="time-slot">6 AM</div>
-              <div class="time-slot">12 PM</div>
-              <div class="time-slot">6 PM</div>
-            </div>
-            <div class="heatmap-row" *ngFor="let day of heatmapData">
-              <div class="day-label">{{day.name}}</div>
-              <div class="heatmap-cell compact" 
-                   *ngFor="let slot of day.slots"
-                   [class]="'intensity-' + slot.intensity"
-                   [title]="slot.value + '% engagement'">
-                {{slot.value}}%
-              </div>
-            </div>
-          </div>
-          
-          <div class="heatmap-legend">
-            <span class="legend-label">Low</span>
-            <div class="legend-gradient">
-              <span class="legend-dot intensity-low"></span>
-              <span class="legend-dot intensity-medium"></span>
-              <span class="legend-dot intensity-high"></span>
-              <span class="legend-dot intensity-highest"></span>
-            </div>
-            <span class="legend-label">High (Avg by slot)</span>
-          </div>
+        <div class="ai-suggestions">
+          <h4><i class="pi pi-lightbulb"></i> AI Suggestions</h4>
+          <ul>
+            <li>Peak engagement at Wed 6 PM (+50%). Schedule high-value promos there.</li>
+            <li>Avoid Sun 12 AM (60%). Use for fallback or A/B test creatives.</li>
+            <li>Tomorrow best slot window non-competing slots for retros: 2-6 AM for Tue-Q3.</li>
+          </ul>
+        </div>
 
-          <!-- AI Suggestions Section -->
-          <div class="ai-suggestions">
-            <div class="suggestions-header">
-              <i class="pi pi-lightbulb"></i>
-              <span>AI Suggestions</span>
-            </div>
-            <div class="suggestions-list">
-              <div class="suggestion-item">
-                • Peak engagement at Wed 6 PM (96%), Schedule high-value promos there.
+        <div class="peak-hours">
+          <h4>Peak Hours Today</h4>
+          <div class="peak-hour-bars">
+            <div class="peak-bar" *ngFor="let peak of peakHours">
+              <span class="peak-time">{{peak.time}}</span>
+              <div class="peak-progress">
+                <div class="peak-fill" [style.width.%]="peak.percentage"></div>
               </div>
-              <div class="suggestion-item">
-                • Avoid Sun 12 AM (6%), Use for fallback A/B test creatives.
-              </div>
-              <div class="suggestion-item">
-                • Timeslots best slow reward non-converting slots for retargets. A/B test AM for Tue 6-8
-              </div>
-            </div>
-          </div>
-
-          <!-- Peak Hours Today Section -->
-          <div class="peak-hours">
-            <div class="peak-hours-header">
-              <i class="pi pi-clock"></i>
-              <span>Peak Hours Today</span>
-            </div>
-            <div class="peak-hours-list">
-              <div class="peak-hour-item">
-                <span class="hour-time">6 AM</span>
-                <div class="hour-bar">
-                  <div class="hour-fill" style="width: 45%"></div>
-                </div>
-                <span class="hour-percentage">45%</span>
-              </div>
-              <div class="peak-hour-item">
-                <span class="hour-time">12 PM</span>
-                <div class="hour-bar">
-                  <div class="hour-fill" style="width: 75%"></div>
-                </div>
-                <span class="hour-percentage">75%</span>
-              </div>
-              <div class="peak-hour-item">
-                <span class="hour-time">6 PM</span>
-                <div class="hour-bar">
-                  <div class="hour-fill" style="width: 90%"></div>
-                </div>
-                <span class="hour-percentage">90%</span>
-              </div>
+              <span class="peak-value">{{peak.percentage}}%</span>
             </div>
           </div>
         </div>
@@ -403,105 +322,99 @@
     </div>
   </section>
 
-  <!-- Real-time Campaign Monitor Section -->
+  <!-- Real-time Campaign Monitor -->
   <section class="campaign-monitor-section">
     <div class="monitor-header">
-      <div class="monitor-title">
+      <h3 class="monitor-title">
         <i class="pi pi-desktop"></i>
-        <span>Real-time Campaign Monitor</span>
-      </div>
+        Real-time Campaign Monitor
+      </h3>
       <div class="monitor-controls">
-        <button class="view-toggle" [class.active]="isCardView" (click)="setCardView(true)">Cards</button>
-        <button class="view-toggle" [class.active]="!isCardView" (click)="setCardView(false)">Table</button>
-        <select class="status-filter">
-          <option>All Status</option>
-          <option>Executing</option>
-          <option>Scheduled</option>
-          <option>Paused</option>
-          <option>Failed</option>
-        </select>
-        <select class="days-filter">
-          <option>Last 7 Days</option>
-          <option>Last 30 Days</option>
-          <option>Last 90 Days</option>
-        </select>
+        <div class="view-toggle">
+          <button [class.active]="viewMode === 'cards'" (click)="setViewMode('cards')">Cards</button>
+          <button [class.active]="viewMode === 'table'" (click)="setViewMode('table')">Table</button>
+        </div>
+        <p-dropdown [options]="statusFilterOptions" 
+                   [(ngModel)]="selectedStatusFilter"
+                   optionLabel="label" 
+                   optionValue="value"
+                   placeholder="All Status">
+        </p-dropdown>
+        <p-dropdown [options]="timeFilterOptions" 
+                   [(ngModel)]="selectedTimeFilter"
+                   optionLabel="label" 
+                   optionValue="value"
+                   placeholder="Last 7 Days">
+        </p-dropdown>
       </div>
     </div>
 
-    <!-- Card View -->
-    <div class="campaign-cards" *ngIf="isCardView">
-      <div class="campaign-navigation">
-        <button class="nav-arrow" (click)="previousCampaign()">
-          <i class="pi pi-chevron-left"></i>
-        </button>
-        
-        <div class="campaign-card" *ngFor="let campaign of visibleCampaigns">
-          <div class="campaign-card-header">
-            <div class="campaign-info">
-              <div class="campaign-icon" [style.background-color]="campaign.color">
-                <i class="pi pi-{{campaign.icon}}"></i>
-              </div>
-              <div class="campaign-details">
-                <div class="campaign-name">{{campaign.name}}</div>
-                <div class="campaign-type">{{campaign.type}}</div>
-              </div>
+    <!-- Cards View -->
+    <div class="campaign-cards-view" *ngIf="viewMode === 'cards'">
+      <div class="campaign-carousel">
+        <div class="campaign-card" *ngFor="let campaign of visibleCampaignCards">
+          <div class="card-header">
+            <div class="campaign-icon" [class]="campaign.statusClass">
+              <i [class]="campaign.icon"></i>
             </div>
-            <div class="campaign-status" [class]="campaign.status.toLowerCase()">
-              <i class="pi pi-{{getStatusIcon(campaign.status)}}"></i>
+            <h4 class="campaign-name">{{campaign.name}}</h4>
+            <div class="campaign-channel">{{campaign.channel}}</div>
+            <div class="campaign-status" [class]="campaign.statusClass">
+              <i [class]="campaign.statusIcon"></i>
               {{campaign.status}}
             </div>
           </div>
-
-          <div class="campaign-progress">
-            <div class="progress-label">Progress</div>
-            <div class="progress-bar">
-              <div class="progress-fill" [style.width.%]="campaign.progress"></div>
+          <div class="card-body">
+            <div class="progress-section">
+              <span class="progress-label">Progress</span>
+              <div class="progress-bar-container">
+                <div class="progress-bar" [style.width.%]="campaign.progressPercentage"></div>
+              </div>
+              <span class="progress-value">{{campaign.progressPercentage}}%</span>
             </div>
-            <div class="progress-value">{{campaign.progress}}%</div>
-          </div>
-
-          <div class="campaign-metrics">
-            <div class="metric-row">
-              <div class="metric-item">
-                <div class="metric-value">{{campaign.sent | number}}</div>
-                <div class="metric-label">Sent</div>
+            <div class="metrics-grid">
+              <div class="metric">
+                <span class="metric-value">{{campaign.sent}}</span>
+                <span class="metric-label">Sent</span>
               </div>
-              <div class="metric-item">
-                <div class="metric-value">{{campaign.target | number}}</div>
-                <div class="metric-label">Target</div>
+              <div class="metric">
+                <span class="metric-value">{{campaign.target}}</span>
+                <span class="metric-label">Target</span>
               </div>
-            </div>
-            <div class="metric-row">
-              <div class="metric-item">
-                <div class="metric-value">{{campaign.spent}}</div>
-                <div class="metric-label">Spent</div>
+              <div class="metric">
+                <span class="metric-value">{{campaign.spent}}</span>
+                <span class="metric-label">Spent</span>
               </div>
-              <div class="metric-item">
-                <div class="metric-value">{{campaign.conversions | number}}</div>
-                <div class="metric-label">Conversions</div>
+              <div class="metric">
+                <span class="metric-value">{{campaign.conversions}}</span>
+                <span class="metric-label">Conversions</span>
               </div>
             </div>
-          </div>
-
-          <div class="budget-usage">
-            <div class="budget-label">Budget Usage</div>
-            <div class="budget-bar">
-              <div class="budget-fill" [style.width.%]="campaign.budgetUsage"></div>
+            <div class="budget-usage">
+              <span class="budget-label">Budget Usage</span>
+              <div class="budget-bar">
+                <div class="budget-fill" [style.width.%]="campaign.budgetUsage"></div>
+              </div>
+              <span class="budget-value">{{campaign.budgetUsage}}%</span>
             </div>
-            <div class="budget-value">{{campaign.budgetUsage}}%</div>
           </div>
         </div>
-
-        <button class="nav-arrow" (click)="nextCampaign()">
+      </div>
+      <div class="carousel-controls">
+        <button class="carousel-btn" (click)="previousCards()" [disabled]="currentCardPage === 0">
+          <i class="pi pi-chevron-left"></i>
+        </button>
+        <span class="page-indicator">{{currentCardPage + 1}} / {{totalCardPages}}</span>
+        <button class="carousel-btn" (click)="nextCards()" [disabled]="currentCardPage === totalCardPages - 1">
           <i class="pi pi-chevron-right"></i>
         </button>
       </div>
     </div>
 
     <!-- Table View -->
-    <div class="campaign-table" *ngIf="!isCardView">
-      <table>
-        <thead>
+    <div class="campaign-table-view" *ngIf="viewMode === 'table'">
+      <p-table [value]="campaignTableData" [rows]="10" [paginator]="true" styleClass="p-datatable-sm">
+        <ng-template pTemplate="header">
           <tr>
             <th>Campaign</th>
             <th>Status</th>
@@ -511,50 +424,59 @@
             <th>Spent</th>
             <th>Actions</th>
           </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let campaign of allCampaigns">
+        </ng-template>
+        <ng-template pTemplate="body" let-campaign>
+          <tr>
             <td>
-              <div class="table-campaign-info">
-                <div class="table-campaign-icon" [style.background-color]="campaign.color">
-                  <i class="pi pi-{{campaign.icon}}"></i>
+              <div class="campaign-cell">
+                <div class="campaign-icon small" [class]="campaign.statusClass">
+                  <i [class]="campaign.icon"></i>
                 </div>
                 <div>
-                  <div class="table-campaign-name">{{campaign.name}}</div>
-                  <div class="table-campaign-type">{{campaign.type}}</div>
+                  <div class="campaign-name">{{campaign.name}}</div>
+                  <div class="campaign-channel">{{campaign.channel}}</div>
                 </div>
               </div>
             </td>
             <td>
-              <span class="table-status" [class]="campaign.status.toLowerCase()">
-                <i class="pi pi-{{getStatusIcon(campaign.status)}}"></i>
+              <span class="status-badge" [class]="campaign.statusClass">
+                <i [class]="campaign.statusIcon"></i>
                 {{campaign.status}}
               </span>
             </td>
             <td>
-              <div class="table-progress">
-                <div class="table-progress-bar">
-                  <div class="table-progress-fill" [style.width.%]="campaign.progress"></div>
+              <div class="progress-cell">
+                <div class="progress-bar small">
+                  <div class="progress-fill" [style.width.%]="campaign.progressPercentage"></div>
                 </div>
-                <span class="table-progress-text">{{campaign.progress}}%</span>
+                <span>{{campaign.progressPercentage}}%</span>
               </div>
             </td>
-            <td>{{campaign.sent | number}}</td>
-            <td>{{campaign.conversions | number}}</td>
+            <td>{{campaign.sent}}</td>
+            <td>{{campaign.conversions}}</td>
             <td>{{campaign.spent}}</td>
             <td>
-              <div class="table-actions">
-                <button class="action-btn" [class]="getActionClass(campaign.status)" [title]="getActionTitle(campaign.status)">
-                  <i class="pi pi-{{getActionIcon(campaign.status)}}"></i>
+              <div class="action-buttons">
+                <button class="action-btn" *ngIf="campaign.status === 'Executing'" (click)="pauseCampaign(campaign)">
+                  <i class="pi pi-pause"></i>
                 </button>
-                <button class="action-btn delete" title="Delete">
+                <button class="action-btn" *ngIf="campaign.status === 'Paused'" (click)="resumeCampaign(campaign)">
+                  <i class="pi pi-play"></i>
+                </button>
+                <button class="action-btn" *ngIf="campaign.status === 'Scheduled'" (click)="startCampaign(campaign)">
+                  <i class="pi pi-play"></i>
+                </button>
+                <button class="action-btn delete" (click)="deleteCampaign(campaign)">
                   <i class="pi pi-trash"></i>
+                </button>
+                <button class="action-btn refresh" *ngIf="campaign.status === 'Failed'" (click)="retryCampaign(campaign)">
+                  <i class="pi pi-refresh"></i>
                 </button>
               </div>
             </td>
           </tr>
-        </tbody>
-      </table>
+        </ng-template>
+      </p-table>
     </div>
   </section>
 

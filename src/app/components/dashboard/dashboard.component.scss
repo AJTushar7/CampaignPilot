@@ -3,6 +3,7 @@
   min-height: 100vh;
   background-color: #f8f9fa;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  overflow-x: hidden; // Prevent horizontal scrollbar
   
   // Header Section
   .dashboard-header {
@@ -1417,6 +1418,30 @@
         color: #2c3e50;
         margin-bottom: 12px;
       }
+    }
+  }
+  
+  // BSP Performance Section - Separate Row
+  .bsp-performance-section {
+    margin: 0 24px 24px 24px;
+    
+    .analytics-card {
+      background: white;
+      border: 1px solid #e9ecef;
+      border-radius: 8px;
+      padding: 20px;
+    }
+  }
+  
+  // Festival Timeline Section - Separate Row
+  .festival-timeline-section {
+    margin: 0 24px 24px 24px;
+    
+    .analytics-card {
+      background: white;
+      border: 1px solid #e9ecef;
+      border-radius: 8px;
+      padding: 20px;
     }
   }
   

@@ -197,71 +197,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
   ];
 
-  // Campaign Table Data
-  campaignTableData = [
-    {
-      name: 'Flash Sale Alert',
-      channel: 'SMS',
-      status: 'Executing',
-      statusClass: 'executing',
-      statusIcon: 'pi pi-play',
-      icon: 'pi pi-mobile',
-      progressPercentage: 67,
-      sent: '89K',
-      conversions: '1234',
-      spent: '₹29K'
-    },
-    {
-      name: 'Weekend Offer',
-      channel: 'WhatsApp',
-      status: 'Scheduled',
-      statusClass: 'scheduled',
-      statusIcon: 'pi pi-clock',
-      icon: 'pi pi-whatsapp',
-      progressPercentage: 0,
-      sent: '0K',
-      conversions: '0',
-      spent: '₹0K'
-    },
-    {
-      name: 'Service Reminder',
-      channel: 'Email',
-      status: 'Paused',
-      statusClass: 'paused',
-      statusIcon: 'pi pi-pause',
-      icon: 'pi pi-envelope',
-      progressPercentage: 23,
-      sent: '12K',
-      conversions: '89',
-      spent: '₹9K'
-    },
-    {
-      name: 'Product Launch',
-      channel: 'Push',
-      status: 'Failed',
-      statusClass: 'failed',
-      statusIcon: 'pi pi-times',
-      icon: 'pi pi-bell',
-      progressPercentage: 12,
-      sent: '3K',
-      conversions: '12',
-      spent: '₹2K'
-    },
-    {
-      name: 'Festival Countdown',
-      channel: 'RCS',
-      status: 'Scheduled',
-      statusClass: 'scheduled',
-      statusIcon: 'pi pi-clock',
-      icon: 'pi pi-comments',
-      progressPercentage: 0,
-      sent: '0K',
-      conversions: '0',
-      spent: '₹0K'
-    }
-  ];
-
-  // Store all campaign cards for filtering
+  // Store all campaign cards for filtering - 10 campaigns with different statuses
   allCampaignCards = [
     {
       name: 'Flash Sale Alert',
@@ -293,7 +229,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     },
     {
       name: 'Service Reminder',
-      channel: 'Email Campaign',
+      channel: 'Email',
       status: 'Paused',
       statusClass: 'paused',
       statusIcon: 'pi pi-pause',
@@ -318,18 +254,123 @@ export class DashboardComponent implements OnInit, OnDestroy {
       spent: '₹2K',
       conversions: '12',
       budgetUsage: 8.0
+    },
+    {
+      name: 'Festival Campaign',
+      channel: 'RCS',
+      status: 'Executing',
+      statusClass: 'executing',
+      statusIcon: 'pi pi-play',
+      icon: 'pi pi-comments',
+      progressPercentage: 85,
+      sent: '156K',
+      target: '180K',
+      spent: '₹45K',
+      conversions: '2890',
+      budgetUsage: 82.5
+    },
+    {
+      name: 'Black Friday',
+      channel: 'Email',
+      status: 'Completed',
+      statusClass: 'completed',
+      statusIcon: 'pi pi-check',
+      icon: 'pi pi-envelope',
+      progressPercentage: 100,
+      sent: '245K',
+      target: '245K',
+      spent: '₹67K',
+      conversions: '4567',
+      budgetUsage: 100.0
+    },
+    {
+      name: 'New User Onboarding',
+      channel: 'SMS',
+      status: 'Executing',
+      statusClass: 'executing',
+      statusIcon: 'pi pi-play',
+      icon: 'pi pi-mobile',
+      progressPercentage: 34,
+      sent: '67K',
+      target: '200K',
+      spent: '₹18K',
+      conversions: '567',
+      budgetUsage: 35.2
+    },
+    {
+      name: 'App Update Notification',
+      channel: 'Push',
+      status: 'Scheduled',
+      statusClass: 'scheduled',
+      statusIcon: 'pi pi-clock',
+      icon: 'pi pi-bell',
+      progressPercentage: 0,
+      sent: '0K',
+      target: '1.2M',
+      spent: '₹0K',
+      conversions: '0',
+      budgetUsage: 0.0
+    },
+    {
+      name: 'Customer Feedback',
+      channel: 'WhatsApp',
+      status: 'Paused',
+      statusClass: 'paused',
+      statusIcon: 'pi pi-pause',
+      icon: 'pi pi-whatsapp',
+      progressPercentage: 45,
+      sent: '78K',
+      target: '170K',
+      spent: '₹25K',
+      conversions: '234',
+      budgetUsage: 48.9
+    },
+    {
+      name: 'Holiday Wishes',
+      channel: 'RCS',
+      status: 'Failed',
+      statusClass: 'failed',
+      statusIcon: 'pi pi-times',
+      icon: 'pi pi-comments',
+      progressPercentage: 8,
+      sent: '5K',
+      target: '60K',
+      spent: '₹3K',
+      conversions: '15',
+      budgetUsage: 12.5
     }
   ];
+
+  // Campaign Table Data - initialized after allCampaignCards
+  campaignTableData: any[] = [];
 
   constructor(private campaignDataService: CampaignDataService) {}
 
   ngOnInit(): void {
+    // Initialize campaign table data from allCampaignCards
+    this.campaignTableData = this.allCampaignCards.map(campaign => ({
+      name: campaign.name,
+      channel: campaign.channel,
+      status: campaign.status,
+      statusClass: campaign.statusClass,
+      statusIcon: campaign.statusIcon,
+      icon: campaign.icon,
+      progressPercentage: campaign.progressPercentage,
+      sent: campaign.sent,
+      conversions: campaign.conversions,
+      spent: campaign.spent
+    }));
+    
     this.updateCampaignDataFilters();
   }
 
   onChannelChange() {
     console.log('Channel changed to:', this.selectedChannel);
-    this.applyFilters();
+    // Only update KPIs and Weekly Overview - NOT channel performance to prevent layout issues
+    this.updateKPIData();
+    this.updateWeeklyOverviewData();
+    
+    // Do NOT call applyFilters() which affects channel performance and causes horizontal scrollbar
   }
 
   onDateRangeChange() {

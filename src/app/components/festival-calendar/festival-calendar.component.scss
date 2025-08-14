@@ -2,237 +2,203 @@
   display: block;
 }
 
-:host ::ng-deep .p-card {
+.festival-timeline-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px;
   height: 100%;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-:host ::ng-deep .p-card .p-card-header {
-  padding: 1.25rem 1.25rem 0.75rem;
-  border-bottom: 1px solid #f3f4f6;
-}
-
-:host ::ng-deep .p-card .p-card-body {
-  padding: 1.25rem;
-}
-
-:host ::ng-deep .p-card .p-card-title {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: #1f2937;
-  margin: 0;
-}
-
-:host ::ng-deep .p-card .p-card-subtitle {
-  font-size: 0.875rem;
-  color: #6b7280;
-  margin: 0.25rem 0 0;
-}
-
-.festival-calendar {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1rem;
-}
-
-.festival-item {
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 1.25rem;
-  transition: all 0.2s ease;
-  position: relative;
-  overflow: hidden;
-  
-  &:hover {
-    border-color: #3b82f6;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
-  }
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #f59e0b, #ef4444, #8b5cf6);
-  }
-
-  &.diwali::before {
-    background: linear-gradient(90deg, #f59e0b, #ef4444);
-  }
-
-  &.christmas::before {
-    background: linear-gradient(90deg, #10b981, #ef4444);
-  }
-
-  &.holi::before {
-    background: linear-gradient(90deg, #ec4899, #8b5cf6, #06b6d4);
-  }
-
-  &.eid::before {
-    background: linear-gradient(90deg, #10b981, #3b82f6);
-  }
-}
-
-.festival-header {
+.card-header {
   display: flex;
-  align-items: flex-start;
-  gap: 0.75rem;
-  margin-bottom: 1rem;
-}
-
-.festival-icon {
-  width: 3.5rem;
-  height: 3.5rem;
-  border-radius: 12px;
-  display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  font-size: 1.5rem;
-  background: linear-gradient(135deg, #f8fafc, #e2e8f0);
-  border: 2px solid #e5e7eb;
+  margin-bottom: 16px;
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    i {
+      color: #3b82f6;
+      font-size: 16px;
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #374151;
+    }
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    .upcoming-icon {
+      color: #3b82f6;
+      font-size: 12px;
+    }
+
+    .upcoming-text {
+      font-size: 12px;
+      color: #3b82f6;
+    }
+  }
+}
+
+.festivals-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.festival-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+  position: relative;
 
   &.diwali {
-    background: linear-gradient(135deg, #fef3c7, #fed7aa);
-    border-color: #f59e0b;
-    color: #92400e;
+    border-left: 4px solid #f97316;
   }
 
   &.christmas {
-    background: linear-gradient(135deg, #dcfce7, #bbf7d0);
-    border-color: #10b981;
-    color: #065f46;
+    border-left: 4px solid #10b981;
   }
 
-  &.holi {
-    background: linear-gradient(135deg, #fdf2f8, #f3e8ff);
-    border-color: #ec4899;
-    color: #9d174d;
+  .festival-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+
+    .festival-icon {
+      font-size: 8px;
+    }
+
+    .festival-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #374151;
+      flex: 1;
+    }
+
+    .festival-timing {
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-weight: 500;
+    }
   }
 
-  &.eid {
-    background: linear-gradient(135deg, #dbeafe, #bfdbfe);
-    border-color: #3b82f6;
-    color: #1e40af;
-  }
-}
+  &.diwali .festival-header {
+    .festival-icon {
+      color: #f97316;
+    }
 
-.festival-details {
-  flex: 1;
-
-  .festival-name {
-    font-size: 1.125rem;
-    font-weight: 600;
-    color: #1f2937;
-    margin: 0 0 0.25rem;
+    .festival-timing {
+      background: #fef3c7;
+      color: #d97706;
+    }
   }
 
-  .festival-date {
-    font-size: 0.875rem;
-    color: #6b7280;
-    margin: 0 0 0.75rem;
-  }
-}
-
-.festival-metrics {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.metric {
-  text-align: center;
-  padding: 0.75rem;
-  background: #f8fafc;
-  border-radius: 8px;
-  border: 1px solid #e5e7eb;
-
-  .metric-value {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: #1f2937;
-    display: block;
-    margin-bottom: 0.25rem;
-
-    &.revenue {
+  &.christmas .festival-header {
+    .festival-icon {
       color: #10b981;
     }
 
-    &.conversion {
-      color: #3b82f6;
-    }
-
-    &.roi {
-      color: #f59e0b;
+    .festival-timing {
+      background: #d1fae5;
+      color: #059669;
     }
   }
 
-  .metric-label {
-    font-size: 0.75rem;
-    color: #6b7280;
-    text-transform: uppercase;
-    font-weight: 500;
+  .festival-stats {
+    margin-bottom: 12px;
+
+    .stat-large {
+      text-align: center;
+
+      .stat-number {
+        display: block;
+        font-size: 20px;
+        font-weight: 600;
+        color: #374151;
+      }
+
+      .stat-label {
+        display: block;
+        font-size: 12px;
+        color: #6b7280;
+      }
+    }
+  }
+
+  .festival-details {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+
+    .detail-row {
+      text-align: center;
+
+      .detail-label {
+        display: block;
+        font-size: 12px;
+        color: #6b7280;
+      }
+
+      .detail-value {
+        display: block;
+        font-size: 12px;
+        font-weight: 500;
+        color: #374151;
+      }
+    }
+  }
+
+  .festival-campaign {
+    .campaign-select {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 12px;
+      background: white;
+      color: #6b7280;
+
+      &:focus {
+        outline: none;
+        border-color: #3b82f6;
+      }
+    }
   }
 }
 
-.festival-actions {
-  display: flex;
-  gap: 0.5rem;
-  margin-top: 1rem;
-  padding-top: 1rem;
+.next-campaign-info {
+  padding-top: 16px;
   border-top: 1px solid #f3f4f6;
 
-  .p-button {
-    flex: 1;
-    font-size: 0.875rem;
-  }
-
-  .p-button-outlined {
-    border-color: #d1d5db;
-    color: #6b7280;
-
-    &:hover {
-      border-color: #3b82f6;
-      color: #3b82f6;
-      background: #f8fafc;
-    }
-  }
-}
-
-.ai-insights {
-  margin-top: 1.5rem;
-  padding: 1rem;
-  background: linear-gradient(135deg, #fef3c7, #fef7cd);
-  border: 1px solid #f59e0b;
-  border-radius: 8px;
-
-  .insight-header {
+  .info-row {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 0.5rem;
+    gap: 8px;
 
     i {
-      color: #d97706;
+      color: #6b7280;
+      font-size: 12px;
     }
 
-    .insight-title {
-      font-weight: 600;
-      color: #92400e;
-      font-size: 0.875rem;
+    .info-text {
+      font-size: 12px;
+      color: #6b7280;
     }
-  }
-
-  .insight-content {
-    font-size: 0.875rem;
-    color: #78350f;
-    line-height: 1.4;
   }
 }

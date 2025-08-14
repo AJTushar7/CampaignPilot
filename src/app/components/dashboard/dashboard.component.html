@@ -254,10 +254,27 @@
       </div>
     </div>
 
-    <!-- Cards View -->
+    <!-- Cards View - Show only 3 cards with navigation -->
     <div class="campaign-cards-view" *ngIf="viewMode === 'cards'">
-      <div class="campaign-carousel" *ngIf="visibleCampaignCards.length > 0">
-        <div class="campaign-card" *ngFor="let campaign of visibleCampaignCards; let i = index; trackBy: trackByCampaignName">
+      <!-- Card Navigation Controls - Top -->
+      <div class="card-navigation-header">
+        <button (click)="previousCards()" 
+                [disabled]="currentCardPage === 0"
+                class="nav-btn prev">
+          <i class="pi pi-chevron-left"></i>
+        </button>
+        <span class="page-indicator">
+          {{ currentCardPage + 1 }} of {{ totalCardPages }}
+        </span>
+        <button (click)="nextCards()" 
+                [disabled]="currentCardPage >= totalCardPages - 1"
+                class="nav-btn next">
+          <i class="pi pi-chevron-right"></i>
+        </button>
+      </div>
+
+      <div class="campaign-carousel-three-cards" *ngIf="visibleCampaignCards.length > 0">
+        <div class="campaign-card" *ngFor="let campaign of visibleCampaignCards.slice(currentCardPage * 3, (currentCardPage + 1) * 3); let i = index; trackBy: trackByCampaignName">
           <div class="card-header">
             <div class="campaign-icon" [class]="campaign.statusClass">
               <i [class]="campaign.icon"></i>

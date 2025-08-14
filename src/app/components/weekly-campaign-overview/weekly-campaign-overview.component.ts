@@ -104,6 +104,7 @@ export class WeeklyCampaignOverviewComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['selectedChannel'] || changes['selectedDateRange'] || changes['filteredCampaignCount']) {
+      this.generateWeekDays();
       this.updateWeekDaysBasedOnFilters();
     }
   }

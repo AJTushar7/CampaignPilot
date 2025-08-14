@@ -2,351 +2,251 @@
   display: block;
 }
 
-:host ::ng-deep .p-card {
-  height: 100%;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+.budget-analysis-card {
+  background: white;
   border: 1px solid #e5e7eb;
   border-radius: 12px;
-}
-
-:host ::ng-deep .p-card .p-card-header {
-  padding: 1.25rem 1.25rem 0.75rem;
-  border-bottom: 1px solid #f3f4f6;
-}
-
-:host ::ng-deep .p-card .p-card-body {
-  padding: 1.25rem;
-}
-
-:host ::ng-deep .p-card .p-card-title {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: #1f2937;
-  margin: 0;
-}
-
-:host ::ng-deep .p-card .p-card-subtitle {
-  font-size: 0.875rem;
-  color: #6b7280;
-  margin: 0.25rem 0 0;
-}
-
-.budget-calculator-card {
+  padding: 20px;
   height: 100%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.calculator-tabs {
-  margin-bottom: 1.5rem;
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
 
-  .p-tabview-nav {
-    border-bottom: 2px solid #e5e7eb;
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 
-    .p-tabview-nav-link {
-      border: none;
-      background: transparent;
+    i {
+      color: #3b82f6;
+      font-size: 16px;
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #374151;
+    }
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .analysis-toggle {
+      font-size: 12px;
       color: #6b7280;
-      font-weight: 500;
-      padding: 1rem 1.5rem;
-      border-bottom: 2px solid transparent;
-      transition: all 0.2s ease;
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
 
-      &:hover {
-        color: #3b82f6;
-        background: #f8fafc;
+      &:first-of-type {
+        background: #f3f4f6;
       }
     }
 
-    .p-highlight .p-tabview-nav-link {
-      color: #3b82f6;
-      border-bottom-color: #3b82f6;
-      background: transparent;
+    .ai-icon {
+      color: #6b7280;
+      font-size: 12px;
+      margin-left: 4px;
+    }
+
+    .ai-text {
+      font-size: 12px;
+      color: #6b7280;
     }
   }
 }
 
-.prediction-section {
-  background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
-  border: 1px solid #0ea5e9;
-  border-radius: 12px;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
+.budget-offer {
+  margin-bottom: 16px;
+
+  .offer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+
+    .offer-label {
+      font-size: 12px;
+      color: #374151;
+    }
+
+    .dropdown-toggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+      
+      i {
+        font-size: 10px;
+        color: #6b7280;
+      }
+    }
+  }
+}
+
+.budget-metrics {
+  margin-bottom: 16px;
+
+  .main-metric {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    background: #f8fafc;
+    border-radius: 8px;
+    margin-bottom: 12px;
+
+    .metric-icon {
+      width: 32px;
+      height: 32px;
+      background: #3b82f6;
+      color: white;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .metric-content {
+      flex: 1;
+
+      .metric-value {
+        font-size: 18px;
+        font-weight: 600;
+        color: #3b82f6;
+      }
+
+      .metric-label {
+        font-size: 12px;
+        color: #6b7280;
+      }
+    }
+
+    .metric-trend {
+      text-align: right;
+
+      .trend-value {
+        display: block;
+        font-size: 16px;
+        font-weight: 600;
+        color: #374151;
+      }
+
+      .trend-label {
+        font-size: 11px;
+        color: #6b7280;
+      }
+    }
+  }
+
+  .secondary-metrics {
+    .metric-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+
+      .metric-small {
+        flex: 1;
+        text-align: center;
+        padding: 12px;
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 6px;
+
+        .metric-value {
+          display: block;
+          font-size: 14px;
+          font-weight: 600;
+          color: #374151;
+        }
+
+        .metric-label {
+          font-size: 11px;
+          color: #6b7280;
+        }
+      }
+    }
+  }
+}
+
+.ai-prediction {
+  background: #f0f9ff;
+  border: 1px solid #e0f2fe;
+  border-radius: 8px;
+  padding: 16px;
 
   .prediction-header {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 1rem;
+    gap: 8px;
+    margin-bottom: 8px;
 
-    .prediction-icon {
-      width: 3rem;
-      height: 3rem;
-      border-radius: 10px;
-      background: #0ea5e9;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.25rem;
+    i {
+      color: #0284c7;
+      font-size: 12px;
     }
 
     .prediction-title {
-      font-size: 1.25rem;
+      font-size: 12px;
       font-weight: 600;
-      color: #0c4a6e;
-    }
-  }
-
-  .prediction-metrics {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 1rem;
-  }
-
-  .prediction-metric {
-    text-align: center;
-    padding: 1rem;
-    background: rgba(255, 255, 255, 0.7);
-    border-radius: 8px;
-    border: 1px solid #bae6fd;
-
-    .metric-value {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: #0c4a6e;
-      display: block;
-      margin-bottom: 0.25rem;
-
-      &.growth {
-        color: #10b981;
-      }
-
-      &.roi {
-        color: #f59e0b;
-      }
+      color: #0284c7;
+      flex: 1;
     }
 
-    .metric-label {
-      font-size: 0.875rem;
-      color: #075985;
-      font-weight: 500;
-    }
-  }
-}
-
-.performance-metrics {
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 1.25rem;
-  margin-bottom: 1.5rem;
-
-  .metrics-header {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #374151;
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-
-    i {
-      color: #6b7280;
-    }
-  }
-
-  .metrics-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-  }
-}
-
-.metric-row {
-  padding: 0.75rem;
-  background: #f8fafc;
-  border-radius: 8px;
-  border: 1px solid #e5e7eb;
-  
-  .metric-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.5rem;
-
-    .metric-name {
-      font-weight: 500;
-      color: #374151;
-      font-size: 0.875rem;
-    }
-
-    .metric-value {
-      font-weight: 600;
-      color: #1f2937;
-    }
-  }
-
-  .metric-bar {
-    background: #e5e7eb;
-    height: 6px;
-    border-radius: 3px;
-    overflow: hidden;
-
-    .metric-fill {
-      height: 100%;
-      border-radius: 3px;
-      transition: width 0.3s ease;
-
-      &.cpm {
-        background: #ef4444;
-      }
-
-      &.cpc {
-        background: #3b82f6;
-      }
-
-      &.cpl {
-        background: #10b981;
-      }
-
-      &.opportunity {
-        background: #f59e0b;
-      }
-    }
-  }
-}
-
-.ai-recommendation {
-  background: linear-gradient(135deg, #fef3c7, #fef7cd);
-  border: 1px solid #f59e0b;
-  border-radius: 12px;
-  padding: 1.25rem;
-  margin-top: 1.5rem;
-  position: relative;
-  overflow: hidden;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 4px;
-    background: linear-gradient(180deg, #f59e0b, #d97706);
-  }
-
-  .recommendation-header {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 1rem;
-
-    .ai-icon {
-      width: 2.5rem;
-      height: 2.5rem;
-      border-radius: 8px;
-      background: #f59e0b;
+    .confidence-badge {
+      font-size: 11px;
+      padding: 2px 6px;
+      background: #10b981;
       color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1rem;
-    }
-
-    .recommendation-title {
-      font-size: 1rem;
-      font-weight: 600;
-      color: #92400e;
+      border-radius: 4px;
     }
   }
 
-  .recommendation-content {
-    font-size: 0.875rem;
-    color: #78350f;
-    line-height: 1.5;
-    margin-bottom: 1rem;
+  .prediction-text {
+    font-size: 12px;
+    color: #374151;
+    margin-bottom: 12px;
   }
 
-  .recommendation-actions {
-    display: flex;
-    gap: 0.75rem;
-
-    .p-button {
-      font-size: 0.875rem;
+  .budget-usage {
+    .usage-label {
+      font-size: 11px;
+      color: #6b7280;
+      display: block;
+      margin-bottom: 4px;
     }
 
-    .p-button-outlined {
-      border-color: #d97706;
-      color: #d97706;
+    .usage-bar {
+      height: 6px;
+      background: #e5e7eb;
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 4px;
 
-      &:hover {
-        background: #fbbf24;
-        border-color: #fbbf24;
-        color: white;
+      .usage-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+        border-radius: 3px;
+        transition: width 0.3s ease;
       }
     }
-  }
-}
 
-:host ::ng-deep .p-inputnumber-input {
-  text-align: right;
-  border-radius: 8px;
-  border: 1px solid #d1d5db;
-  
-  &:focus {
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-  }
-}
-
-:host ::ng-deep .field {
-  margin-bottom: 1rem;
-}
-
-:host ::ng-deep .p-button-group .p-button {
-  border-radius: 0;
-  
-  &:first-child {
-    border-top-left-radius: 8px;
-    border-bottom-left-radius: 8px;
-  }
-  
-  &:last-child {
-    border-top-right-radius: 8px;
-    border-bottom-right-radius: 8px;
-  }
-}
-
-.confidence-indicator {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 0.75rem;
-  font-size: 0.875rem;
-
-  .confidence-badge {
-    padding: 0.25rem 0.75rem;
-    border-radius: 20px;
-    font-weight: 500;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-
-    &.high {
-      background: #dcfce7;
-      color: #166534;
+    .usage-percentage {
+      font-size: 11px;
+      color: #6b7280;
+      float: right;
     }
-
-    &.medium {
-      background: #fef3c7;
-      color: #92400e;
-    }
-
-    &.low {
-      background: #fecaca;
-      color: #991b1b;
-    }
-  }
-
-  .confidence-text {
-    color: #6b7280;
   }
 }

@@ -703,6 +703,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.updateKPIData();
     // Update weekly overview based on selected channel
     this.updateWeeklyOverviewData();
+    // Force change detection for weekly overview component
+    this.totalCampaigns = this.kpiData.totalCampaigns;
   }
 
   onDateRangeChange() {

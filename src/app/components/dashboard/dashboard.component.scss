@@ -919,6 +919,70 @@
         }
       }
       
+      /* Navigation Header for Three Cards */
+      .card-navigation-header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+        padding: 1rem;
+        background: #f8fafc;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+
+        .nav-btn {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 2.5rem;
+          height: 2.5rem;
+          border: 1px solid #d1d5db;
+          background: white;
+          border-radius: 50%;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          color: #6b7280;
+
+          &:hover:not(:disabled) {
+            border-color: #3b82f6;
+            color: #3b82f6;
+            background: #f8fafc;
+          }
+
+          &:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+          }
+
+          i {
+            font-size: 0.875rem;
+          }
+        }
+
+        .page-indicator {
+          font-size: 0.875rem;
+          color: #6b7280;
+          font-weight: 500;
+        }
+      }
+
+      /* Three Cards Grid */
+      .campaign-carousel-three-cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+
+        @media (max-width: 1200px) {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        @media (max-width: 768px) {
+          grid-template-columns: 1fr;
+        }
+      }
+
       .carousel-controls {
         display: flex;
         justify-content: center;

@@ -162,10 +162,13 @@
       <div class="analytics-card engagement-heatmap">
         <div class="card-header">
           <h3 class="card-title">
-            <i class="pi pi-th-large"></i>
+            <i class="pi pi-calendar"></i>
             Engagement Heatmap
           </h3>
-          <button class="link-button">Live Data</button>
+          <button class="live-data-btn">
+            <i class="pi pi-wifi"></i>
+            Live Data
+          </button>
         </div>
         <div class="heatmap-content">
           <div class="heatmap-header">
@@ -562,68 +565,48 @@
 
       <!-- Festival Cards Grid -->
       <div class="festivals-grid">
-        <!-- Diwali Card -->
-        <div class="festival-card diwali">
+        <div 
+          *ngFor="let festival of festivals.slice(0, 5)" 
+          class="festival-card"
+          [ngClass]="festival.color">
           <div class="festival-card-header">
-            <div class="festival-icon">🪔</div>
+            <div class="festival-icon">{{ festival.icon }}</div>
             <div class="festival-info">
-              <h4 class="festival-name">Diwali</h4>
-              <span class="festival-timing">Soon</span>
+              <h4 class="festival-name">{{ festival.name }}</h4>
+              <span class="festival-timing" *ngIf="festival.status">{{ festival.status }}</span>
             </div>
           </div>
           <div class="festival-countdown">
-            <div class="countdown-number">18</div>
+            <div class="countdown-number" [ngClass]="{ 'blue': festival.daysLeft > 60 }">{{ festival.daysLeft }}</div>
             <div class="countdown-label">days left</div>
           </div>
           <div class="festival-metrics">
             <div class="metric-row">
               <div class="metric-item">
                 <span class="metric-label">Reach</span>
-                <span class="metric-value">NaNK</span>
+                <span class="metric-value">{{ festival.reach }}</span>
               </div>
               <div class="metric-item">
                 <span class="metric-label">Budget</span>
-                <span class="metric-value">₹NaNK</span>
+                <span class="metric-value">{{ festival.budget }}</span>
               </div>
             </div>
           </div>
           <div class="plan-campaign-section">
-            <button class="plan-campaign-btn">
-              <span>Plan Campaign</span>
-              <i class="pi pi-chevron-down"></i>
-            </button>
-          </div>
-        </div>
-
-        <!-- Christmas Card -->
-        <div class="festival-card christmas">
-          <div class="festival-card-header">
-            <div class="festival-icon">🎄</div>
-            <div class="festival-info">
-              <h4 class="festival-name">Christmas</h4>
-            </div>
-          </div>
-          <div class="festival-countdown">
-            <div class="countdown-number blue">72</div>
-            <div class="countdown-label">days left</div>
-          </div>
-          <div class="festival-metrics">
-            <div class="metric-row">
-              <div class="metric-item">
-                <span class="metric-label">Reach</span>
-                <span class="metric-value">NaNK</span>
-              </div>
-              <div class="metric-item">
-                <span class="metric-label">Budget</span>
-                <span class="metric-value">₹NaNK</span>
+            <div class="planning-dropdown-wrapper">
+              <button class="plan-campaign-btn" (click)="togglePlanningDropdown(festival.name)">
+                <span>Plan Campaign</span>
+                <i class="pi pi-chevron-down" [ngClass]="{ 'rotated': showPlanningDropdown[festival.name] }"></i>
+              </button>
+              <div class="planning-dropdown" *ngIf="showPlanningDropdown[festival.name]">
+                <div 
+                  *ngFor="let option of planningOptions"
+                  class="planning-option"
+                  (click)="selectPlanningOption(festival.name, option.value)">
+                  {{ option.label }}
+                </div>
               </div>
             </div>
-          </div>
-          <div class="plan-campaign-section">
-            <button class="plan-campaign-btn">
-              <span>Plan Campaign</span>
-              <i class="pi pi-chevron-down"></i>
-            </button>
           </div>
         </div>
       </div>
@@ -647,80 +630,80 @@
       <div class="card-header">
         <div class="header-left">
           <h3 class="card-title">
-            <i class="pi pi-wallet"></i>
+            <i class="pi pi-chart-pie"></i>
             Budget Analysis
           </h3>
           <div class="analysis-tabs">
             <button class="tab-btn active">Pre</button>
             <button class="tab-btn">Post</button>
-            <button class="tab-btn">
-              <i class="pi pi-robot"></i>
+            <button class="tab-btn ai-tab">
+              <i class="pi pi-sparkles"></i>
               AI
             </button>
           </div>
         </div>
-        <div class="header-right">
-          <button class="optimize-btn">
-            <i class="pi pi-cog"></i>
-            Optimize
-          </button>
-        </div>
       </div>
       
       <div class="budget-content">
-        <div class="budget-header">
-          <h4 class="budget-title">Diwali Festival Offer</h4>
-          <p-dropdown [options]="[{label: 'Diwali Festival Offer', value: 'diwali'}]" 
-                     placeholder="Select Campaign">
-          </p-dropdown>
+        <div class="campaign-selector">
+          <select class="campaign-dropdown">
+            <option>Diwali Festival Offer</option>
+          </select>
+          <i class="pi pi-chevron-down"></i>
         </div>
         
-        <div class="budget-metrics">
-          <div class="budget-metric primary">
-            <div class="metric-icon">
+        <div class="budget-metrics-grid">
+          <div class="budget-metric blue-metric">
+            <div class="metric-icon blue">
               <i class="pi pi-dollar"></i>
             </div>
-            <div class="metric-info">
-              <span class="metric-value">₹180</span>
-              <span class="metric-label">Predicted CPA</span>
-            </div>
-            <div class="metric-trend positive">
-              <i class="pi pi-arrow-up"></i>
-              <span class="trend-value">4.2x</span>
-              <span class="trend-label">Predicted ROI</span>
-            </div>
+            <div class="metric-value">₹180</div>
+            <div class="metric-label">Predicted CPL</div>
           </div>
           
-          <div class="budget-metric">
-            <div class="metric-icon">
+          <div class="budget-metric chart-metric">
+            <div class="metric-icon chart">
+              <i class="pi pi-chart-line"></i>
+            </div>
+            <div class="metric-value">4.2x</div>
+            <div class="metric-label">Predicted ROI</div>
+          </div>
+          
+          <div class="budget-metric people-metric">
+            <div class="metric-icon people">
               <i class="pi pi-users"></i>
             </div>
-            <div class="metric-info">
-              <span class="metric-value">150K</span>
-              <span class="metric-label">Predicted Reach</span>
+            <div class="metric-value orange">150K</div>
+            <div class="metric-label">Predicted Reach</div>
+          </div>
+          
+          <div class="budget-metric target-metric">
+            <div class="metric-icon target">
+              <i class="pi pi-bullseye"></i>
             </div>
-            <div class="metric-trend positive">
-              <i class="pi pi-check"></i>
-              <span class="trend-value">85%</span>
-              <span class="trend-label">Confidence</span>
-            </div>
+            <div class="metric-value">85%</div>
+            <div class="metric-label">Confidence</div>
           </div>
         </div>
         
-        <div class="ai-prediction">
-          <div class="prediction-header">
-            <i class="pi pi-info-circle"></i>
-            <span class="prediction-label">AI Prediction</span>
+        <div class="ai-prediction-section">
+          <div class="ai-prediction-header">
+            <div class="ai-icon">
+              <i class="pi pi-sparkles"></i>
+            </div>
+            <span class="prediction-title">AI Prediction</span>
             <span class="confidence-badge">High Confidence</span>
+            <span class="ready-status">Ready to optimize</span>
           </div>
-          <p class="prediction-text">Ready to optimize budget allocation for maximum ROI!</p>
           
-          <div class="budget-usage">
-            <span class="usage-label">Budget Usage</span>
-            <div class="usage-bar">
+          <div class="budget-usage-section">
+            <div class="usage-header">
+              <span class="usage-title">Budget Usage</span>
+              <span class="usage-percentage">75.8%</span>
+            </div>
+            <div class="usage-progress-bar">
               <div class="usage-fill" style="width: 75.8%"></div>
             </div>
-            <span class="usage-percentage">75.8%</span>
           </div>
         </div>
       </div>

@@ -201,6 +201,64 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
   };
 
+  // Festival Timeline Data
+  festivals = [
+    {
+      name: 'Independence Day',
+      icon: '🇮🇳',
+      daysLeft: 6,
+      status: 'Soon',
+      reach: '₹2.5L',
+      budget: '₹45K',
+      color: 'orange'
+    },
+    {
+      name: 'Raksha Bandhan', 
+      icon: '🎗️',
+      daysLeft: 12,
+      status: 'Soon',
+      reach: '₹1.8L',
+      budget: '₹35K', 
+      color: 'red'
+    },
+    {
+      name: 'Diwali',
+      icon: '🪔',
+      daysLeft: 18,
+      status: 'Soon',
+      reach: '₹4.2L',
+      budget: '₹80K',
+      color: 'gold'
+    },
+    {
+      name: 'Holi',
+      icon: '🎨',
+      daysLeft: 45,
+      status: '',
+      reach: '₹3.1L',
+      budget: '₹60K',
+      color: 'rainbow'
+    },
+    {
+      name: 'Christmas',
+      icon: '🎄',
+      daysLeft: 72,
+      status: '',
+      reach: '₹3.8L',
+      budget: '₹65K',
+      color: 'green'
+    }
+  ];
+
+  planningOptions = [
+    { label: 'Plan in 15 days', value: 15 },
+    { label: 'Plan in 30 days', value: 30 },
+    { label: 'Plan in 45 days', value: 45 },
+    { label: 'Plan in 60 days', value: 60 }
+  ];
+
+  showPlanningDropdown: { [key: string]: boolean } = {};
+
   // Weekly Campaign Overview Data
   weeklyOverviewExpanded = false;
   totalActiveCampaigns = 14;
@@ -226,6 +284,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ];
 
   // Heatmap data for the grid - exact from screenshots
+  // Heatmap Data matching screenshot design
   heatmapData = [
     { name: 'Sun', hours: [
       { percentage: 6, intensity: 'low' },
@@ -1007,6 +1066,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   getCurrentBSPData(): any {
     return this.bspData[this.selectedBSPChannel as keyof typeof this.bspData] || this.bspData.sms;
+  }
+
+  // Festival Planning Methods
+  togglePlanningDropdown(festivalName: string): void {
+    this.showPlanningDropdown[festivalName] = !this.showPlanningDropdown[festivalName];
+  }
+
+  selectPlanningOption(festivalName: string, days: number): void {
+    console.log(`Planning ${festivalName} campaign in ${days} days`);
+    this.showPlanningDropdown[festivalName] = false;
   }
 
   // Methods for component functionality

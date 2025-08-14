@@ -69,6 +69,22 @@ export class DashboardComponent implements OnInit, OnDestroy {
   activeCampaigns = 12;
   totalReach = 2450000;
   totalSpend = 185000;
+
+  // Weekly Campaign Overview Data
+  weeklyOverviewExpanded = false;
+  totalActiveCampaigns = 14;
+  totalScheduledCampaigns = 19;
+  totalWeeklyCampaigns = 52;
+
+  weekDays = [
+    { name: 'Thu', number: 14, campaignCount: 6, live: 3, scheduled: 2, paused: 1, status: 'Moderate' },
+    { name: 'Fri', number: 15, campaignCount: 6, live: 2, scheduled: 3, paused: 1, status: 'Moderate' },
+    { name: 'Sat', number: 16, campaignCount: 5, live: 2, scheduled: 1, paused: 2, status: 'Light' },
+    { name: 'Sun', number: 17, campaignCount: 8, live: 1, scheduled: 5, paused: 2, status: 'Heavy' },
+    { name: 'Mon', number: 18, campaignCount: 7, live: 1, scheduled: 5, paused: 1, status: 'Moderate' },
+    { name: 'Tue', number: 19, campaignCount: 10, live: 5, scheduled: 4, paused: 1, status: 'Heavy' },
+    { name: 'Wed', number: 20, campaignCount: 8, live: 1, scheduled: 5, paused: 2, status: 'Heavy' }
+  ];
   
   // Channel Performance Data
   channelMetrics = [
@@ -127,7 +143,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ];
   
   selectedHeatmapView = 'engagement';
-  weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   hours = Array.from({length: 24}, (_, i) => i);
   
   // Campaign monitoring data
@@ -579,6 +594,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.calculateProjections();
     this.startLiveUpdatesSimulation();
     this.filterCampaigns();
+  }
+
+  // Weekly Campaign Overview Methods
+  toggleWeeklyOverview(): void {
+    this.weeklyOverviewExpanded = !this.weeklyOverviewExpanded;
+  }
+
+  getDotsArray(count: number): number[] {
+    return Array(count).fill(0).map((_, i) => i);
   }
 
   ngOnDestroy(): void {

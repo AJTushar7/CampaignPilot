@@ -74,6 +74,133 @@ export class DashboardComponent implements OnInit, OnDestroy {
   totalReach = 2450000;
   totalSpend = 185000;
 
+  // BSP Performance Data
+  selectedBSPChannel = 'sms';
+  bspChannels = ['sms', 'whatsapp', 'email', 'push', 'rcs'];
+  
+  bspData = {
+    sms: {
+      summary: { bestDelivery: '94%', lowestCost: '₹0.1', recommended: 1 },
+      providers: [
+        {
+          name: 'Airtel IQ',
+          icon: '🏆',
+          badges: ['excellent', 'best'],
+          delivery: '94%',
+          cost: '₹0.12',
+          uptime: '99.9%',
+          performanceScore: 94,
+          featured: true
+        },
+        {
+          name: 'Jio Platform',
+          badges: ['good'],
+          delivery: '91%',
+          cost: '₹0.14',
+          uptime: '98.5%',
+          performanceScore: 91,
+          featured: false
+        }
+      ]
+    },
+    whatsapp: {
+      summary: { bestDelivery: '98%', lowestCost: '₹0.35', recommended: 1 },
+      providers: [
+        {
+          name: 'Cloud API',
+          icon: '⚡',
+          badges: ['excellent', 'best'],
+          delivery: '98%',
+          cost: '₹0.35',
+          uptime: '99.8%',
+          performanceScore: 98,
+          featured: true
+        },
+        {
+          name: 'MM Lite',
+          badges: ['good'],
+          delivery: '95%',
+          cost: '₹0.42',
+          uptime: '97.2%',
+          performanceScore: 87,
+          featured: false
+        }
+      ]
+    },
+    email: {
+      summary: { bestDelivery: '96%', lowestCost: '₹0.05', recommended: 1 },
+      providers: [
+        {
+          name: 'SendGrid',
+          icon: '📧',
+          badges: ['excellent', 'best'],
+          delivery: '96%',
+          cost: '₹0.05',
+          uptime: '99.5%',
+          performanceScore: 96,
+          featured: true
+        },
+        {
+          name: 'Amazon SES',
+          badges: ['good'],
+          delivery: '93%',
+          cost: '₹0.08',
+          uptime: '98.9%',
+          performanceScore: 89,
+          featured: false
+        }
+      ]
+    },
+    push: {
+      summary: { bestDelivery: '92%', lowestCost: '₹0.02', recommended: 1 },
+      providers: [
+        {
+          name: 'Firebase FCM',
+          icon: '🔔',
+          badges: ['excellent', 'best'],
+          delivery: '92%',
+          cost: '₹0.02',
+          uptime: '99.9%',
+          performanceScore: 92,
+          featured: true
+        },
+        {
+          name: 'OneSignal',
+          badges: ['good'],
+          delivery: '88%',
+          cost: '₹0.03',
+          uptime: '97.8%',
+          performanceScore: 85,
+          featured: false
+        }
+      ]
+    },
+    rcs: {
+      summary: { bestDelivery: '89%', lowestCost: '₹0.25', recommended: 1 },
+      providers: [
+        {
+          name: 'Karix',
+          icon: '💬',
+          badges: ['excellent', 'best'],
+          delivery: '89%',
+          cost: '₹0.25',
+          uptime: '98.2%',
+          performanceScore: 89,
+          featured: true
+        },
+        {
+          name: 'TCL Connect',
+          badges: ['good'],
+          delivery: '85%',
+          cost: '₹0.30',
+          uptime: '96.5%',
+          performanceScore: 82,
+          featured: false
+        }
+      ]
+    }
+  };
+
   // Weekly Campaign Overview Data
   weeklyOverviewExpanded = false;
   totalActiveCampaigns = 14;
@@ -871,6 +998,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  // BSP Channel Selection
+  selectBSPChannel(channel: string): void {
+    this.selectedBSPChannel = channel;
+  }
+
+  getCurrentBSPData(): any {
+    return this.bspData[this.selectedBSPChannel as keyof typeof this.bspData] || this.bspData.sms;
   }
 
   // Methods for component functionality

@@ -455,69 +455,70 @@
 
       <!-- Channel Tabs -->
       <div class="channel-tabs">
-        <button class="tab-button active" data-channel="sms">
-          <i class="pi pi-mobile"></i>
-          SMS
-        </button>
-        <button class="tab-button" data-channel="whatsapp">
-          WHATSAPP
-        </button>
-        <button class="tab-button" data-channel="email">
-          <i class="pi pi-envelope"></i>
-          EMAIL
-        </button>
-        <button class="tab-button" data-channel="push">
-          <i class="pi pi-bell"></i>
-          PUSH
-        </button>
-        <button class="tab-button" data-channel="rcs">
-          <i class="pi pi-comment"></i>
-          RCS
+        <button 
+          *ngFor="let channel of bspChannels" 
+          class="tab-button" 
+          [class.active]="selectedBSPChannel === channel"
+          (click)="selectBSPChannel(channel)">
+          <i class="pi" [ngClass]="{
+            'pi-mobile': channel === 'sms',
+            'pi-whatsapp': channel === 'whatsapp', 
+            'pi-envelope': channel === 'email',
+            'pi-bell': channel === 'push',
+            'pi-comment': channel === 'rcs'
+          }" *ngIf="channel !== 'whatsapp'"></i>
+          {{ channel.toUpperCase() }}
         </button>
       </div>
 
       <!-- Summary Stats -->
       <div class="bsp-summary">
         <div class="summary-item">
-          <div class="summary-value blue">94%</div>
+          <div class="summary-value blue">{{ getCurrentBSPData().summary.bestDelivery }}</div>
           <div class="summary-label">Best Delivery</div>
         </div>
         <div class="summary-item">
-          <div class="summary-value">₹0.1</div>
+          <div class="summary-value">{{ getCurrentBSPData().summary.lowestCost }}</div>
           <div class="summary-label">Lowest Cost</div>
         </div>
         <div class="summary-item">
-          <div class="summary-value gold">1</div>
+          <div class="summary-value gold">{{ getCurrentBSPData().summary.recommended }}</div>
           <div class="summary-label">Recommended</div>
         </div>
       </div>
 
       <!-- BSP Provider Cards -->
       <div class="bsp-providers">
-        <!-- Airtel IQ - Best Provider -->
-        <div class="provider-card featured">
+        <div 
+          *ngFor="let provider of getCurrentBSPData().providers" 
+          class="provider-card" 
+          [class.featured]="provider.featured">
           <div class="provider-header">
             <div class="provider-name">
-              <span class="name">Airtel IQ</span>
-              <span class="provider-icon">🏆</span>
+              <span class="name">{{ provider.name }}</span>
+              <span class="provider-icon" *ngIf="provider.icon">{{ provider.icon }}</span>
             </div>
             <div class="provider-badges">
-              <span class="badge excellent">excellent</span>
-              <span class="badge best">Best</span>
+              <span 
+                *ngFor="let badge of provider.badges" 
+                class="badge" 
+                [ngClass]="badge">
+                {{ badge }}
+              </span>
             </div>
           </div>
           <div class="provider-metrics">
             <div class="metric-row">
               <div class="metric-item">
-                <span class="metric-value">94%</span>
+                <span class="metric-value">{{ provider.delivery }}</span>
                 <span class="metric-label">Delivery</span>
               </div>
               <div class="metric-item">
-                <span class="metric-value">₹0.12</span>
+                <span class="metric-value">{{ provider.cost }}</span>
                 <span class="metric-label">Cost</span>
               </div>
               <div class="metric-item">
-                <span class="metric-value">%</span>
+                <span class="metric-value">{{ provider.uptime }}</span>
                 <span class="metric-label">Uptime</span>
               </div>
             </div>
@@ -525,47 +526,10 @@
           <div class="performance-section">
             <div class="performance-header">
               <span class="performance-label">Performance Score</span>
-              <span class="performance-value">NaN%</span>
+              <span class="performance-value">{{ provider.performanceScore }}%</span>
             </div>
             <div class="performance-bar">
-              <div class="performance-fill" style="width: 94%"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Jio Platform -->
-        <div class="provider-card">
-          <div class="provider-header">
-            <div class="provider-name">
-              <span class="name">Jio Platform</span>
-            </div>
-            <div class="provider-badges">
-              <span class="badge good">good</span>
-            </div>
-          </div>
-          <div class="provider-metrics">
-            <div class="metric-row">
-              <div class="metric-item">
-                <span class="metric-value">91%</span>
-                <span class="metric-label">Delivery</span>
-              </div>
-              <div class="metric-item">
-                <span class="metric-value">₹0.14</span>
-                <span class="metric-label">Cost</span>
-              </div>
-              <div class="metric-item">
-                <span class="metric-value">%</span>
-                <span class="metric-label">Uptime</span>
-              </div>
-            </div>
-          </div>
-          <div class="performance-section">
-            <div class="performance-header">
-              <span class="performance-label">Performance Score</span>
-              <span class="performance-value">NaN%</span>
-            </div>
-            <div class="performance-bar">
-              <div class="performance-fill" style="width: 91%"></div>
+              <div class="performance-fill" [style.width.%]="provider.performanceScore"></div>
             </div>
           </div>
         </div>
@@ -573,123 +537,107 @@
     </div>
   </section>
 
-  <!-- Festival Timeline Section - Separate Row -->
+  <!-- Festival Timeline Section - New Design -->
   <section class="festival-timeline-section">
-    <div class="analytics-card festival-timeline">
-      <div class="card-header">
-        <div class="header-left">
-          <h3 class="card-title">
+    <div class="festival-timeline-card">
+      <!-- Header -->
+      <div class="festival-header">
+        <div class="title-section">
+          <h3 class="festival-title">
             <i class="pi pi-calendar"></i>
             Festival Timeline
           </h3>
-          <div class="timeline-badge">
-            <i class="pi pi-star"></i>
-            Next 4 Festivals
-          </div>
         </div>
-        <div class="header-right">
-          <button class="add-btn">
+        <div class="header-actions">
+          <div class="upcoming-badge">
+            <i class="pi pi-star"></i>
+            Upcoming Opportunities
+          </div>
+          <button class="add-festival-btn">
             <i class="pi pi-plus"></i>
-            Plan Campaign
+            Add
           </button>
         </div>
       </div>
-      
-      <div class="festival-content">
-        <div class="festival-cards">
-          <div class="festival-card">
-            <div class="festival-icon" style="background: #ff6b35; color: white;">🪔</div>
+
+      <!-- Festival Cards Grid -->
+      <div class="festivals-grid">
+        <!-- Diwali Card -->
+        <div class="festival-card diwali">
+          <div class="festival-card-header">
+            <div class="festival-icon">🪔</div>
             <div class="festival-info">
               <h4 class="festival-name">Diwali</h4>
-              <p class="festival-status">18 days away</p>
-              <div class="festival-metrics">
-                <div class="festival-metric">
-                  <span class="metric-number">₹4.2L</span>
-                  <span class="metric-unit">Revenue</span>
-                </div>
-                <div class="festival-metric">
-                  <span class="metric-number">12%</span>
-                  <span class="metric-unit">Conversion</span>
-                </div>
-              </div>
-              <div class="campaign-planning">
-                <span class="planning-label">Campaign Planning</span>
-                <div class="planning-sections">
-                  <div class="planning-item">
-                    <span class="item-label">Pre-buzz</span>
-                    <span class="item-value">7 days</span>
-                  </div>
-                  <div class="planning-item">
-                    <span class="item-label">Main</span>
-                    <span class="item-value">3 days</span>
-                  </div>
-                  <div class="planning-item">
-                    <span class="item-label">Post</span>
-                    <span class="item-value">2 days</span>
-                  </div>
-                  <div class="planning-item">
-                    <span class="item-label">Budget</span>
-                    <span class="item-value">₹80K</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="dropdown-container">
-              <p-dropdown [options]="[{label: 'Plan Campaign', value: 'plan'}]" 
-                         placeholder="Plan Campaign">
-              </p-dropdown>
+              <span class="festival-timing">Soon</span>
             </div>
           </div>
-          
-          <div class="festival-card upcoming">
-            <div class="festival-icon" style="background: #4ecdc4; color: white;">🎄</div>
-            <div class="festival-info">
-              <h4 class="festival-name">Christmas</h4>
-              <p class="festival-status">62 days away</p>
-              <div class="festival-metrics">
-                <div class="festival-metric">
-                  <span class="metric-number">₹3.8L</span>
-                  <span class="metric-unit">Revenue</span>
-                </div>
-                <div class="festival-metric">
-                  <span class="metric-number">9.5%</span>
-                  <span class="metric-unit">Conversion</span>
-                </div>
+          <div class="festival-countdown">
+            <div class="countdown-number">18</div>
+            <div class="countdown-label">days left</div>
+          </div>
+          <div class="festival-metrics">
+            <div class="metric-row">
+              <div class="metric-item">
+                <span class="metric-label">Reach</span>
+                <span class="metric-value">NaNK</span>
               </div>
-              <div class="campaign-planning">
-                <span class="planning-label">Campaign Planning</span>
-                <div class="planning-sections">
-                  <div class="planning-item">
-                    <span class="item-label">Pre-buzz</span>
-                    <span class="item-value">10 days</span>
-                  </div>
-                  <div class="planning-item">
-                    <span class="item-label">Main</span>
-                    <span class="item-value">5 days</span>
-                  </div>
-                  <div class="planning-item">
-                    <span class="item-label">Post</span>
-                    <span class="item-value">3 days</span>
-                  </div>
-                  <div class="planning-item">
-                    <span class="item-label">Budget</span>
-                    <span class="item-value">₹65K</span>
-                  </div>
-                </div>
+              <div class="metric-item">
+                <span class="metric-label">Budget</span>
+                <span class="metric-value">₹NaNK</span>
               </div>
             </div>
-            <div class="dropdown-container">
-              <p-dropdown [options]="[{label: 'Plan Campaign', value: 'plan'}]" 
-                         placeholder="Plan Campaign">
-              </p-dropdown>
-            </div>
+          </div>
+          <div class="plan-campaign-section">
+            <button class="plan-campaign-btn">
+              <span>Plan Campaign</span>
+              <i class="pi pi-chevron-down"></i>
+            </button>
           </div>
         </div>
-        
+
+        <!-- Christmas Card -->
+        <div class="festival-card christmas">
+          <div class="festival-card-header">
+            <div class="festival-icon">🎄</div>
+            <div class="festival-info">
+              <h4 class="festival-name">Christmas</h4>
+            </div>
+          </div>
+          <div class="festival-countdown">
+            <div class="countdown-number blue">72</div>
+            <div class="countdown-label">days left</div>
+          </div>
+          <div class="festival-metrics">
+            <div class="metric-row">
+              <div class="metric-item">
+                <span class="metric-label">Reach</span>
+                <span class="metric-value">NaNK</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-label">Budget</span>
+                <span class="metric-value">₹NaNK</span>
+              </div>
+            </div>
+          </div>
+          <div class="plan-campaign-section">
+            <button class="plan-campaign-btn">
+              <span>Plan Campaign</span>
+              <i class="pi pi-chevron-down"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Next Campaign Due Section -->
+      <div class="next-campaign-section">
         <div class="next-campaign-info">
-          <i class="pi pi-info-circle"></i>
-          <span class="info-text">Next Campaign Due: <strong>Diwali</strong> (18 days)</span>
-          <span class="budget-info">+ <strong>Total Budget: ₹80K</strong></span>
+          <i class="pi pi-clock"></i>
+          <span class="next-campaign-text">Next Campaign Due:</span>
+          <span class="next-campaign-name">Diwali(18 days)</span>
+        </div>
+        <div class="total-budget-info">
+          <i class="pi pi-chart-line"></i>
+          <span class="budget-text">₹NaNK Total Budget</span>
         </div>
       </div>
     </div>

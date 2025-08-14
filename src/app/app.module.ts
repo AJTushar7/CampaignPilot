@@ -43,7 +43,7 @@ import { CampaignNotificationsComponent } from './components/campaign-notificati
 import { WeeklyCampaignOverviewComponent } from './components/weekly-campaign-overview/weekly-campaign-overview.component';
 import { OrchestrationAnalysisComponent } from './components/orchestration-analysis/orchestration-analysis.component';
 import { ExportMenuComponent } from './components/export-menu/export-menu.component';
-import { MessageStatusTrackerComponent } from './components/message-status-tracker/message-status-tracker.component';
+
 import { TemplatePerformanceComponent } from './components/template-performance/template-performance.component';
 
 @NgModule({
@@ -64,7 +64,7 @@ import { TemplatePerformanceComponent } from './components/template-performance/
     WeeklyCampaignOverviewComponent,
     OrchestrationAnalysisComponent,
     ExportMenuComponent,
-    MessageStatusTrackerComponent,
+
     TemplatePerformanceComponent
   ],
   imports: [

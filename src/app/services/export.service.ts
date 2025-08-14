@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
+import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import 'jspdf-autotable';
-import { Workbook } from 'exceljs';
 
 export interface CampaignData {
   name: string;
@@ -65,31 +64,34 @@ export class ExportService {
     channelData: ChannelPerformance[],
     bspData: BSPPerformance[]
   ): void {
-    const workbook = new Workbook();
+    const workbook = XLSX.utils.book_new();
     
     // Dashboard Summary Sheet
-    const summarySheet = workbook.addWorksheet('Dashboard Summary');
-    this.createSummarySheet(summarySheet, kpiData);
+    const summaryData = [
+      ['Metric', 'Value'],
+      ['Total Campaigns', kpiData.totalCampaigns],
+      ['Total Spend', kpiData.totalSpend],
+      ['Total Revenue', kpiData.totalRevenue],
+      ['Average Conversion', kpiData.avgConversion],
+      ['Total Reach', kpiData.totalReach]
+    ];
+    const summarySheet = XLSX.utils.aoa_to_sheet(summaryData);
+    XLSX.utils.book_append_sheet(workbook, summarySheet, 'Dashboard Summary');
     
     // Campaign Details Sheet
-    const campaignSheet = workbook.addWorksheet('Campaign Details');
-    this.createCampaignSheet(campaignSheet, campaignData);
+    const campaignSheet = XLSX.utils.json_to_sheet(campaignData);
+    XLSX.utils.book_append_sheet(workbook, campaignSheet, 'Campaign Details');
     
     // Channel Performance Sheet
-    const channelSheet = workbook.addWorksheet('Channel Performance');
-    this.createChannelSheet(channelSheet, channelData);
+    const channelSheet = XLSX.utils.json_to_sheet(channelData);
+    XLSX.utils.book_append_sheet(workbook, channelSheet, 'Channel Performance');
     
     // BSP Performance Sheet
-    const bspSheet = workbook.addWorksheet('BSP Performance');
-    this.createBSPSheet(bspSheet, bspData);
+    const bspSheet = XLSX.utils.json_to_sheet(bspData);
+    XLSX.utils.book_append_sheet(workbook, bspSheet, 'BSP Performance');
     
     // Save the workbook
-    workbook.xlsx.writeBuffer().then((buffer) => {
-      const blob = new Blob([buffer], {
-        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-      });
-      saveAs(blob, `Campaign_Dashboard_Report_${this.formatDate(new Date())}.xlsx`);
-    });
+    XLSX.writeFile(workbook, `Campaign_Dashboard_Report_${this.formatDate(new Date())}.xlsx`);
   }
 
   // Export Dashboard Summary to PDF

@@ -28,7 +28,16 @@ export class BudgetCalculatorComponent implements OnInit {
     confidence: 92
   };
 
-  activeTab = 'pre-campaign';
+  activeTab = 'pre';
+  budgetUsagePercentage = 75.8;
+  selectedCampaign = 'diwali-offer';
+
+  campaignOptions = [
+    { label: 'Diwali Festival Offer', value: 'diwali-offer' },
+    { label: 'Summer Sale Campaign', value: 'summer-sale' },
+    { label: 'New Year Promotion', value: 'new-year' },
+    { label: 'Monsoon Offers', value: 'monsoon' }
+  ];
 
   constructor() { }
 

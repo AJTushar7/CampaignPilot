@@ -5,174 +5,245 @@
 .budget-analysis-card {
   background: white;
   border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 20px;
+  border-radius: 16px;
+  padding: 24px;
   height: 100%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  max-width: 420px;
 }
 
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 
   .header-left {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
 
-    i {
+    .header-icon {
       color: #3b82f6;
-      font-size: 16px;
+      font-size: 20px;
     }
 
     .card-title {
-      font-size: 16px;
+      font-size: 18px;
       font-weight: 600;
-      color: #374151;
+      color: #1f2937;
     }
   }
 
   .header-right {
     display: flex;
     align-items: center;
-    gap: 8px;
-
-    .analysis-toggle {
-      font-size: 12px;
-      color: #6b7280;
-      padding: 4px 8px;
-      border-radius: 4px;
-      cursor: pointer;
-
-      &:first-of-type {
-        background: #f3f4f6;
-      }
-    }
-
-    .ai-icon {
-      color: #6b7280;
-      font-size: 12px;
-      margin-left: 4px;
-    }
-
-    .ai-text {
-      font-size: 12px;
-      color: #6b7280;
-    }
-  }
-}
-
-.budget-offer {
-  margin-bottom: 16px;
-
-  .offer-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 12px;
-    background: #f9fafb;
-    border: 1px solid #e5e7eb;
-    border-radius: 6px;
-
-    .offer-label {
-      font-size: 12px;
-      color: #374151;
-    }
-
-    .dropdown-toggle {
-      background: none;
-      border: none;
-      cursor: pointer;
-      
-      i {
-        font-size: 10px;
-        color: #6b7280;
-      }
-    }
-  }
-}
-
-.budget-metrics {
-  margin-bottom: 16px;
-
-  .main-metric {
-    display: flex;
-    align-items: center;
     gap: 12px;
-    padding: 16px;
-    background: #f8fafc;
-    border-radius: 8px;
-    margin-bottom: 12px;
 
-    .metric-icon {
-      width: 32px;
-      height: 32px;
-      background: #3b82f6;
-      color: white;
-      border-radius: 6px;
+    .toggle-group {
+      display: flex;
+      background: #f3f4f6;
+      border-radius: 8px;
+      padding: 2px;
+
+      .toggle-btn {
+        background: none;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 500;
+        color: #6b7280;
+        cursor: pointer;
+        transition: all 0.2s;
+
+        &.active {
+          background: white;
+          color: #374151;
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        &:hover:not(.active) {
+          color: #374151;
+        }
+      }
+    }
+
+    .ai-section {
       display: flex;
       align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      font-weight: 600;
-    }
+      gap: 6px;
+      padding: 6px 10px;
+      background: #dbeafe;
+      border-radius: 8px;
 
-    .metric-content {
-      flex: 1;
-
-      .metric-value {
-        font-size: 18px;
-        font-weight: 600;
+      .ai-icon {
         color: #3b82f6;
-      }
-
-      .metric-label {
         font-size: 12px;
-        color: #6b7280;
-      }
-    }
-
-    .metric-trend {
-      text-align: right;
-
-      .trend-value {
-        display: block;
-        font-size: 16px;
-        font-weight: 600;
-        color: #374151;
       }
 
-      .trend-label {
-        font-size: 11px;
-        color: #6b7280;
+      .ai-text {
+        font-size: 12px;
+        font-weight: 500;
+        color: #3b82f6;
       }
     }
   }
+}
 
-  .secondary-metrics {
-    .metric-row {
+.campaign-selector {
+  margin-bottom: 24px;
+
+  ::ng-deep .campaign-dropdown {
+    width: 100%;
+
+    .p-dropdown {
+      width: 100%;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      background: #f9fafb;
+
+      .p-dropdown-label {
+        font-size: 14px;
+        color: #374151;
+        padding: 10px 12px;
+      }
+
+      .p-dropdown-trigger {
+        color: #6b7280;
+      }
+
+      &:not(.p-disabled):hover {
+        border-color: #d1d5db;
+      }
+
+      &.p-focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 1px #3b82f6;
+      }
+    }
+  }
+}
+
+.prediction-metrics {
+  margin-bottom: 24px;
+
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+
+    .metric-card {
       display: flex;
-      justify-content: space-between;
+      align-items: center;
       gap: 12px;
+      padding: 16px 12px;
+      background: #ffffff;
+      border: 1px solid #f3f4f6;
+      border-radius: 12px;
+      transition: all 0.2s;
 
-      .metric-small {
+      &:hover {
+        border-color: #e5e7eb;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+
+      .metric-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+
+        &.dollar-icon {
+          background: #dbeafe;
+          color: #3b82f6;
+        }
+
+        &.trend-icon {
+          background: #f0fdf4;
+          color: #059669;
+        }
+
+        &.user-icon {
+          background: #fef3c7;
+          color: #d97706;
+        }
+
+        &.target-icon {
+          background: #fce7f3;
+          color: #be185d;
+        }
+      }
+
+      .metric-content {
         flex: 1;
-        text-align: center;
-        padding: 12px;
-        background: white;
-        border: 1px solid #e5e7eb;
-        border-radius: 6px;
+        min-width: 0;
 
         .metric-value {
-          display: block;
-          font-size: 14px;
-          font-weight: 600;
-          color: #374151;
+          font-size: 18px;
+          font-weight: 700;
+          color: #111827;
+          line-height: 1.2;
+          margin-bottom: 2px;
         }
 
         .metric-label {
+          font-size: 11px;
+          color: #6b7280;
+          font-weight: 500;
+          line-height: 1.2;
+        }
+      }
+    }
+  }
+}
+
+.ai-prediction-section {
+  margin-bottom: 20px;
+
+  .prediction-card {
+    background: #f0f9ff;
+    border: 1px solid #e0f2fe;
+    border-radius: 12px;
+    padding: 16px;
+
+    .prediction-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .prediction-left {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .prediction-icon {
+          color: #0284c7;
+          font-size: 14px;
+        }
+
+        .prediction-title {
+          font-size: 14px;
+          font-weight: 600;
+          color: #0284c7;
+        }
+      }
+
+      .confidence-section {
+        text-align: right;
+
+        .confidence-text {
+          display: block;
+          font-size: 12px;
+          font-weight: 600;
+          color: #059669;
+          margin-bottom: 2px;
+        }
+
+        .confidence-status {
           font-size: 11px;
           color: #6b7280;
         }
@@ -181,72 +252,37 @@
   }
 }
 
-.ai-prediction {
-  background: #f0f9ff;
-  border: 1px solid #e0f2fe;
-  border-radius: 8px;
-  padding: 16px;
-
-  .prediction-header {
+.budget-usage-section {
+  .usage-header {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 8px;
     margin-bottom: 8px;
 
-    i {
-      color: #0284c7;
-      font-size: 12px;
-    }
-
-    .prediction-title {
-      font-size: 12px;
-      font-weight: 600;
-      color: #0284c7;
-      flex: 1;
-    }
-
-    .confidence-badge {
-      font-size: 11px;
-      padding: 2px 6px;
-      background: #10b981;
-      color: white;
-      border-radius: 4px;
-    }
-  }
-
-  .prediction-text {
-    font-size: 12px;
-    color: #374151;
-    margin-bottom: 12px;
-  }
-
-  .budget-usage {
     .usage-label {
-      font-size: 11px;
+      font-size: 12px;
       color: #6b7280;
-      display: block;
-      margin-bottom: 4px;
-    }
-
-    .usage-bar {
-      height: 6px;
-      background: #e5e7eb;
-      border-radius: 3px;
-      overflow: hidden;
-      margin-bottom: 4px;
-
-      .usage-fill {
-        height: 100%;
-        background: linear-gradient(90deg, #3b82f6, #1d4ed8);
-        border-radius: 3px;
-        transition: width 0.3s ease;
-      }
+      font-weight: 500;
     }
 
     .usage-percentage {
-      font-size: 11px;
-      color: #6b7280;
-      float: right;
+      font-size: 12px;
+      color: #374151;
+      font-weight: 600;
+    }
+  }
+
+  .usage-bar {
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 4px;
+    overflow: hidden;
+
+    .usage-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+      border-radius: 4px;
+      transition: width 0.3s ease;
     }
   }
 }

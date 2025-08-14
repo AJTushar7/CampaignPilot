@@ -1,68 +1,102 @@
 <div class="budget-analysis-card">
   <div class="card-header">
     <div class="header-left">
-      <i class="pi pi-chart-line"></i>
+      <i class="pi pi-chart-bar header-icon"></i>
       <span class="card-title">Budget Analysis</span>
     </div>
     <div class="header-right">
-      <span class="analysis-toggle">Pre</span>
-      <span class="analysis-toggle">Post</span>
-      <i class="pi pi-cog ai-icon"></i>
-      <span class="ai-text">AI</span>
+      <div class="toggle-group">
+        <button class="toggle-btn active" (click)="setActiveTab('pre')">Pre</button>
+        <button class="toggle-btn" (click)="setActiveTab('post')">Post</button>
+      </div>
+      <div class="ai-section">
+        <i class="pi pi-sparkles ai-icon"></i>
+        <span class="ai-text">AI</span>
+      </div>
     </div>
   </div>
 
-  <div class="budget-offer">
-    <div class="offer-header">
-      <span class="offer-label">Diwali Festival Offer</span>
-      <button class="dropdown-toggle">
-        <i class="pi pi-chevron-down"></i>
-      </button>
-    </div>
+  <div class="campaign-selector">
+    <p-dropdown 
+      [options]="campaignOptions" 
+      [(ngModel)]="selectedCampaign"
+      optionLabel="label" 
+      optionValue="value"
+      placeholder="Diwali Festival Offer"
+      styleClass="campaign-dropdown">
+    </p-dropdown>
   </div>
 
-  <div class="budget-metrics">
-    <!-- Main Metric -->
-    <div class="main-metric">
-      <div class="metric-icon">₹</div>
-      <div class="metric-content">
-        <div class="metric-value">₹180</div>
-        <div class="metric-label">Predicted CPL</div>
-      </div>
-      <div class="metric-trend">
-        <span class="trend-value">4.2x</span>
-        <span class="trend-label">Projected ROI</span>
-      </div>
-    </div>
-
-    <!-- Secondary Metrics -->
-    <div class="secondary-metrics">
-      <div class="metric-row">
-        <div class="metric-small">
-          <span class="metric-value">₹150K</span>
-          <span class="metric-label">Predicted Reach</span>
+  <div class="prediction-metrics">
+    <div class="metrics-grid">
+      <!-- CPL Metric -->
+      <div class="metric-card cpl-card">
+        <div class="metric-icon dollar-icon">
+          <i class="pi pi-dollar"></i>
         </div>
-        <div class="metric-small">
-          <span class="metric-value">85%</span>
-          <span class="metric-label">Confidence</span>
+        <div class="metric-content">
+          <div class="metric-value">₹180</div>
+          <div class="metric-label">Predicted CPL</div>
         </div>
       </div>
+
+      <!-- ROI Metric -->
+      <div class="metric-card roi-card">
+        <div class="metric-icon trend-icon">
+          <i class="pi pi-chart-line"></i>
+        </div>
+        <div class="metric-content">
+          <div class="metric-value">4.2x</div>
+          <div class="metric-label">Predicted ROI</div>
+        </div>
+      </div>
+
+      <!-- Reach Metric -->
+      <div class="metric-card reach-card">
+        <div class="metric-icon user-icon">
+          <i class="pi pi-users"></i>
+        </div>
+        <div class="metric-content">
+          <div class="metric-value">150K</div>
+          <div class="metric-label">Predicted Reach</div>
+        </div>
+      </div>
+
+      <!-- Confidence Metric -->
+      <div class="metric-card confidence-card">
+        <div class="metric-icon target-icon">
+          <i class="pi pi-bullseye"></i>
+        </div>
+        <div class="metric-content">
+          <div class="metric-value">85%</div>
+          <div class="metric-label">Confidence</div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="ai-prediction">
-    <div class="prediction-header">
-      <i class="pi pi-info-circle"></i>
-      <span class="prediction-title">AI Prediction</span>
-      <span class="confidence-badge">High Confidence</span>
+  <div class="ai-prediction-section">
+    <div class="prediction-card">
+      <div class="prediction-header">
+        <div class="prediction-left">
+          <i class="pi pi-sparkles prediction-icon"></i>
+          <span class="prediction-title">AI Prediction</span>
+        </div>
+        <div class="confidence-section">
+          <span class="confidence-text">High Confidence</span>
+          <span class="confidence-status">Ready to optimize</span>
+        </div>
+      </div>
     </div>
-    <div class="prediction-text">Ready to optimize</div>
-    <div class="budget-usage">
+  </div>
+
+  <div class="budget-usage-section">
+    <div class="usage-header">
       <span class="usage-label">Budget Usage</span>
-      <div class="usage-bar">
-        <div class="usage-fill" style="width: 75%"></div>
-      </div>
       <span class="usage-percentage">75.8%</span>
+    </div>
+    <div class="usage-bar">
+      <div class="usage-fill" [style.width.%]="budgetUsagePercentage"></div>
     </div>
   </div>
 </div>

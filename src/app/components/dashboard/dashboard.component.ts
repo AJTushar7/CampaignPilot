@@ -367,19 +367,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   applyFilters(): void {
-    // Apply global filters to KPIs, weekly overview, and channel performance
+    // Apply filters ONLY to KPIs and weekly overview - NOT channel performance
     console.log('Applying filters - Channel:', this.selectedChannel, 'Date Range:', this.selectedDateRange);
     
     // Update KPIs based on filters
     this.updateKPIData();
     
-    // Update channel performance data
-    this.updateChannelPerformanceData();
+    // Update weekly overview data based on filters
+    // Channel filtering only affects KPIs and weekly overview, NOT channel performance
     
-    // Update heatmap data
+    // Update heatmap data (not affected by channel filter)
     this.updateHeatmapData();
     
-    // Update campaign data
+    // Update campaign data (not affected by channel filter)
     this.updateCampaignDataFilters();
   }
 
@@ -396,20 +396,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateChannelPerformanceData(): void {
-    // Filter channel performance based on selected channel
-    if (this.selectedChannel === 'all') {
-      this.channelPerformanceData = [
-        { name: 'SMS', icon: 'pi pi-mobile', iconClass: 'sms', percentage: 100, value: '15,709', colorClass: 'blue' },
-        { name: 'WhatsApp', icon: 'pi pi-whatsapp', iconClass: 'whatsapp', percentage: 75, value: '11,304', colorClass: 'green' },
-        { name: 'Email', icon: 'pi pi-envelope', iconClass: 'email', percentage: 55, value: '8,762', colorClass: 'purple' },
-        { name: 'Push', icon: 'pi pi-bell', iconClass: 'push', percentage: 40, value: '5,977', colorClass: 'orange' }
-      ];
-    } else {
-      // Filter to show only selected channel
-      this.channelPerformanceData = this.channelPerformanceData.filter(channel => 
-        channel.name.toLowerCase() === this.selectedChannel.toLowerCase()
-      );
+  updateWeeklyOverviewData(): void {
+    // Filter weekly overview data based on selected channel and date range
+    console.log('Updating weekly overview data for channel:', this.selectedChannel);
+    
+    // This would update the weekly campaign overview charts/data
+    // For now, just log the filtering - in real app, this would update specific datasets
+    if (this.selectedChannel !== 'all') {
+      console.log('Filtering weekly overview for channel:', this.selectedChannel);
     }
   }
 

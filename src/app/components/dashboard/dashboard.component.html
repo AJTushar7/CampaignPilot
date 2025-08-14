@@ -666,4 +666,295 @@
   <!-- Orchestration Analysis -->
   <app-orchestration-analysis></app-orchestration-analysis>
 
+  <!-- Enhanced Analytics Section - BSP Performance, Festival Timeline, Budget Analysis -->
+  <section class="enhanced-analytics-section">
+    <!-- BSP Performance Section -->
+    <div class="analytics-card bsp-performance">
+      <div class="card-header">
+        <div class="header-left">
+          <h3 class="card-title">
+            <i class="pi pi-chart-bar"></i>
+            BSP Performance
+          </h3>
+        </div>
+        <div class="header-right">
+          <button class="add-btn">
+            <i class="pi pi-plus"></i>
+            Add BSP
+          </button>
+        </div>
+      </div>
+      
+      <div class="channel-tabs">
+        <button class="tab-btn active">WhatsApp</button>
+        <button class="tab-btn">RCS</button>
+      </div>
+      
+      <div class="bsp-cards">
+        <div class="bsp-card highlighted">
+          <div class="bsp-header">
+            <div class="bsp-badge recommended">
+              <i class="pi pi-star-fill"></i>
+              Recommended
+            </div>
+          </div>
+          <h4 class="bsp-name">Cloud API</h4>
+          <div class="bsp-metrics">
+            <div class="metric-row">
+              <span class="metric-label">Delivery Rate</span>
+              <span class="metric-value primary">98.2%</span>
+            </div>
+            <div class="metric-row">
+              <span class="metric-label">Cost per Message</span>
+              <span class="metric-value">₹0.35</span>
+            </div>
+            <div class="metric-row">
+              <span class="metric-label">Response Time</span>
+              <span class="metric-value">1.2s</span>
+            </div>
+          </div>
+          <div class="performance-score">
+            <span class="score-label">Performance Score</span>
+            <div class="score-bar">
+              <div class="score-fill" style="width: 95%"></div>
+            </div>
+            <span class="score-text">95/100 Excellent</span>
+          </div>
+        </div>
+        
+        <div class="bsp-card">
+          <div class="bsp-header">
+            <div class="bsp-badge good">Good</div>
+          </div>
+          <h4 class="bsp-name">MM Lite</h4>
+          <div class="bsp-metrics">
+            <div class="metric-row">
+              <span class="metric-label">Delivery Rate</span>
+              <span class="metric-value">94.8%</span>
+            </div>
+            <div class="metric-row">
+              <span class="metric-label">Cost per Message</span>
+              <span class="metric-value">₹0.42</span>
+            </div>
+            <div class="metric-row">
+              <span class="metric-label">Response Time</span>
+              <span class="metric-value">2.1s</span>
+            </div>
+          </div>
+          <div class="performance-score">
+            <span class="score-label">Performance Score</span>
+            <div class="score-bar">
+              <div class="score-fill" style="width: 82%"></div>
+            </div>
+            <span class="score-text">82/100 Good</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Festival Timeline Section -->
+    <div class="analytics-card festival-timeline">
+      <div class="card-header">
+        <div class="header-left">
+          <h3 class="card-title">
+            <i class="pi pi-calendar"></i>
+            Festival Timeline
+          </h3>
+          <div class="timeline-badge">
+            <i class="pi pi-star"></i>
+            Next 4 Festivals
+          </div>
+        </div>
+        <div class="header-right">
+          <button class="add-btn">
+            <i class="pi pi-plus"></i>
+            Plan Campaign
+          </button>
+        </div>
+      </div>
+      
+      <div class="festival-content">
+        <div class="festival-cards">
+          <div class="festival-card">
+            <div class="festival-icon" style="background: #ff6b35; color: white;">🪔</div>
+            <div class="festival-info">
+              <h4 class="festival-name">Diwali</h4>
+              <p class="festival-status">18 days away</p>
+              <div class="festival-metrics">
+                <div class="festival-metric">
+                  <span class="metric-number">₹4.2L</span>
+                  <span class="metric-unit">Revenue</span>
+                </div>
+                <div class="festival-metric">
+                  <span class="metric-number">12%</span>
+                  <span class="metric-unit">Conversion</span>
+                </div>
+              </div>
+              <div class="campaign-planning">
+                <span class="planning-label">Campaign Planning</span>
+                <div class="planning-sections">
+                  <div class="planning-item">
+                    <span class="item-label">Pre-buzz</span>
+                    <span class="item-value">7 days</span>
+                  </div>
+                  <div class="planning-item">
+                    <span class="item-label">Main</span>
+                    <span class="item-value">3 days</span>
+                  </div>
+                  <div class="planning-item">
+                    <span class="item-label">Post</span>
+                    <span class="item-value">2 days</span>
+                  </div>
+                  <div class="planning-item">
+                    <span class="item-label">Budget</span>
+                    <span class="item-value">₹80K</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="dropdown-container">
+              <p-dropdown [options]="[{label: 'Plan Campaign', value: 'plan'}]" 
+                         placeholder="Plan Campaign">
+              </p-dropdown>
+            </div>
+          </div>
+          
+          <div class="festival-card upcoming">
+            <div class="festival-icon" style="background: #4ecdc4; color: white;">🎄</div>
+            <div class="festival-info">
+              <h4 class="festival-name">Christmas</h4>
+              <p class="festival-status">62 days away</p>
+              <div class="festival-metrics">
+                <div class="festival-metric">
+                  <span class="metric-number">₹3.8L</span>
+                  <span class="metric-unit">Revenue</span>
+                </div>
+                <div class="festival-metric">
+                  <span class="metric-number">9.5%</span>
+                  <span class="metric-unit">Conversion</span>
+                </div>
+              </div>
+              <div class="campaign-planning">
+                <span class="planning-label">Campaign Planning</span>
+                <div class="planning-sections">
+                  <div class="planning-item">
+                    <span class="item-label">Pre-buzz</span>
+                    <span class="item-value">10 days</span>
+                  </div>
+                  <div class="planning-item">
+                    <span class="item-label">Main</span>
+                    <span class="item-value">5 days</span>
+                  </div>
+                  <div class="planning-item">
+                    <span class="item-label">Post</span>
+                    <span class="item-value">3 days</span>
+                  </div>
+                  <div class="planning-item">
+                    <span class="item-label">Budget</span>
+                    <span class="item-value">₹65K</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="dropdown-container">
+              <p-dropdown [options]="[{label: 'Plan Campaign', value: 'plan'}]" 
+                         placeholder="Plan Campaign">
+              </p-dropdown>
+            </div>
+          </div>
+        </div>
+        
+        <div class="next-campaign-info">
+          <i class="pi pi-info-circle"></i>
+          <span class="info-text">Next Campaign Due: <strong>Diwali</strong> (18 days)</span>
+          <span class="budget-info">+ <strong>Total Budget: ₹80K</strong></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Budget Analysis Section -->
+    <div class="analytics-card budget-analysis">
+      <div class="card-header">
+        <div class="header-left">
+          <h3 class="card-title">
+            <i class="pi pi-wallet"></i>
+            Budget Analysis
+          </h3>
+          <div class="analysis-tabs">
+            <button class="tab-btn active">Pre</button>
+            <button class="tab-btn">Post</button>
+            <button class="tab-btn">
+              <i class="pi pi-robot"></i>
+              AI
+            </button>
+          </div>
+        </div>
+        <div class="header-right">
+          <button class="optimize-btn">
+            <i class="pi pi-cog"></i>
+            Optimize
+          </button>
+        </div>
+      </div>
+      
+      <div class="budget-content">
+        <div class="budget-header">
+          <h4 class="budget-title">Diwali Festival Offer</h4>
+          <p-dropdown [options]="[{label: 'Diwali Festival Offer', value: 'diwali'}]" 
+                     placeholder="Select Campaign">
+          </p-dropdown>
+        </div>
+        
+        <div class="budget-metrics">
+          <div class="budget-metric primary">
+            <div class="metric-icon">
+              <i class="pi pi-dollar"></i>
+            </div>
+            <div class="metric-info">
+              <span class="metric-value">₹180</span>
+              <span class="metric-label">Predicted CPA</span>
+            </div>
+            <div class="metric-trend positive">
+              <i class="pi pi-arrow-up"></i>
+              <span class="trend-value">4.2x</span>
+              <span class="trend-label">Predicted ROI</span>
+            </div>
+          </div>
+          
+          <div class="budget-metric">
+            <div class="metric-icon">
+              <i class="pi pi-users"></i>
+            </div>
+            <div class="metric-info">
+              <span class="metric-value">150K</span>
+              <span class="metric-label">Predicted Reach</span>
+            </div>
+            <div class="metric-trend positive">
+              <i class="pi pi-check"></i>
+              <span class="trend-value">85%</span>
+              <span class="trend-label">Confidence</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="ai-prediction">
+          <div class="prediction-header">
+            <i class="pi pi-info-circle"></i>
+            <span class="prediction-label">AI Prediction</span>
+            <span class="confidence-badge">High Confidence</span>
+          </div>
+          <p class="prediction-text">Ready to optimize budget allocation for maximum ROI!</p>
+          
+          <div class="budget-usage">
+            <span class="usage-label">Budget Usage</span>
+            <div class="usage-bar">
+              <div class="usage-fill" style="width: 75.8%"></div>
+            </div>
+            <span class="usage-percentage">75.8%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
 </div>

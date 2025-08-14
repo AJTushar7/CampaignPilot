@@ -147,6 +147,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   
   // Campaign monitoring data
   isCardView = true;
+  currentCampaignIndex = 0;
 
   // Channel data for the new design
   channelData = [
@@ -210,67 +211,77 @@ export class DashboardComponent implements OnInit, OnDestroy {
     { label: '6 PM', performance: 90 }
   ];
 
-  // All campaigns data
+  // All campaigns data - Updated for Real-time Campaign Monitor
   allCampaigns = [
     {
-      name: 'Diwali Festival Sale',
-      status: 'active',
-      audience: 'Active Buyers',
-      channel: 'WhatsApp',
-      progress: 78,
-      sent: '160,000',
-      total: '200,000',
-      dateCreated: '2025-08-05'
+      name: 'Flash Sale Alert',
+      type: 'SMS Campaign',
+      icon: 'flash',
+      color: '#3b82f6',
+      status: 'Executing',
+      progress: 67,
+      sent: 89000,
+      target: 132000,
+      spent: '₹29K',
+      conversions: 1234,
+      budgetUsage: 64.2,
+      dateCreated: '2025-08-12'
     },
     {
-      name: 'New Model Launch',
-      status: 'active',
-      audience: 'Leads 300',
-      channel: 'Orchestrate',
-      progress: 46,
-      sent: '93,300',
-      total: '200,000',
-      dateCreated: '2025-08-08'
+      name: 'Weekend Offer',
+      type: 'WhatsApp',
+      icon: 'whatsapp',
+      color: '#22c55e',
+      status: 'Scheduled',
+      progress: 0,
+      sent: 0,
+      target: 88000,
+      spent: '₹10K',
+      conversions: 0,
+      budgetUsage: 0.0,
+      dateCreated: '2025-08-13'
     },
     {
       name: 'Service Reminder',
-      status: 'completed',
-      audience: 'Service Due 70',
-      channel: 'SMS',
-      progress: 100,
-      sent: '75,000',
-      total: '75,000',
-      dateCreated: '2025-08-03'
+      type: 'Email',
+      icon: 'envelope',
+      color: '#8b5cf6',
+      status: 'Paused',
+      progress: 23,
+      sent: 12000,
+      target: 54000,
+      spent: '₹9K',
+      conversions: 89,
+      budgetUsage: 38.7,
+      dateCreated: '2025-08-10'
     },
     {
-      name: 'Summer Sale Alert',
-      status: 'paused',
-      audience: 'All Users',
-      channel: 'Email',
-      progress: 25,
-      sent: '50,000',
-      total: '200,000',
-      dateCreated: '2025-07-28'
+      name: 'Product Launch',
+      type: 'Push',
+      icon: 'bell',
+      color: '#f59e0b',
+      status: 'Failed',
+      progress: 12,
+      sent: 3000,
+      target: 25000,
+      spent: '₹2K',
+      conversions: 12,
+      budgetUsage: 15.0,
+      dateCreated: '2025-08-11'
     },
     {
-      name: 'Weekly Newsletter',
-      status: 'completed',
-      audience: 'Subscribers',
-      channel: 'Email',
-      progress: 100,
-      sent: '180,000',
-      total: '180,000',
-      dateCreated: '2025-07-20'
-    },
-    {
-      name: 'Product Update',
-      status: 'active',
-      audience: 'Premium Users',
-      channel: 'Push',
-      progress: 89,
-      sent: '45,000',
-      total: '50,000',
-      dateCreated: '2025-08-09'
+      name: 'Festival Countdown',
+      type: 'RCS',
+      icon: 'calendar',
+      color: '#ec4899',
+      status: 'Scheduled',
+      progress: 0,
+      sent: 0,
+      target: 75000,
+      spent: '₹0K',
+      conversions: 0,
+      budgetUsage: 0.0,
+      dateCreated: '2025-08-14'
     }
   ];
   
@@ -594,6 +605,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.calculateProjections();
     this.startLiveUpdatesSimulation();
     this.filterCampaigns();
+    this.updateVisibleCampaigns();
   }
 
   // Weekly Campaign Overview Methods
@@ -608,6 +620,69 @@ export class DashboardComponent implements OnInit, OnDestroy {
   getLimitedDotsArray(count: number, maxDots: number): number[] {
     const limitedCount = Math.min(count, maxDots);
     return Array(limitedCount).fill(0).map((_, i) => i);
+  }
+
+  // Real-time Campaign Monitor Methods
+  setCardView(isCard: boolean): void {
+    this.isCardView = isCard;
+  }
+
+  previousCampaign(): void {
+    if (this.currentCampaignIndex > 0) {
+      this.currentCampaignIndex--;
+      this.updateVisibleCampaigns();
+    }
+  }
+
+  nextCampaign(): void {
+    if (this.currentCampaignIndex < this.allCampaigns.length - 3) {
+      this.currentCampaignIndex++;
+      this.updateVisibleCampaigns();
+    }
+  }
+
+  updateVisibleCampaigns(): void {
+    this.visibleCampaigns = this.allCampaigns.slice(this.currentCampaignIndex, this.currentCampaignIndex + 3);
+  }
+
+  getStatusIcon(status: string): string {
+    switch (status.toLowerCase()) {
+      case 'executing': return 'play';
+      case 'scheduled': return 'calendar';
+      case 'paused': return 'pause';
+      case 'failed': return 'times';
+      default: return 'circle';
+    }
+  }
+
+  getActionClass(status: string): string {
+    switch (status.toLowerCase()) {
+      case 'executing': return 'pause';
+      case 'scheduled': return 'play';
+      case 'paused': return 'play';
+      case 'failed': return 'refresh';
+      default: return 'play';
+    }
+  }
+
+  getActionIcon(status: string): string {
+    switch (status.toLowerCase()) {
+      case 'executing': return 'pause';
+      case 'scheduled': return 'play';
+      case 'paused': return 'play';
+      case 'failed': return 'refresh';
+      default: return 'play';
+    }
+  }
+
+  getActionTitle(status: string): string {
+    switch (status.toLowerCase()) {
+      case 'executing': return 'Pause Campaign';
+      case 'scheduled': return 'Start Campaign';
+      case 'paused': return 'Resume Campaign';
+      case 'failed': return 'Retry Campaign';
+      default: return 'Start Campaign';
+    }
   }
 
   getChannelIcon(channelName: string): string {
@@ -766,11 +841,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     return Math.round(campaign.sent * 0.5); // Sample calculation
   }
   
-  updateVisibleCampaigns(): void {
-    const startIndex = this.currentCardPage * 3;
-    const endIndex = startIndex + 3;
-    this.visibleCampaigns = this.allCampaigns.slice(startIndex, endIndex);
-  }
+
   
   loadCampaignPerformanceData(): void {
     // Simulate different data based on selected campaign

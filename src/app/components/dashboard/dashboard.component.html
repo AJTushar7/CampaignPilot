@@ -113,7 +113,7 @@
     </div>
   </section>
 
-  <!-- KPI Cards Section -->
+  <!-- KPI Cards Section - 5 Cards Only -->
   <section class="kpi-section">
     <div class="kpi-grid">
       <div class="kpi-card">
@@ -121,35 +121,35 @@
           <div class="kpi-icon blue">
             <i class="pi pi-chart-line"></i>
           </div>
-          <div class="kpi-trend positive">+12.5%</div>
+          <div class="kpi-trend positive">+12%</div>
         </div>
         <div class="kpi-title">Total Campaigns</div>
-        <div class="kpi-value">156</div>
-        <div class="kpi-subtitle">23 currently active</div>
+        <div class="kpi-value">148</div>
+        <div class="kpi-subtitle">Active this month</div>
       </div>
 
       <div class="kpi-card">
         <div class="kpi-header">
           <div class="kpi-icon green">
-            <i class="pi pi-users"></i>
+            <i class="pi pi-wallet"></i>
           </div>
-          <div class="kpi-trend negative">-8.2%</div>
+          <div class="kpi-trend positive">+8%</div>
         </div>
-        <div class="kpi-title">Total Reach</div>
-        <div class="kpi-value">28,47,392</div>
-        <div class="kpi-subtitle">Across all channels</div>
+        <div class="kpi-title">Total Spend</div>
+        <div class="kpi-value">₹12.5L</div>
+        <div class="kpi-subtitle">This month</div>
       </div>
 
       <div class="kpi-card">
         <div class="kpi-header">
           <div class="kpi-icon orange">
-            <i class="pi pi-dollar"></i>
+            <i class="pi pi-chart-bar"></i>
           </div>
-          <div class="kpi-trend positive">+15.3%</div>
+          <div class="kpi-trend positive">+15%</div>
         </div>
-        <div class="kpi-title">Total Spend</div>
-        <div class="kpi-value">₹9,84,750</div>
-        <div class="kpi-subtitle">This month</div>
+        <div class="kpi-title">Total Revenue</div>
+        <div class="kpi-value">₹50.5L</div>
+        <div class="kpi-subtitle">Generated</div>
       </div>
 
       <div class="kpi-card">
@@ -157,59 +157,23 @@
           <div class="kpi-icon purple">
             <i class="pi pi-percentage"></i>
           </div>
-          <div class="kpi-trend negative">-5.7%</div>
+          <div class="kpi-trend positive">+3%</div>
         </div>
-        <div class="kpi-title">Average CTR</div>
-        <div class="kpi-value">3.2%</div>
-        <div class="kpi-subtitle">Industry avg: 2.8%</div>
+        <div class="kpi-title">Avg Conversion</div>
+        <div class="kpi-value">10.7%</div>
+        <div class="kpi-subtitle">All channels</div>
       </div>
 
       <div class="kpi-card">
         <div class="kpi-header">
           <div class="kpi-icon teal">
-            <i class="pi pi-chart-bar"></i>
+            <i class="pi pi-users"></i>
           </div>
-          <div class="kpi-trend positive">+3.2%</div>
+          <div class="kpi-trend positive">+18%</div>
         </div>
-        <div class="kpi-title">Conversion Rate</div>
-        <div class="kpi-value">1.8%</div>
-        <div class="kpi-subtitle">Last 30 days</div>
-      </div>
-
-      <div class="kpi-card">
-        <div class="kpi-header">
-          <div class="kpi-icon yellow">
-            <i class="pi pi-flash"></i>
-          </div>
-          <div class="kpi-trend negative">-7.8%</div>
-        </div>
-        <div class="kpi-title">Cost per Lead</div>
-        <div class="kpi-value">₹245</div>
-        <div class="kpi-subtitle">Optimized pricing</div>
-      </div>
-
-      <div class="kpi-card">
-        <div class="kpi-header">
-          <div class="kpi-icon indigo">
-            <i class="pi pi-trending-up"></i>
-          </div>
-          <div class="kpi-trend positive">+18.9%</div>
-        </div>
-        <div class="kpi-title">ROI</div>
-        <div class="kpi-value">3.4</div>
-        <div class="kpi-subtitle">Return on investment</div>
-      </div>
-
-      <div class="kpi-card">
-        <div class="kpi-header">
-          <div class="kpi-icon red">
-            <i class="pi pi-play"></i>
-          </div>
-          <div class="kpi-trend positive">+25%</div>
-        </div>
-        <div class="kpi-title">Active Campaigns</div>
-        <div class="kpi-value">23</div>
-        <div class="kpi-subtitle">Running now</div>
+        <div class="kpi-title">Active Users</div>
+        <div class="kpi-value">2.4M</div>
+        <div class="kpi-subtitle">Monthly active</div>
       </div>
     </div>
   </section>
@@ -325,15 +289,16 @@
   <!-- Real-time Campaign Monitor -->
   <section class="campaign-monitor-section">
     <div class="monitor-header">
-      <h3 class="monitor-title">
-        <i class="pi pi-desktop"></i>
-        Real-time Campaign Monitor
-      </h3>
+      <div class="monitor-left">
+        <button class="view-toggle-btn" [class.active]="viewMode === 'cards'" (click)="setViewMode('cards')">
+          <i class="pi pi-th-large"></i>
+        </button>
+        <h3 class="monitor-title">
+          <i class="pi pi-desktop"></i>
+          Real-time Campaign Monitor
+        </h3>
+      </div>
       <div class="monitor-controls">
-        <div class="view-toggle">
-          <button [class.active]="viewMode === 'cards'" (click)="setViewMode('cards')">Cards</button>
-          <button [class.active]="viewMode === 'table'" (click)="setViewMode('table')">Table</button>
-        </div>
         <p-dropdown [options]="statusFilterOptions" 
                    [(ngModel)]="selectedStatusFilter"
                    optionLabel="label" 
@@ -346,6 +311,9 @@
                    optionValue="value"
                    placeholder="Last 7 Days">
         </p-dropdown>
+        <button class="view-toggle-btn" [class.active]="viewMode === 'table'" (click)="setViewMode('table')">
+          <i class="pi pi-list"></i>
+        </button>
       </div>
     </div>
 
@@ -477,6 +445,94 @@
           </tr>
         </ng-template>
       </p-table>
+    </div>
+  </section>
+
+  <!-- AI Optimization & Enhancement Section -->
+  <section class="ai-optimization-section">
+    <div class="optimization-header">
+      <div class="optimization-title">
+        <i class="pi pi-lightbulb"></i>
+        <span>AI Optimization & Enhancement</span>
+      </div>
+      <div class="optimization-controls">
+        <span class="auto-learning-tag">
+          <i class="pi pi-sync"></i>
+          Auto Learning
+        </span>
+      </div>
+    </div>
+
+    <div class="optimization-content">
+      <div class="optimization-grid">
+        <!-- High Priority - Inactive Customer Management -->
+        <div class="optimization-card priority-high">
+          <div class="card-icon">
+            <i class="pi pi-exclamation-triangle"></i>
+          </div>
+          <div class="priority-badge high">HIGH</div>
+          <div class="card-content">
+            <h4>Inactive Customer Management</h4>
+            <p>33,842 customers haven't engaged in 90+ days</p>
+            <div class="metric-highlight">
+              <span class="value">Save ₹1.2L</span>
+              <span class="label">monthly</span>
+            </div>
+            <button class="action-button primary">Create Exclusion List</button>
+          </div>
+        </div>
+
+        <!-- Medium Priority - Channel Cost Optimization -->
+        <div class="optimization-card priority-medium">
+          <div class="card-icon">
+            <i class="pi pi-dollar"></i>
+          </div>
+          <div class="priority-badge medium">MEDIUM</div>
+          <div class="card-content">
+            <h4>Channel Cost Optimization</h4>
+            <p>WhatsApp shows 34% better ROI than SMS</p>
+            <div class="metric-highlight">
+              <span class="value">Increase ROI by</span>
+              <span class="label">23%</span>
+            </div>
+            <button class="action-button secondary">Reallocate Budget</button>
+          </div>
+        </div>
+
+        <!-- High Priority - Send Time Optimization -->
+        <div class="optimization-card priority-high">
+          <div class="card-icon">
+            <i class="pi pi-clock"></i>
+          </div>
+          <div class="priority-badge high">HIGH</div>
+          <div class="card-content">
+            <h4>Send Time Optimization</h4>
+            <p>Campaigns sent at 8 PM get 65% more engagement</p>
+            <div class="metric-highlight">
+              <span class="value">Boost</span>
+              <span class="label">engagement by 65%</span>
+            </div>
+            <button class="action-button primary">Schedule Optimizer</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="optimization-summary">
+        <div class="summary-left">
+          <div class="total-savings">
+            <h4>Total Potential Savings</h4>
+            <div class="savings-amount">₹2.8L</div>
+            <div class="savings-period">per month with AI optimizations</div>
+          </div>
+        </div>
+        <div class="summary-right">
+          <div class="pending-optimizations">
+            <span class="count">3</span>
+            <span class="label">optimizations pending</span>
+          </div>
+          <button class="apply-all-button">Apply All</button>
+        </div>
+      </div>
     </div>
   </section>
 

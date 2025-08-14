@@ -302,24 +302,31 @@ export class DashboardComponent implements OnInit, OnDestroy {
     campaign.status = 'Paused';
     campaign.statusClass = 'paused';
     campaign.statusIcon = 'pi pi-pause';
+    this.updateCampaignInAllLists(campaign);
   }
 
   resumeCampaign(campaign: any): void {
     campaign.status = 'Executing';
     campaign.statusClass = 'executing';
     campaign.statusIcon = 'pi pi-play';
+    this.updateCampaignInAllLists(campaign);
   }
 
   startCampaign(campaign: any): void {
     campaign.status = 'Executing';
     campaign.statusClass = 'executing';
     campaign.statusIcon = 'pi pi-play';
+    this.updateCampaignInAllLists(campaign);
   }
 
   deleteCampaign(campaign: any): void {
-    const index = this.campaignTableData.indexOf(campaign);
-    if (index > -1) {
-      this.campaignTableData.splice(index, 1);
+    const tableIndex = this.campaignTableData.indexOf(campaign);
+    if (tableIndex > -1) {
+      this.campaignTableData.splice(tableIndex, 1);
+    }
+    const cardIndex = this.visibleCampaignCards.indexOf(campaign);
+    if (cardIndex > -1) {
+      this.visibleCampaignCards.splice(cardIndex, 1);
     }
   }
 
@@ -327,6 +334,26 @@ export class DashboardComponent implements OnInit, OnDestroy {
     campaign.status = 'Executing';
     campaign.statusClass = 'executing';
     campaign.statusIcon = 'pi pi-play';
+    this.updateCampaignInAllLists(campaign);
+  }
+
+  // Helper method to update campaign status across all lists
+  private updateCampaignInAllLists(updatedCampaign: any): void {
+    // Update in table data
+    const tableIndex = this.campaignTableData.findIndex(c => c.name === updatedCampaign.name);
+    if (tableIndex > -1) {
+      this.campaignTableData[tableIndex].status = updatedCampaign.status;
+      this.campaignTableData[tableIndex].statusClass = updatedCampaign.statusClass;
+      this.campaignTableData[tableIndex].statusIcon = updatedCampaign.statusIcon;
+    }
+
+    // Update in visible campaign cards
+    const cardIndex = this.visibleCampaignCards.findIndex(c => c.name === updatedCampaign.name);
+    if (cardIndex > -1) {
+      this.visibleCampaignCards[cardIndex].status = updatedCampaign.status;
+      this.visibleCampaignCards[cardIndex].statusClass = updatedCampaign.statusClass;
+      this.visibleCampaignCards[cardIndex].statusIcon = updatedCampaign.statusIcon;
+    }
   }
 
   // Helper methods

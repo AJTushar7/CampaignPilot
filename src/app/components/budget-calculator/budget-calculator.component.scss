@@ -120,27 +120,28 @@
   }
 }
 
-.main-metrics-row, .secondary-metrics-row {
-  display: flex;
+.metrics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 16px;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 
-  .metric-section {
-    flex: 1;
+  .metric-card {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 12px;
     text-align: center;
+    padding: 16px 8px;
 
-    .metric-icon {
+    .metric-icon-top {
       width: 32px;
       height: 32px;
-      border-radius: 6px;
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 14px;
-      margin: 0 auto 8px;
+      font-size: 16px;
+      margin-bottom: 12px;
 
       &.cpl-icon {
         background: #dbeafe;
@@ -163,24 +164,19 @@
       }
     }
 
-    .metric-content {
-      flex: 1;
-      text-align: left;
+    .metric-value-large {
+      font-size: 24px;
+      font-weight: 700;
+      color: #1a202c;
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
 
-      .metric-value {
-        font-size: 20px;
-        font-weight: 700;
-        color: #1a202c;
-        line-height: 1.1;
-        margin-bottom: 2px;
-      }
-
-      .metric-label {
-        font-size: 11px;
-        color: #718096;
-        font-weight: 500;
-        line-height: 1.2;
-      }
+    .metric-label-bottom {
+      font-size: 12px;
+      color: #718096;
+      font-weight: 500;
+      line-height: 1.2;
     }
   }
 }

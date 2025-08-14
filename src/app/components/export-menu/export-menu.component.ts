@@ -50,14 +50,18 @@ export class ExportMenuComponent implements OnInit {
   async exportDashboardPDF(): Promise<void> {
     this.isExporting = true;
     try {
+      console.log('Starting PDF export...');
       this.campaignDataService.getCampaigns().subscribe(campaigns => {
+        console.log('Campaign data received, transforming...');
         const campaignData = this.transformCampaignData(campaigns);
+        console.log('Data transformed, generating PDF...');
         this.exportService.exportDashboardToPDF(this.kpiData, campaignData, this.channelData);
         this.showExportMenu = false;
         this.isExporting = false;
       });
     } catch (error) {
       console.error('Error exporting PDF:', error);
+      alert('PDF export failed. Please try again.');
       this.isExporting = false;
     }
   }

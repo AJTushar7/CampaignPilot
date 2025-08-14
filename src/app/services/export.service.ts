@@ -195,8 +195,10 @@ export class ExportService {
       });
     }
 
-    // Save PDF
+    // Save PDF with immediate download
+    console.log('Saving PDF...');
     doc.save(`Campaign_Dashboard_Report_${this.formatDate(new Date())}.pdf`);
+    console.log('PDF download initiated');
   }
 
   // Export Campaign Data to Excel

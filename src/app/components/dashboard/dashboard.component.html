@@ -289,16 +289,15 @@
   <!-- Real-time Campaign Monitor -->
   <section class="campaign-monitor-section">
     <div class="monitor-header">
-      <div class="monitor-left">
-        <button class="view-toggle-btn" [class.active]="viewMode === 'cards'" (click)="setViewMode('cards')">
-          <i class="pi pi-th-large"></i>
-        </button>
-        <h3 class="monitor-title">
-          <i class="pi pi-desktop"></i>
-          Real-time Campaign Monitor
-        </h3>
-      </div>
+      <h3 class="monitor-title">
+        <i class="pi pi-desktop"></i>
+        Real-time Campaign Monitor
+      </h3>
       <div class="monitor-controls">
+        <div class="view-toggle">
+          <button [class.active]="viewMode === 'cards'" (click)="setViewMode('cards')">Cards</button>
+          <button [class.active]="viewMode === 'table'" (click)="setViewMode('table')">Table</button>
+        </div>
         <p-dropdown [options]="statusFilterOptions" 
                    [(ngModel)]="selectedStatusFilter"
                    optionLabel="label" 
@@ -311,9 +310,6 @@
                    optionValue="value"
                    placeholder="Last 7 Days">
         </p-dropdown>
-        <button class="view-toggle-btn" [class.active]="viewMode === 'table'" (click)="setViewMode('table')">
-          <i class="pi pi-list"></i>
-        </button>
       </div>
     </div>
 
@@ -465,72 +461,76 @@
 
     <div class="optimization-content">
       <div class="optimization-grid">
-        <!-- High Priority - Inactive Customer Management -->
-        <div class="optimization-card priority-high">
-          <div class="card-icon">
-            <i class="pi pi-exclamation-triangle"></i>
+        <!-- Card 1: Inactive Customer Management -->
+        <div class="optimization-card">
+          <div class="card-header">
+            <div class="card-icon">
+              <i class="pi pi-exclamation-triangle"></i>
+            </div>
+            <div class="priority-badge high">HIGH</div>
           </div>
-          <div class="priority-badge high">HIGH</div>
-          <div class="card-content">
+          <div class="card-body">
             <h4>Inactive Customer Management</h4>
             <p>33,842 customers haven't engaged in 90+ days</p>
-            <div class="metric-highlight">
-              <span class="value">Save ₹1.2L</span>
-              <span class="label">monthly</span>
+            <div class="savings-info">
+              <span class="savings-text">Save ₹1.2L</span>
+              <span class="savings-period">monthly</span>
             </div>
-            <button class="action-button primary">Create Exclusion List</button>
+            <button class="action-btn primary">Create Exclusion List</button>
           </div>
         </div>
 
-        <!-- Medium Priority - Channel Cost Optimization -->
-        <div class="optimization-card priority-medium">
-          <div class="card-icon">
-            <i class="pi pi-dollar"></i>
+        <!-- Card 2: Channel Cost Optimization -->
+        <div class="optimization-card">
+          <div class="card-header">
+            <div class="card-icon">
+              <i class="pi pi-dollar"></i>
+            </div>
+            <div class="priority-badge medium">MEDIUM</div>
           </div>
-          <div class="priority-badge medium">MEDIUM</div>
-          <div class="card-content">
+          <div class="card-body">
             <h4>Channel Cost Optimization</h4>
             <p>WhatsApp shows 34% better ROI than SMS</p>
-            <div class="metric-highlight">
-              <span class="value">Increase ROI by</span>
-              <span class="label">23%</span>
+            <div class="savings-info">
+              <span class="savings-text">Increase ROI by</span>
+              <span class="savings-period">23%</span>
             </div>
-            <button class="action-button secondary">Reallocate Budget</button>
+            <button class="action-btn secondary">Reallocate Budget</button>
           </div>
         </div>
 
-        <!-- High Priority - Send Time Optimization -->
-        <div class="optimization-card priority-high">
-          <div class="card-icon">
-            <i class="pi pi-clock"></i>
+        <!-- Card 3: Send Time Optimization -->
+        <div class="optimization-card">
+          <div class="card-header">
+            <div class="card-icon">
+              <i class="pi pi-clock"></i>
+            </div>
+            <div class="priority-badge high">HIGH</div>
           </div>
-          <div class="priority-badge high">HIGH</div>
-          <div class="card-content">
+          <div class="card-body">
             <h4>Send Time Optimization</h4>
             <p>Campaigns sent at 8 PM get 65% more engagement</p>
-            <div class="metric-highlight">
-              <span class="value">Boost</span>
-              <span class="label">engagement by 65%</span>
+            <div class="savings-info">
+              <span class="savings-text">Boost</span>
+              <span class="savings-period">engagement by 65%</span>
             </div>
-            <button class="action-button primary">Schedule Optimizer</button>
+            <button class="action-btn primary">Schedule Optimizer</button>
           </div>
         </div>
       </div>
 
       <div class="optimization-summary">
         <div class="summary-left">
-          <div class="total-savings">
-            <h4>Total Potential Savings</h4>
-            <div class="savings-amount">₹2.8L</div>
-            <div class="savings-period">per month with AI optimizations</div>
-          </div>
+          <h4>Total Potential Savings</h4>
+          <div class="total-amount">₹2.8L</div>
+          <div class="period-text">per month with AI optimizations</div>
         </div>
         <div class="summary-right">
-          <div class="pending-optimizations">
+          <div class="pending-count">
             <span class="count">3</span>
             <span class="label">optimizations pending</span>
           </div>
-          <button class="apply-all-button">Apply All</button>
+          <button class="apply-all-btn">Apply All</button>
         </div>
       </div>
     </div>

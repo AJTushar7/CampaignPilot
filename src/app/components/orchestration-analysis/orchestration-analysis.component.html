@@ -6,125 +6,34 @@
       <span>Orchestration Analysis</span>
     </div>
     <div class="section-controls">
-      <div class="metric-badge">
-        <span class="metric-value">76%</span>
-        <span class="metric-label">Success Rate</span>
-      </div>
-      <button class="link-button">
-        <i class="pi pi-map"></i>
-        View Journey Map
-      </button>
-    </div>
-  </div>
-
-  <!-- Top Metrics Row -->
-  <div class="orchestration-metrics">
-    <div class="metric-card">
-      <div class="metric-icon">
-        <i class="pi pi-check-circle"></i>
-      </div>
-      <div class="metric-content">
-        <div class="metric-number">76%</div>
-        <div class="metric-description">Fallback Success Rate</div>
-      </div>
-    </div>
-
-    <div class="metric-card">
-      <div class="metric-icon channels">
-        <i class="pi pi-share-alt"></i>
-      </div>
-      <div class="metric-content">
-        <div class="metric-number">2.3</div>
-        <div class="metric-description">Avg Channels Used</div>
-      </div>
-    </div>
-
-    <div class="metric-card">
-      <div class="metric-icon completion">
-        <i class="pi pi-trophy"></i>
-      </div>
-      <div class="metric-content">
-        <div class="metric-number">89%</div>
-        <div class="metric-description">Journey Completion</div>
+      <div class="search-box">
+        <i class="pi pi-search"></i>
+        <input type="text" placeholder="Search strategies..." [(ngModel)]="searchQuery">
       </div>
     </div>
   </div>
 
   <!-- Fallback Strategies Section -->
-  <div class="fallback-strategies">
-    <div class="strategies-header">
-      <h4><i class="pi pi-arrow-right"></i> Fallback Strategies</h4>
-    </div>
-    
+  <div class="fallback-strategies">    
     <div class="strategies-grid">
-      <div class="strategy-card">
+      <div class="strategy-card" *ngFor="let strategy of filteredStrategies">
         <div class="strategy-flow">
-          <div class="channel-icon sms">
-            <i class="pi pi-comment"></i>
+          <div class="channel-icon" [class]="strategy.fromChannel.toLowerCase()">
+            <i [class]="strategy.fromIcon"></i>
           </div>
           <div class="flow-arrow">→</div>
-          <div class="channel-icon whatsapp">
-            <i class="pi pi-whatsapp"></i>
+          <div class="channel-icon" [class]="strategy.toChannel.toLowerCase()">
+            <i [class]="strategy.toIcon"></i>
           </div>
         </div>
         <div class="strategy-stats">
-          <div class="success-rate">84%</div>
-          <div class="strategy-label">SMS → WhatsApp</div>
-          <div class="usage-stat">5% usage</div>
+          <div class="success-rate">{{strategy.successRate}}%</div>
+          <div class="strategy-label">{{strategy.fromChannel}} → {{strategy.toChannel}}</div>
+          <div class="usage-stat">{{strategy.usage}}% usage</div>
         </div>
-        <button class="view-details-btn">View Details</button>
-      </div>
-
-      <div class="strategy-card">
-        <div class="strategy-flow">
-          <div class="channel-icon email">
-            <i class="pi pi-envelope"></i>
-          </div>
-          <div class="flow-arrow">→</div>
-          <div class="channel-icon push">
-            <i class="pi pi-bell"></i>
-          </div>
-        </div>
-        <div class="strategy-stats">
-          <div class="success-rate">72%</div>
-          <div class="strategy-label">Email → Push</div>
-          <div class="usage-stat">3% usage</div>
-        </div>
-        <button class="view-details-btn">View Details</button>
-      </div>
-
-      <div class="strategy-card">
-        <div class="strategy-flow">
-          <div class="channel-icon whatsapp">
-            <i class="pi pi-whatsapp"></i>
-          </div>
-          <div class="flow-arrow">→</div>
-          <div class="channel-icon sms">
-            <i class="pi pi-comment"></i>
-          </div>
-        </div>
-        <div class="strategy-stats">
-          <div class="success-rate">78%</div>
-          <div class="strategy-label">WhatsApp → SMS</div>
-          <div class="usage-stat">26% usage</div>
-        </div>
-        <button class="view-details-btn">View Details</button>
-      </div>
-
-      <div class="strategy-card">
-        <div class="strategy-flow">
-          <div class="channel-icon push">
-            <i class="pi pi-bell"></i>
-          </div>
-          <div class="flow-arrow">→</div>
-          <div class="channel-icon email">
-            <i class="pi pi-envelope"></i>
-          </div>
-        </div>
-        <div class="strategy-stats">
-          <div class="success-rate">69%</div>
-          <div class="strategy-label">Push → Email</div>
-          <div class="usage-stat">15% usage</div>
+        <div class="strategy-tags">
+          <span class="tag recommended" *ngIf="strategy.isRecommended">Recommended</span>
+          <span class="tag" [class]="strategy.tagClass" *ngFor="let tag of strategy.tags">{{tag}}</span>
         </div>
         <button class="view-details-btn">View Details</button>
       </div>

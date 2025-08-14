@@ -191,14 +191,14 @@
         <div class="ai-suggestions">
           <h4><i class="pi pi-lightbulb"></i> AI Suggestions</h4>
           <ul>
-            <li>Peak engagement at Wed 6 PM (+50%). Schedule high-value promos there.</li>
-            <li>Avoid Sun 12 AM (60%). Use for fallback or A/B test creatives.</li>
-            <li>Tomorrow best slot window non-competing slots for retros: 2-6 AM for Tue-Q3.</li>
+            <li>Peak engagement at Wed 6 PM (~96%). Schedule high-value promos there.</li>
+            <li>Avoid Sun 12 AM (6%). Use for fallback or A/B test creatives.</li>
+            <li>Timezone hint: skew toward non-converting slots for retros. A/B test AM for Tue-2/3</li>
           </ul>
         </div>
 
         <div class="peak-hours">
-          <h4>Peak Hours Today</h4>
+          <h4><i class="pi pi-clock"></i> Peak Hours Today</h4>
           <div class="peak-hour-bars">
             <div class="peak-bar" *ngFor="let peak of peakHours">
               <span class="peak-time">{{peak.time}}</span>
@@ -372,9 +372,6 @@
     </div>
   </section>
 
-  <!-- Orchestration Analysis -->
-  <app-orchestration-analysis></app-orchestration-analysis>
-
   <!-- AI Optimization & Enhancement Section -->
   <section class="ai-optimization-section">
     <div class="optimization-header">
@@ -466,5 +463,8 @@
       </div>
     </div>
   </section>
+
+  <!-- Orchestration Analysis -->
+  <app-orchestration-analysis></app-orchestration-analysis>
 
 </div>

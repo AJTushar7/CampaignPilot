@@ -30,7 +30,7 @@ export class BudgetCalculatorComponent implements OnInit {
 
   activeTab = 'pre';
   budgetUsagePercentage = 75.8;
-  selectedCampaign = 'diwali-offer';
+  selectedCampaign = 'diwali';
 
   campaignOptions = [
     { label: 'Diwali Festival Offer', value: 'diwali-offer' },

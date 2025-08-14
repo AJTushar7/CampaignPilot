@@ -1,102 +1,104 @@
 <div class="budget-analysis-card">
+  <!-- Header -->
   <div class="card-header">
     <div class="header-left">
       <i class="pi pi-chart-bar header-icon"></i>
       <span class="card-title">Budget Analysis</span>
     </div>
     <div class="header-right">
-      <div class="toggle-group">
-        <button class="toggle-btn active" (click)="setActiveTab('pre')">Pre</button>
-        <button class="toggle-btn" (click)="setActiveTab('post')">Post</button>
+      <div class="toggle-buttons">
+        <button class="toggle-btn" [class.active]="activeTab === 'pre'" (click)="setActiveTab('pre')">Pre</button>
+        <button class="toggle-btn" [class.active]="activeTab === 'post'" (click)="setActiveTab('post')">Post</button>
       </div>
-      <div class="ai-section">
-        <i class="pi pi-sparkles ai-icon"></i>
-        <span class="ai-text">AI</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="campaign-selector">
-    <p-dropdown 
-      [options]="campaignOptions" 
-      [(ngModel)]="selectedCampaign"
-      optionLabel="label" 
-      optionValue="value"
-      placeholder="Diwali Festival Offer"
-      styleClass="campaign-dropdown">
-    </p-dropdown>
-  </div>
-
-  <div class="prediction-metrics">
-    <div class="metrics-grid">
-      <!-- CPL Metric -->
-      <div class="metric-card cpl-card">
-        <div class="metric-icon dollar-icon">
-          <i class="pi pi-dollar"></i>
-        </div>
-        <div class="metric-content">
-          <div class="metric-value">₹180</div>
-          <div class="metric-label">Predicted CPL</div>
-        </div>
-      </div>
-
-      <!-- ROI Metric -->
-      <div class="metric-card roi-card">
-        <div class="metric-icon trend-icon">
-          <i class="pi pi-chart-line"></i>
-        </div>
-        <div class="metric-content">
-          <div class="metric-value">4.2x</div>
-          <div class="metric-label">Predicted ROI</div>
-        </div>
-      </div>
-
-      <!-- Reach Metric -->
-      <div class="metric-card reach-card">
-        <div class="metric-icon user-icon">
-          <i class="pi pi-users"></i>
-        </div>
-        <div class="metric-content">
-          <div class="metric-value">150K</div>
-          <div class="metric-label">Predicted Reach</div>
-        </div>
-      </div>
-
-      <!-- Confidence Metric -->
-      <div class="metric-card confidence-card">
-        <div class="metric-icon target-icon">
-          <i class="pi pi-bullseye"></i>
-        </div>
-        <div class="metric-content">
-          <div class="metric-value">85%</div>
-          <div class="metric-label">Confidence</div>
-        </div>
+      <div class="ai-badge">
+        <i class="pi pi-sparkles"></i>
+        <span>AI</span>
       </div>
     </div>
   </div>
 
-  <div class="ai-prediction-section">
-    <div class="prediction-card">
-      <div class="prediction-header">
-        <div class="prediction-left">
-          <i class="pi pi-sparkles prediction-icon"></i>
-          <span class="prediction-title">AI Prediction</span>
-        </div>
-        <div class="confidence-section">
-          <span class="confidence-text">High Confidence</span>
-          <span class="confidence-status">Ready to optimize</span>
-        </div>
+  <!-- Campaign Selector -->
+  <div class="campaign-dropdown-container">
+    <select class="campaign-select" [(ngModel)]="selectedCampaign">
+      <option value="diwali">Diwali Festival Offer</option>
+      <option value="summer">Summer Sale Campaign</option>
+      <option value="new-year">New Year Promotion</option>
+    </select>
+    <i class="pi pi-chevron-down dropdown-icon"></i>
+  </div>
+
+  <!-- Main Metrics Row -->
+  <div class="main-metrics-row">
+    <!-- CPL Metric -->
+    <div class="metric-section">
+      <div class="metric-icon cpl-icon">
+        <i class="pi pi-dollar"></i>
+      </div>
+      <div class="metric-content">
+        <div class="metric-value">₹180</div>
+        <div class="metric-label">Predicted CPL</div>
+      </div>
+    </div>
+
+    <!-- ROI Metric -->
+    <div class="metric-section">
+      <div class="metric-icon roi-icon">
+        <i class="pi pi-chart-line"></i>
+      </div>
+      <div class="metric-content">
+        <div class="metric-value">4.2x</div>
+        <div class="metric-label">Predicted ROI</div>
       </div>
     </div>
   </div>
 
-  <div class="budget-usage-section">
+  <!-- Secondary Metrics Row -->
+  <div class="secondary-metrics-row">
+    <!-- Reach Metric -->
+    <div class="metric-section">
+      <div class="metric-icon reach-icon">
+        <i class="pi pi-users"></i>
+      </div>
+      <div class="metric-content">
+        <div class="metric-value">150K</div>
+        <div class="metric-label">Predicted Reach</div>
+      </div>
+    </div>
+
+    <!-- Confidence Metric -->
+    <div class="metric-section">
+      <div class="metric-icon confidence-icon">
+        <i class="pi pi-bullseye"></i>
+      </div>
+      <div class="metric-content">
+        <div class="metric-value">85%</div>
+        <div class="metric-label">Confidence</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI Prediction Section -->
+  <div class="ai-prediction-banner">
+    <div class="prediction-content">
+      <div class="prediction-left">
+        <i class="pi pi-sparkles prediction-icon"></i>
+        <span class="prediction-text">AI Prediction</span>
+      </div>
+      <div class="prediction-right">
+        <div class="confidence-level">High Confidence</div>
+        <div class="status-text">Ready to optimize</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Budget Usage -->
+  <div class="budget-usage">
     <div class="usage-header">
       <span class="usage-label">Budget Usage</span>
-      <span class="usage-percentage">75.8%</span>
+      <span class="usage-value">75.8%</span>
     </div>
-    <div class="usage-bar">
-      <div class="usage-fill" [style.width.%]="budgetUsagePercentage"></div>
+    <div class="progress-bar">
+      <div class="progress-fill" [style.width.%]="budgetUsagePercentage"></div>
     </div>
   </div>
 </div>

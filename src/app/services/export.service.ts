@@ -3,6 +3,53 @@ import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import { Workbook } from 'exceljs';
+
+export interface CampaignData {
+  name: string;
+  channel: string;
+  status: string;
+  sent: number;
+  delivered: number;
+  opened: number;
+  clicked: number;
+  converted: number;
+  spend: number;
+  revenue: number;
+  cpl: number;
+  roi: number;
+  conversionRate: number;
+  startDate: Date;
+  endDate: Date;
+}
+
+export interface KPIData {
+  totalCampaigns: number;
+  totalSpend: number;
+  totalRevenue: number;
+  avgConversion: number;
+  totalReach: number;
+  overallROI: number;
+}
+
+export interface ChannelPerformance {
+  channel: string;
+  campaigns: number;
+  reach: number;
+  conversion: number;
+  spend: number;
+  revenue: number;
+  roi: number;
+}
+
+export interface BSPPerformance {
+  provider: string;
+  channel: string;
+  deliveryRate: number;
+  cost: number;
+  reliability: number;
+  volume: number;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -11,258 +58,365 @@ export class ExportService {
 
   constructor() { }
 
-  // Export to Excel
-  exportToExcel(data: any[], filename: string = 'campaign-report'): void {
-    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
-    const workbook: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Campaign Data');
-    XLSX.writeFile(workbook, `${filename}.xlsx`);
+  // Export Dashboard Summary to Excel
+  exportDashboardToExcel(
+    kpiData: KPIData,
+    campaignData: CampaignData[],
+    channelData: ChannelPerformance[],
+    bspData: BSPPerformance[]
+  ): void {
+    const workbook = new Workbook();
+    
+    // Dashboard Summary Sheet
+    const summarySheet = workbook.addWorksheet('Dashboard Summary');
+    this.createSummarySheet(summarySheet, kpiData);
+    
+    // Campaign Details Sheet
+    const campaignSheet = workbook.addWorksheet('Campaign Details');
+    this.createCampaignSheet(campaignSheet, campaignData);
+    
+    // Channel Performance Sheet
+    const channelSheet = workbook.addWorksheet('Channel Performance');
+    this.createChannelSheet(channelSheet, channelData);
+    
+    // BSP Performance Sheet
+    const bspSheet = workbook.addWorksheet('BSP Performance');
+    this.createBSPSheet(bspSheet, bspData);
+    
+    // Save the workbook
+    workbook.xlsx.writeBuffer().then((buffer) => {
+      const blob = new Blob([buffer], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      });
+      saveAs(blob, `Campaign_Dashboard_Report_${this.formatDate(new Date())}.xlsx`);
+    });
   }
 
-  // Export dashboard to Excel with multiple sheets
-  exportDashboardToExcel(): void {
-    const workbook: XLSX.WorkBook = XLSX.utils.book_new();
-
-    // KPI Data
-    const kpiData = [
-      { Metric: 'Total Campaigns', Value: '148', Type: 'Count' },
-      { Metric: 'Total Spend', Value: '₹12.5L', Type: 'Currency' },
-      { Metric: 'Total Revenue', Value: '₹50.5L', Type: 'Currency' },
-      { Metric: 'Avg Conversion', Value: '10.7%', Type: 'Percentage' }
-    ];
-    const kpiSheet = XLSX.utils.json_to_sheet(kpiData);
-    XLSX.utils.book_append_sheet(workbook, kpiSheet, 'KPI Metrics');
-
-    // Channel Performance
-    const channelData = [
-      { Channel: 'SMS', 'Sent': 2450000, 'Delivered': 2328000, 'Opens': 1396800, 'Clicks': 186240, 'Conversions': 24412, 'Revenue': '₹18.5L' },
-      { Channel: 'WhatsApp', 'Sent': 1850000, 'Delivered': 1776000, 'Opens': 1420800, 'Clicks': 248320, 'Conversions': 34765, 'Revenue': '₹22.8L' },
-      { Channel: 'Email', 'Sent': 3200000, 'Delivered': 2944000, 'Opens': 1032400, 'Clicks': 61952, 'Conversions': 8068, 'Revenue': '₹6.2L' },
-      { Channel: 'Push', 'Sent': 1650000, 'Delivered': 1551000, 'Opens': 310200, 'Clicks': 24816, 'Conversions': 1737, 'Revenue': '₹1.8L' },
-      { Channel: 'RCS', 'Sent': 980000, 'Delivered': 931000, 'Opens': 558600, 'Clicks': 55860, 'Conversions': 6702, 'Revenue': '₹1.2L' }
-    ];
-    const channelSheet = XLSX.utils.json_to_sheet(channelData);
-    XLSX.utils.book_append_sheet(workbook, channelSheet, 'Channel Performance');
-
-    // Campaign Data
-    const campaignData = [
-      { Campaign: 'Diwali Festival Sale', Status: 'Executing', Channel: 'WhatsApp', Budget: '₹2.5L', Spend: '₹1.8L', Conversions: 3420, ROI: '4.2x' },
-      { Campaign: 'New Year Promotion', Status: 'Scheduled', Channel: 'SMS', Budget: '₹1.8L', Spend: '₹0', Conversions: 0, ROI: '-' },
-      { Campaign: 'Flash Sale Weekend', Status: 'Completed', Channel: 'Email', Budget: '₹1.2L', Spend: '₹1.2L', Conversions: 1850, ROI: '2.8x' },
-      { Campaign: 'Summer Collection', Status: 'Paused', Channel: 'Push', Budget: '₹0.8L', Spend: '₹0.3L', Conversions: 450, ROI: '1.9x' },
-      { Campaign: 'Monsoon Offers', Status: 'Failed', Channel: 'RCS', Budget: '₹1.5L', Spend: '₹0.2L', Conversions: 85, ROI: '0.5x' }
-    ];
-    const campaignSheet = XLSX.utils.json_to_sheet(campaignData);
-    XLSX.utils.book_append_sheet(workbook, campaignSheet, 'Campaign Details');
-
-    // BSP Performance
-    const bspData = [
-      { Channel: 'WhatsApp', Provider: 'Cloud API', 'Delivery Rate': '95.2%', 'Cost per Message': '₹0.15', 'Success Rate': '92.8%' },
-      { Channel: 'WhatsApp', Provider: 'MM Lite', 'Delivery Rate': '93.8%', 'Cost per Message': '₹0.12', 'Success Rate': '89.5%' },
-      { Channel: 'SMS', Provider: 'Karix', 'Delivery Rate': '94.8%', 'Cost per Message': '₹0.08', 'Success Rate': '91.2%' },
-      { Channel: 'SMS', Provider: 'TCL', 'Delivery Rate': '92.5%', 'Cost per Message': '₹0.09', 'Success Rate': '88.7%' },
-      { Channel: 'RCS', Provider: 'Karix RCS', 'Delivery Rate': '89.3%', 'Cost per Message': '₹0.25', 'Success Rate': '85.4%' }
-    ];
-    const bspSheet = XLSX.utils.json_to_sheet(bspData);
-    XLSX.utils.book_append_sheet(workbook, bspSheet, 'BSP Performance');
-
-    XLSX.writeFile(workbook, `automotive-campaign-dashboard-${this.getTimestamp()}.xlsx`);
-  }
-
-  // Export to PDF
-  exportToPDF(title: string = 'Campaign Dashboard Report'): void {
+  // Export Dashboard Summary to PDF
+  exportDashboardToPDF(
+    kpiData: KPIData,
+    campaignData: CampaignData[],
+    channelData: ChannelPerformance[]
+  ): void {
     const doc = new jsPDF();
+    let yPosition = 20;
 
-    // Add title
-    doc.setFontSize(20);
-    doc.text(title, 14, 22);
+    // Header
+    doc.setFontSize(18);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Campaign Analytics Dashboard Report', 14, yPosition);
+    yPosition += 15;
 
-    // Add generation date
     doc.setFontSize(10);
-    doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 14, 30);
+    doc.setFont('helvetica', 'normal');
+    doc.text(`Generated on: ${this.formatDate(new Date())}`, 14, yPosition);
+    yPosition += 15;
 
     // KPI Summary
     doc.setFontSize(14);
-    doc.text('KPI Summary', 14, 45);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Key Performance Indicators', 14, yPosition);
+    yPosition += 10;
 
-    const kpiTableData = [
-      ['Total Campaigns', '148'],
-      ['Total Spend', '₹12.5L'],
-      ['Total Revenue', '₹50.5L'],
-      ['Average Conversion Rate', '10.7%']
+    const kpiTable = [
+      ['Total Campaigns', kpiData.totalCampaigns.toString()],
+      ['Total Spend', `₹${this.formatCurrency(kpiData.totalSpend)}`],
+      ['Total Revenue', `₹${this.formatCurrency(kpiData.totalRevenue)}`],
+      ['Average Conversion', `${kpiData.avgConversion}%`],
+      ['Total Reach', this.formatNumber(kpiData.totalReach)],
+      ['Overall ROI', `${kpiData.overallROI}x`]
     ];
 
     (doc as any).autoTable({
       head: [['Metric', 'Value']],
-      body: kpiTableData,
-      startY: 50,
+      body: kpiTable,
+      startY: yPosition,
       theme: 'grid',
       headStyles: { fillColor: [59, 130, 246] },
-      margin: { left: 14 }
+      margin: { left: 14, right: 14 }
     });
+
+    yPosition = Number((doc as any).lastAutoTable.finalY) + 15;
+
+    // Campaign Performance
+    doc.setFontSize(14);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Top Performing Campaigns', 14, yPosition);
+    yPosition += 10;
+
+    const topCampaigns = campaignData
+      .sort((a, b) => b.roi - a.roi)
+      .slice(0, 10)
+      .map(campaign => [
+        campaign.name,
+        campaign.channel,
+        campaign.status,
+        this.formatNumber(campaign.sent),
+        `${campaign.conversionRate}%`,
+        `₹${this.formatCurrency(campaign.spend)}`,
+        `${campaign.roi}x`
+      ]);
+
+    (doc as any).autoTable({
+      head: [['Campaign', 'Channel', 'Status', 'Sent', 'Conv %', 'Spend', 'ROI']],
+      body: topCampaigns,
+      startY: yPosition,
+      theme: 'grid',
+      headStyles: { fillColor: [59, 130, 246] },
+      margin: { left: 14, right: 14 },
+      styles: { fontSize: 8 }
+    });
+
+    const finalY: number = Number((doc as any).lastAutoTable.finalY) + 15;
 
     // Channel Performance
-    doc.setFontSize(14);
-    doc.text('Channel Performance', 14, (doc as any).lastAutoTable.finalY + 20);
-
-    const channelTableData = [
-      ['SMS', '2.45M', '95.0%', '60.0%', '8.0%', '₹18.5L'],
-      ['WhatsApp', '1.85M', '96.0%', '80.0%', '13.5%', '₹22.8L'],
-      ['Email', '3.20M', '92.0%', '35.1%', '2.1%', '₹6.2L'],
-      ['Push', '1.65M', '94.0%', '20.0%', '1.1%', '₹1.8L'],
-      ['RCS', '0.98M', '95.0%', '60.0%', '6.8%', '₹1.2L']
-    ];
-
-    (doc as any).autoTable({
-      head: [['Channel', 'Sent', 'Delivery', 'Open Rate', 'Conv Rate', 'Revenue']],
-      body: channelTableData,
-      startY: (doc as any).lastAutoTable.finalY + 25,
-      theme: 'grid',
-      headStyles: { fillColor: [16, 185, 129] },
-      margin: { left: 14 }
-    });
-
-    // Active Campaigns
-    if ((doc as any).lastAutoTable.finalY > 240) {
-      doc.addPage();
+    if (finalY < 250) {
       doc.setFontSize(14);
-      doc.text('Active Campaigns', 14, 30);
-      var startY = 35;
-    } else {
-      doc.setFontSize(14);
-      doc.text('Active Campaigns', 14, (doc as any).lastAutoTable.finalY + 20);
-      var startY = (doc as any).lastAutoTable.finalY + 25;
+      doc.setFont('helvetica', 'bold');
+      doc.text('Channel Performance Summary', 14, finalY);
+
+      const channelTable = channelData.map(channel => [
+        channel.channel,
+        channel.campaigns.toString(),
+        this.formatNumber(channel.reach),
+        `${channel.conversion}%`,
+        `₹${this.formatCurrency(channel.spend)}`,
+        `${channel.roi}x`
+      ]);
+
+      (doc as any).autoTable({
+        head: [['Channel', 'Campaigns', 'Reach', 'Conv %', 'Spend', 'ROI']],
+        body: channelTable,
+        startY: finalY + 10,
+        theme: 'grid',
+        headStyles: { fillColor: [59, 130, 246] },
+        margin: { left: 14, right: 14 },
+        styles: { fontSize: 8 }
+      });
     }
 
-    const campaignTableData = [
-      ['Diwali Festival Sale', 'Executing', 'WhatsApp', '₹2.5L', '4.2x'],
-      ['New Year Promotion', 'Scheduled', 'SMS', '₹1.8L', '-'],
-      ['Flash Sale Weekend', 'Completed', 'Email', '₹1.2L', '2.8x'],
-      ['Summer Collection', 'Paused', 'Push', '₹0.8L', '1.9x'],
-      ['Monsoon Offers', 'Failed', 'RCS', '₹1.5L', '0.5x']
-    ];
-
-    (doc as any).autoTable({
-      head: [['Campaign', 'Status', 'Channel', 'Budget', 'ROI']],
-      body: campaignTableData,
-      startY: startY,
-      theme: 'grid',
-      headStyles: { fillColor: [239, 68, 68] },
-      margin: { left: 14 }
-    });
-
-    doc.save(`automotive-campaign-report-${this.getTimestamp()}.pdf`);
+    // Save PDF
+    doc.save(`Campaign_Dashboard_Report_${this.formatDate(new Date())}.pdf`);
   }
 
-  // Advanced Excel export with charts and formatting
-  exportAdvancedExcel(): void {
-    import('exceljs').then(ExcelJS => {
-      const workbook = new ExcelJS.Workbook();
+  // Export Campaign Data to Excel
+  exportCampaignDataToExcel(campaignData: CampaignData[]): void {
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(
+      campaignData.map(campaign => ({
+        'Campaign Name': campaign.name,
+        'Channel': campaign.channel,
+        'Status': campaign.status,
+        'Messages Sent': campaign.sent,
+        'Delivered': campaign.delivered,
+        'Opened': campaign.opened,
+        'Clicked': campaign.clicked,
+        'Converted': campaign.converted,
+        'Spend (₹)': campaign.spend,
+        'Revenue (₹)': campaign.revenue,
+        'CPL (₹)': campaign.cpl,
+        'ROI': campaign.roi,
+        'Conversion Rate (%)': campaign.conversionRate,
+        'Start Date': this.formatDate(campaign.startDate),
+        'End Date': this.formatDate(campaign.endDate)
+      }))
+    );
+
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Campaign Data');
+    
+    const excelBuffer: any = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    saveAs(
+      new Blob([excelBuffer], { type: 'application/octet-stream' }),
+      `Campaign_Data_${this.formatDate(new Date())}.xlsx`
+    );
+  }
+
+  // Create Summary Sheet for Excel
+  private createSummarySheet(sheet: any, kpiData: KPIData): void {
+    // Title
+    sheet.mergeCells('A1:B1');
+    sheet.getCell('A1').value = 'Campaign Analytics Dashboard Summary';
+    sheet.getCell('A1').font = { bold: true, size: 16 };
+    sheet.getCell('A1').alignment = { horizontal: 'center' };
+
+    // Date
+    sheet.getCell('A2').value = `Generated on: ${this.formatDate(new Date())}`;
+    sheet.getCell('A2').font = { italic: true };
+
+    // KPI Data
+    const kpiRows = [
+      ['Metric', 'Value'],
+      ['Total Campaigns', kpiData.totalCampaigns],
+      ['Total Spend (₹)', this.formatCurrency(kpiData.totalSpend)],
+      ['Total Revenue (₹)', this.formatCurrency(kpiData.totalRevenue)],
+      ['Average Conversion (%)', kpiData.avgConversion],
+      ['Total Reach', this.formatNumber(kpiData.totalReach)],
+      ['Overall ROI', `${kpiData.overallROI}x`]
+    ];
+
+    kpiRows.forEach((row, index) => {
+      const rowNum = index + 4;
+      sheet.getCell(`A${rowNum}`).value = row[0];
+      sheet.getCell(`B${rowNum}`).value = row[1];
       
-      // Dashboard Summary Sheet
-      const summarySheet = workbook.addWorksheet('Dashboard Summary', {
-        pageSetup: { paperSize: 9, orientation: 'landscape' }
-      });
-
-      // Add headers
-      summarySheet.mergeCells('A1:F1');
-      summarySheet.getCell('A1').value = 'Automotive Campaign Manager - Dashboard Report';
-      summarySheet.getCell('A1').font = { size: 16, bold: true };
-      summarySheet.getCell('A1').alignment = { horizontal: 'center' };
-
-      // KPI Section
-      summarySheet.getCell('A3').value = 'Key Performance Indicators';
-      summarySheet.getCell('A3').font = { size: 14, bold: true };
-      
-      const kpiHeaders = ['Metric', 'Current Value', 'Previous Period', 'Change', 'Target'];
-      summarySheet.addRow(kpiHeaders);
-      summarySheet.getRow(4).font = { bold: true };
-      summarySheet.getRow(4).fill = {
-        type: 'pattern',
-        pattern: 'solid',
-        fgColor: { argb: 'FF3B82F6' }
-      };
-
-      const kpiData = [
-        ['Total Campaigns', '148', '135', '+9.6%', '150'],
-        ['Total Spend', '₹12.5L', '₹11.2L', '+11.6%', '₹15.0L'],
-        ['Total Revenue', '₹50.5L', '₹45.8L', '+10.3%', '₹55.0L'],
-        ['Avg Conversion Rate', '10.7%', '9.8%', '+0.9%', '12.0%'],
-        ['Customer Acquisition Cost', '₹180', '₹195', '-7.7%', '₹150'],
-        ['Return on Ad Spend', '4.2x', '3.8x', '+10.5%', '4.5x']
-      ];
-
-      kpiData.forEach(row => {
-        summarySheet.addRow(row);
-      });
-
-      // Style the data rows
-      for (let i = 5; i <= 10; i++) {
-        summarySheet.getRow(i).getCell(4).font = { 
-          color: { argb: summarySheet.getRow(i).getCell(4).value?.toString().includes('+') ? 'FF059669' : 'FFEF4444' }
+      if (index === 0) {
+        sheet.getCell(`A${rowNum}`).font = { bold: true };
+        sheet.getCell(`B${rowNum}`).font = { bold: true };
+        sheet.getCell(`A${rowNum}`).fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: 'FFE3F2FD' }
+        };
+        sheet.getCell(`B${rowNum}`).fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: 'FFE3F2FD' }
         };
       }
+    });
 
-      // Set column widths
-      summarySheet.columns = [
-        { width: 25 }, { width: 15 }, { width: 18 }, { width: 12 }, { width: 12 }
-      ];
+    // Auto-fit columns
+    sheet.columns = [
+      { width: 25 },
+      { width: 20 }
+    ];
+  }
 
-      // Channel Performance Sheet
-      const channelSheet = workbook.addWorksheet('Channel Analysis');
-      
-      channelSheet.mergeCells('A1:H1');
-      channelSheet.getCell('A1').value = 'Channel Performance Analysis';
-      channelSheet.getCell('A1').font = { size: 14, bold: true };
-      channelSheet.getCell('A1').alignment = { horizontal: 'center' };
+  // Create Campaign Sheet for Excel
+  private createCampaignSheet(sheet: any, campaignData: CampaignData[]): void {
+    const headers = [
+      'Campaign Name', 'Channel', 'Status', 'Messages Sent', 'Delivered',
+      'Opened', 'Clicked', 'Converted', 'Spend (₹)', 'Revenue (₹)',
+      'CPL (₹)', 'ROI', 'Conversion Rate (%)', 'Start Date', 'End Date'
+    ];
 
-      const channelHeaders = ['Channel', 'Messages Sent', 'Delivery Rate', 'Open Rate', 'Click Rate', 'Conversion Rate', 'Revenue', 'Cost per Lead'];
-      channelSheet.addRow(channelHeaders);
-      channelSheet.getRow(2).font = { bold: true };
-      channelSheet.getRow(2).fill = {
+    // Add headers
+    headers.forEach((header, index) => {
+      const cell = sheet.getCell(1, index + 1);
+      cell.value = header;
+      cell.font = { bold: true };
+      cell.fill = {
         type: 'pattern',
         pattern: 'solid',
-        fgColor: { argb: 'FF10B981' }
+        fgColor: { argb: 'FFE3F2FD' }
       };
+    });
 
-      const channelPerformanceData = [
-        ['SMS', '2,450,000', '95.0%', '60.0%', '8.0%', '1.0%', '₹18.5L', '₹75'],
-        ['WhatsApp', '1,850,000', '96.0%', '80.0%', '13.5%', '1.8%', '₹22.8L', '₹68'],
-        ['Email', '3,200,000', '92.0%', '35.1%', '2.1%', '0.25%', '₹6.2L', '₹95'],
-        ['Push Notification', '1,650,000', '94.0%', '20.0%', '1.5%', '0.1%', '₹1.8L', '₹125'],
-        ['RCS', '980,000', '95.0%', '60.0%', '5.7%', '0.68%', '₹1.2L', '₹85']
-      ];
+    // Add data
+    campaignData.forEach((campaign, rowIndex) => {
+      const row = rowIndex + 2;
+      sheet.getCell(row, 1).value = campaign.name;
+      sheet.getCell(row, 2).value = campaign.channel;
+      sheet.getCell(row, 3).value = campaign.status;
+      sheet.getCell(row, 4).value = campaign.sent;
+      sheet.getCell(row, 5).value = campaign.delivered;
+      sheet.getCell(row, 6).value = campaign.opened;
+      sheet.getCell(row, 7).value = campaign.clicked;
+      sheet.getCell(row, 8).value = campaign.converted;
+      sheet.getCell(row, 9).value = campaign.spend;
+      sheet.getCell(row, 10).value = campaign.revenue;
+      sheet.getCell(row, 11).value = campaign.cpl;
+      sheet.getCell(row, 12).value = campaign.roi;
+      sheet.getCell(row, 13).value = campaign.conversionRate;
+      sheet.getCell(row, 14).value = this.formatDate(campaign.startDate);
+      sheet.getCell(row, 15).value = this.formatDate(campaign.endDate);
+    });
 
-      channelPerformanceData.forEach(row => {
-        channelSheet.addRow(row);
-      });
+    // Auto-fit columns
+    sheet.columns = headers.map(() => ({ width: 15 }));
+  }
 
-      channelSheet.columns = [
-        { width: 20 }, { width: 15 }, { width: 12 }, { width: 12 }, { width: 12 }, { width: 15 }, { width: 12 }, { width: 15 }
-      ];
+  // Create Channel Sheet for Excel
+  private createChannelSheet(sheet: any, channelData: ChannelPerformance[]): void {
+    const headers = ['Channel', 'Campaigns', 'Reach', 'Conversion (%)', 'Spend (₹)', 'Revenue (₹)', 'ROI'];
 
-      // Save the workbook
-      workbook.xlsx.writeBuffer().then((buffer) => {
-        saveAs(new Blob([buffer]), `automotive-campaign-advanced-${this.getTimestamp()}.xlsx`);
-      });
+    // Add headers
+    headers.forEach((header, index) => {
+      const cell = sheet.getCell(1, index + 1);
+      cell.value = header;
+      cell.font = { bold: true };
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'FFE3F2FD' }
+      };
+    });
+
+    // Add data
+    channelData.forEach((channel, rowIndex) => {
+      const row = rowIndex + 2;
+      sheet.getCell(row, 1).value = channel.channel;
+      sheet.getCell(row, 2).value = channel.campaigns;
+      sheet.getCell(row, 3).value = channel.reach;
+      sheet.getCell(row, 4).value = channel.conversion;
+      sheet.getCell(row, 5).value = channel.spend;
+      sheet.getCell(row, 6).value = channel.revenue;
+      sheet.getCell(row, 7).value = channel.roi;
+    });
+
+    // Auto-fit columns
+    sheet.columns = headers.map(() => ({ width: 15 }));
+  }
+
+  // Create BSP Sheet for Excel
+  private createBSPSheet(sheet: any, bspData: BSPPerformance[]): void {
+    const headers = ['Provider', 'Channel', 'Delivery Rate (%)', 'Cost per Message (₹)', 'Reliability (%)', 'Volume'];
+
+    // Add headers
+    headers.forEach((header, index) => {
+      const cell = sheet.getCell(1, index + 1);
+      cell.value = header;
+      cell.font = { bold: true };
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'FFE3F2FD' }
+      };
+    });
+
+    // Add data
+    bspData.forEach((bsp, rowIndex) => {
+      const row = rowIndex + 2;
+      sheet.getCell(row, 1).value = bsp.provider;
+      sheet.getCell(row, 2).value = bsp.channel;
+      sheet.getCell(row, 3).value = bsp.deliveryRate;
+      sheet.getCell(row, 4).value = bsp.cost;
+      sheet.getCell(row, 5).value = bsp.reliability;
+      sheet.getCell(row, 6).value = bsp.volume;
+    });
+
+    // Auto-fit columns
+    sheet.columns = headers.map(() => ({ width: 18 }));
+  }
+
+  // Utility methods
+  private formatDate(date: Date): string {
+    return date.toLocaleDateString('en-IN', {
+      year: 'numeric',
+      month: 'short',
+      day: '2-digit'
     });
   }
 
-  // Generate timestamp for unique filenames
-  private getTimestamp(): string {
-    const now = new Date();
-    return `${now.getFullYear()}${(now.getMonth() + 1).toString().padStart(2, '0')}${now.getDate().toString().padStart(2, '0')}_${now.getHours().toString().padStart(2, '0')}${now.getMinutes().toString().padStart(2, '0')}`;
+  private formatCurrency(amount: number): string {
+    if (amount >= 10000000) {
+      return `${(amount / 10000000).toFixed(1)}Cr`;
+    } else if (amount >= 100000) {
+      return `${(amount / 100000).toFixed(1)}L`;
+    } else if (amount >= 1000) {
+      return `${(amount / 1000).toFixed(1)}K`;
+    }
+    return amount.toString();
   }
 
-  // Export specific campaign data
-  exportCampaignData(campaignId: string): void {
-    // This would typically fetch campaign-specific data from a service
-    const campaignData = [
-      { Date: '2025-01-01', Channel: 'WhatsApp', Sent: 45000, Delivered: 43200, Opens: 34560, Clicks: 4665, Conversions: 653, Revenue: 48975 },
-      { Date: '2025-01-02', Channel: 'WhatsApp', Sent: 48000, Delivered: 46080, Opens: 36864, Clicks: 4972, Conversions: 696, Revenue: 52200 },
-      { Date: '2025-01-03', Channel: 'SMS', Sent: 52000, Delivered: 49400, Opens: 29640, Clicks: 2371, Conversions: 332, Revenue: 24900 }
-    ];
-
-    this.exportToExcel(campaignData, `campaign-${campaignId}-data`);
+  private formatNumber(num: number): string {
+    if (num >= 10000000) {
+      return `${(num / 10000000).toFixed(1)}Cr`;
+    } else if (num >= 100000) {
+      return `${(num / 100000).toFixed(1)}L`;
+    } else if (num >= 1000) {
+      return `${(num / 1000).toFixed(1)}K`;
+    }
+    return num.toString();
   }
 }

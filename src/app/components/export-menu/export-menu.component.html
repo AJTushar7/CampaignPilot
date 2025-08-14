@@ -1,0 +1,38 @@
+<div class="export-menu-container">
+  <button 
+    class="export-button" 
+    (click)="toggleExportMenu()"
+    [disabled]="isExporting">
+    <i class="pi pi-download"></i>
+    <span>{{ isExporting ? 'Exporting...' : 'Export' }}</span>
+    <i class="pi pi-chevron-down" [class.rotated]="showExportMenu"></i>
+  </button>
+
+  <div class="export-dropdown" [class.show]="showExportMenu">
+    <div class="export-option" (click)="exportDashboardPDF()">
+      <i class="pi pi-file-pdf export-icon pdf-icon"></i>
+      <div class="option-content">
+        <div class="option-title">Dashboard Report (PDF)</div>
+        <div class="option-description">Complete analytics summary with KPIs and top campaigns</div>
+      </div>
+    </div>
+
+    <div class="export-option" (click)="exportDashboardExcel()">
+      <i class="pi pi-file-excel export-icon excel-icon"></i>
+      <div class="option-content">
+        <div class="option-title">Full Dashboard (Excel)</div>
+        <div class="option-description">Multi-sheet workbook with all data and analytics</div>
+      </div>
+    </div>
+
+    <div class="export-option" (click)="exportCampaignData()">
+      <i class="pi pi-table export-icon table-icon"></i>
+      <div class="option-content">
+        <div class="option-title">Campaign Data (Excel)</div>
+        <div class="option-description">Detailed campaign performance data for analysis</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" [class.show]="showExportMenu" (click)="toggleExportMenu()"></div>
+</div>

@@ -42,6 +42,7 @@ import { FestivalCalendarComponent } from './components/festival-calendar/festiv
 import { CampaignNotificationsComponent } from './components/campaign-notifications/campaign-notifications.component';
 import { WeeklyCampaignOverviewComponent } from './components/weekly-campaign-overview/weekly-campaign-overview.component';
 import { OrchestrationAnalysisComponent } from './components/orchestration-analysis/orchestration-analysis.component';
+import { ExportMenuComponent } from './components/export-menu/export-menu.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { OrchestrationAnalysisComponent } from './components/orchestration-analy
     FestivalCalendarComponent,
     CampaignNotificationsComponent,
     WeeklyCampaignOverviewComponent,
-    OrchestrationAnalysisComponent
+    OrchestrationAnalysisComponent,
+    ExportMenuComponent
   ],
   imports: [
     BrowserModule,

@@ -256,94 +256,94 @@
 
     <!-- Cards View - Show only 3 cards with navigation -->
     <div class="campaign-cards-view" *ngIf="viewMode === 'cards'">
-      <!-- Card Navigation Controls - Top -->
-      <div class="card-navigation-header">
-        <button (click)="previousCards()" 
-                [disabled]="currentCardPage === 0"
-                class="nav-btn prev">
-          <i class="pi pi-chevron-left"></i>
-        </button>
-        <span class="page-indicator">
-          {{ currentCardPage + 1 }} of {{ totalCardPages }}
-        </span>
-        <button (click)="nextCards()" 
-                [disabled]="currentCardPage >= totalCardPages - 1"
-                class="nav-btn next">
-          <i class="pi pi-chevron-right"></i>
-        </button>
-      </div>
-
       <div class="campaign-carousel-three-cards" *ngIf="visibleCampaignCards.length > 0">
         <div class="campaign-card" *ngFor="let campaign of visibleCampaignCards.slice(currentCardPage * 3, (currentCardPage + 1) * 3); let i = index; trackBy: trackByCampaignName">
-          <div class="card-header">
+          <!-- Card Header -->
+          <div class="campaign-card-header">
             <div class="campaign-info">
-              <div class="campaign-icon" [class]="campaign.statusClass">
-                <i [class]="campaign.icon"></i>
+              <div class="campaign-icon-wrapper">
+                <div class="campaign-icon" [class]="campaign.statusClass">
+                  <i [class]="campaign.icon"></i>
+                </div>
               </div>
               <div class="campaign-details">
                 <h4 class="campaign-name">{{campaign.name}}</h4>
                 <div class="campaign-channel">{{campaign.channel}}</div>
               </div>
             </div>
-            <div class="campaign-status" [class]="campaign.statusClass">
-              <i [class]="campaign.statusIcon"></i>
-              {{campaign.status}}
+            <div class="campaign-status-area">
+              <div class="campaign-status-badge" [class]="campaign.statusClass">
+                <i [class]="campaign.statusIcon"></i>
+                {{campaign.status}}
+              </div>
+              <!-- Play button for scheduled campaigns -->
+              <button class="play-button" *ngIf="campaign.status === 'Scheduled'">
+                <i class="pi pi-play"></i>
+              </button>
             </div>
           </div>
-          <div class="card-body">
+
+          <!-- Card Body -->
+          <div class="campaign-card-body">
+            <!-- Progress Section -->
             <div class="progress-section">
               <span class="progress-label">Progress</span>
-              <div class="progress-bar-container">
-                <div class="progress-bar" [style.width.%]="campaign.progressPercentage"></div>
-              </div>
-              <span class="progress-value">{{campaign.progressPercentage}}%</span>
+              <span class="progress-percentage">{{campaign.progressPercentage}}%</span>
             </div>
+            <div class="progress-bar-wrapper">
+              <div class="progress-bar-track">
+                <div class="progress-bar-fill" [style.width.%]="campaign.progressPercentage"></div>
+              </div>
+            </div>
+
+            <!-- Metrics Grid -->
             <div class="metrics-grid">
-              <div class="metric-row">
+              <div class="metrics-row">
                 <div class="metric-item">
-                  <span class="metric-value">{{campaign.sent}}</span>
-                  <span class="metric-label">Sent</span>
+                  <div class="metric-value">{{campaign.sent}}</div>
+                  <div class="metric-label">Sent</div>
                 </div>
                 <div class="metric-item">
-                  <span class="metric-value">{{campaign.target}}</span>
-                  <span class="metric-label">Target</span>
+                  <div class="metric-value">{{campaign.target}}</div>
+                  <div class="metric-label">Target</div>
                 </div>
               </div>
-              <div class="metric-row">
+              <div class="metrics-row">
                 <div class="metric-item">
-                  <span class="metric-value">{{campaign.spent}}</span>
-                  <span class="metric-label">Spent</span>
+                  <div class="metric-value">{{campaign.spent}}</div>
+                  <div class="metric-label">Spent</div>
                 </div>
                 <div class="metric-item">
-                  <span class="metric-value">{{campaign.conversions}}</span>
-                  <span class="metric-label">Conversions</span>
+                  <div class="metric-value">{{campaign.conversions}}</div>
+                  <div class="metric-label">Conversions</div>
                 </div>
               </div>
             </div>
-            <div class="budget-usage">
-              <span class="budget-label">Budget Usage</span>
-              <div class="budget-bar-container">
-                <div class="budget-bar" [style.width.%]="campaign.budgetUsagePercentage"></div>
+
+            <!-- Budget Usage Section -->
+            <div class="budget-usage-section">
+              <div class="budget-header">
+                <span class="budget-label">Budget Usage</span>
+                <span class="budget-percentage">{{campaign.budgetUsage}}%</span>
               </div>
-              <span class="budget-value">{{campaign.budgetUsagePercentage}}%</span>
-              <div class="metric">
-                <span class="metric-value">{{campaign.spent}}</span>
-                <span class="metric-label">Spent</span>
+              <div class="budget-bar-wrapper">
+                <div class="budget-bar-track">
+                  <div class="budget-bar-fill" [style.width.%]="campaign.budgetUsage"></div>
+                </div>
               </div>
-              <div class="metric">
-                <span class="metric-value">{{campaign.conversions}}</span>
-                <span class="metric-label">Conversions</span>
-              </div>
-            </div>
-            <div class="budget-usage">
-              <span class="budget-label">Budget Usage</span>
-              <div class="budget-bar">
-                <div class="budget-fill" [style.width.%]="campaign.budgetUsage"></div>
-              </div>
-              <span class="budget-value">{{campaign.budgetUsage}}%</span>
             </div>
           </div>
         </div>
+      </div>
+      
+      <!-- Navigation Controls -->
+      <div class="campaign-navigation">
+        <button class="nav-button" (click)="previousCards()" [disabled]="currentCardPage === 0">
+          <i class="pi pi-chevron-left"></i>
+        </button>
+        <button class="nav-button" (click)="nextCards()" [disabled]="currentCardPage >= totalCardPages - 1">
+          <i class="pi pi-chevron-right"></i>
+        </button>
       </div>
       
       <!-- No Records Found -->
@@ -353,16 +353,6 @@
           <h4>No campaigns found</h4>
           <p>No campaigns match the selected filters. Try adjusting your filters or check back later.</p>
         </div>
-      </div>
-      
-      <div class="carousel-controls">
-        <button class="carousel-btn" (click)="previousCards()" [disabled]="currentCardPage === 0">
-          <i class="pi pi-chevron-left"></i>
-        </button>
-        <span class="page-indicator">{{currentCardPage + 1}} / {{totalCardPages}}</span>
-        <button class="carousel-btn" (click)="nextCards()" [disabled]="currentCardPage === totalCardPages - 1">
-          <i class="pi pi-chevron-right"></i>
-        </button>
       </div>
     </div>
 

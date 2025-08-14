@@ -336,11 +336,15 @@
         </div>
       </div>
       
-      <!-- Navigation Controls -->
-      <div class="campaign-navigation">
+      <!-- Left Navigation -->
+      <div class="campaign-navigation-left">
         <button class="nav-button" (click)="previousCards()" [disabled]="currentCardPage === 0">
           <i class="pi pi-chevron-left"></i>
         </button>
+      </div>
+      
+      <!-- Right Navigation -->
+      <div class="campaign-navigation-right">
         <button class="nav-button" (click)="nextCards()" [disabled]="currentCardPage >= totalCardPages - 1">
           <i class="pi pi-chevron-right"></i>
         </button>
@@ -430,86 +434,139 @@
   <!-- Orchestration Analysis -->
   <app-orchestration-analysis></app-orchestration-analysis>
 
-  <!-- BSP Performance Section - Separate Row -->
+  <!-- BSP Performance Section - New Design -->
   <section class="bsp-performance-section">
-    <div class="analytics-card bsp-performance">
-      <div class="card-header">
-        <div class="header-left">
-          <h3 class="card-title">
+    <div class="bsp-performance-card">
+      <!-- Header -->
+      <div class="bsp-header">
+        <div class="title-section">
+          <h3 class="bsp-title">
             <i class="pi pi-chart-bar"></i>
             BSP Performance
           </h3>
         </div>
-        <div class="header-right">
-          <button class="add-btn">
-            <i class="pi pi-plus"></i>
-            Add BSP
+        <div class="optimize-section">
+          <button class="optimize-btn">
+            <i class="pi pi-cog"></i>
+            Optimize
           </button>
         </div>
       </div>
-      
+
+      <!-- Channel Tabs -->
       <div class="channel-tabs">
-        <button class="tab-btn active">WhatsApp</button>
-        <button class="tab-btn">RCS</button>
+        <button class="tab-button active" data-channel="sms">
+          <i class="pi pi-mobile"></i>
+          SMS
+        </button>
+        <button class="tab-button" data-channel="whatsapp">
+          WHATSAPP
+        </button>
+        <button class="tab-button" data-channel="email">
+          <i class="pi pi-envelope"></i>
+          EMAIL
+        </button>
+        <button class="tab-button" data-channel="push">
+          <i class="pi pi-bell"></i>
+          PUSH
+        </button>
+        <button class="tab-button" data-channel="rcs">
+          <i class="pi pi-comment"></i>
+          RCS
+        </button>
       </div>
-      
-      <div class="bsp-cards">
-        <div class="bsp-card highlighted">
-          <div class="bsp-header">
-            <div class="bsp-badge recommended">
-              <i class="pi pi-star-fill"></i>
-              Recommended
+
+      <!-- Summary Stats -->
+      <div class="bsp-summary">
+        <div class="summary-item">
+          <div class="summary-value blue">94%</div>
+          <div class="summary-label">Best Delivery</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-value">₹0.1</div>
+          <div class="summary-label">Lowest Cost</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-value gold">1</div>
+          <div class="summary-label">Recommended</div>
+        </div>
+      </div>
+
+      <!-- BSP Provider Cards -->
+      <div class="bsp-providers">
+        <!-- Airtel IQ - Best Provider -->
+        <div class="provider-card featured">
+          <div class="provider-header">
+            <div class="provider-name">
+              <span class="name">Airtel IQ</span>
+              <span class="provider-icon">🏆</span>
+            </div>
+            <div class="provider-badges">
+              <span class="badge excellent">excellent</span>
+              <span class="badge best">Best</span>
             </div>
           </div>
-          <h4 class="bsp-name">Cloud API</h4>
-          <div class="bsp-metrics">
+          <div class="provider-metrics">
             <div class="metric-row">
-              <span class="metric-label">Delivery Rate</span>
-              <span class="metric-value primary">98.2%</span>
-            </div>
-            <div class="metric-row">
-              <span class="metric-label">Cost per Message</span>
-              <span class="metric-value">₹0.35</span>
-            </div>
-            <div class="metric-row">
-              <span class="metric-label">Response Time</span>
-              <span class="metric-value">1.2s</span>
+              <div class="metric-item">
+                <span class="metric-value">94%</span>
+                <span class="metric-label">Delivery</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-value">₹0.12</span>
+                <span class="metric-label">Cost</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-value">%</span>
+                <span class="metric-label">Uptime</span>
+              </div>
             </div>
           </div>
-          <div class="performance-score">
-            <span class="score-label">Performance Score</span>
-            <div class="score-bar">
-              <div class="score-fill" style="width: 95%"></div>
+          <div class="performance-section">
+            <div class="performance-header">
+              <span class="performance-label">Performance Score</span>
+              <span class="performance-value">NaN%</span>
             </div>
-            <span class="score-text">95/100 Excellent</span>
+            <div class="performance-bar">
+              <div class="performance-fill" style="width: 94%"></div>
+            </div>
           </div>
         </div>
-        
-        <div class="bsp-card">
-          <div class="bsp-header">
-            <div class="bsp-badge good">Good</div>
-          </div>
-          <h4 class="bsp-name">MM Lite</h4>
-          <div class="bsp-metrics">
-            <div class="metric-row">
-              <span class="metric-label">Delivery Rate</span>
-              <span class="metric-value">94.8%</span>
+
+        <!-- Jio Platform -->
+        <div class="provider-card">
+          <div class="provider-header">
+            <div class="provider-name">
+              <span class="name">Jio Platform</span>
             </div>
-            <div class="metric-row">
-              <span class="metric-label">Cost per Message</span>
-              <span class="metric-value">₹0.42</span>
-            </div>
-            <div class="metric-row">
-              <span class="metric-label">Response Time</span>
-              <span class="metric-value">2.1s</span>
+            <div class="provider-badges">
+              <span class="badge good">good</span>
             </div>
           </div>
-          <div class="performance-score">
-            <span class="score-label">Performance Score</span>
-            <div class="score-bar">
-              <div class="score-fill" style="width: 82%"></div>
+          <div class="provider-metrics">
+            <div class="metric-row">
+              <div class="metric-item">
+                <span class="metric-value">91%</span>
+                <span class="metric-label">Delivery</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-value">₹0.14</span>
+                <span class="metric-label">Cost</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-value">%</span>
+                <span class="metric-label">Uptime</span>
+              </div>
             </div>
-            <span class="score-text">82/100 Good</span>
+          </div>
+          <div class="performance-section">
+            <div class="performance-header">
+              <span class="performance-label">Performance Score</span>
+              <span class="performance-value">NaN%</span>
+            </div>
+            <div class="performance-bar">
+              <div class="performance-fill" style="width: 91%"></div>
+            </div>
           </div>
         </div>
       </div>

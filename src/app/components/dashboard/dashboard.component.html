@@ -40,7 +40,11 @@
   </header>
 
   <!-- Weekly Campaign Overview -->
-  <app-weekly-campaign-overview></app-weekly-campaign-overview>
+  <app-weekly-campaign-overview 
+    [selectedChannel]="selectedChannel"
+    [selectedDateRange]="selectedDateRange" 
+    [filteredCampaignCount]="totalCampaigns">
+  </app-weekly-campaign-overview>
 
   <!-- KPI Cards Section - 5 Cards Only -->
   <section class="kpi-section">

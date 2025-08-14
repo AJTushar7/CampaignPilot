@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 interface WeekDay {
   name: string;
@@ -16,7 +16,11 @@ interface WeekDay {
   templateUrl: './weekly-campaign-overview.component.html',
   styleUrls: ['./weekly-campaign-overview.component.scss']
 })
-export class WeeklyCampaignOverviewComponent implements OnInit {
+export class WeeklyCampaignOverviewComponent implements OnInit, OnChanges {
+  @Input() selectedChannel: string = 'all';
+  @Input() selectedDateRange: string = '7d';
+  @Input() filteredCampaignCount: number = 0;
+  
   isExpanded = false;
   
   weekDays: WeekDay[] = [
@@ -98,6 +102,12 @@ export class WeeklyCampaignOverviewComponent implements OnInit {
     this.generateWeekDays();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['selectedChannel'] || changes['selectedDateRange'] || changes['filteredCampaignCount']) {
+      this.updateWeekDaysBasedOnFilters();
+    }
+  }
+
   // Get current week data filtering Monday to Friday only
   get currentWeekDays(): WeekDay[] {
     return this.weekDays.slice(0, 5); // Only Mon-Fri
@@ -115,23 +125,47 @@ export class WeeklyCampaignOverviewComponent implements OnInit {
     this.weekDays = [];
     const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
     
+    // Base data that will be adjusted based on filters
+    const baseCampaignData = [18, 22, 15, 20, 16]; // Mon, Tue, Wed, Thu, Fri
+    
     for (let i = 0; i < 5; i++) {
       const currentDate = new Date(monday);
       currentDate.setDate(monday.getDate() + i);
       
       const isToday = currentDate.toDateString() === today.toDateString();
+      const baseCampaigns = baseCampaignData[i];
       
       this.weekDays.push({
         name: dayNames[i],
         number: currentDate.getDate(),
-        totalCampaigns: Math.floor(Math.random() * 15) + 3,
-        live: Math.floor(Math.random() * 8) + 1,
-        scheduled: Math.floor(Math.random() * 6) + 2,
-        paused: Math.floor(Math.random() * 2),
-        trafficLevel: ['Light', 'Moderate', 'Heavy'][Math.floor(Math.random() * 3)],
+        totalCampaigns: baseCampaigns,
+        live: Math.floor(baseCampaigns * 0.4),
+        scheduled: Math.floor(baseCampaigns * 0.3),
+        paused: Math.floor(baseCampaigns * 0.3),
+        trafficLevel: baseCampaigns > 18 ? 'Heavy' : baseCampaigns > 15 ? 'Moderate' : 'Light',
         isToday: isToday
       });
     }
+  }
+
+  updateWeekDaysBasedOnFilters() {
+    // Calculate channel ratio based on filtered campaign count
+    const totalCampaigns = 27; // Total campaigns across all channels  
+    const channelRatio = this.filteredCampaignCount / totalCampaigns;
+    const dateMultiplier = this.selectedDateRange === '7d' ? 0.6 : 1.0;
+    
+    // Update each day based on the filters
+    this.weekDays = this.weekDays.map(day => {
+      const adjustedTotal = Math.round(day.totalCampaigns * channelRatio * dateMultiplier);
+      return {
+        ...day,
+        totalCampaigns: Math.max(1, adjustedTotal), // Minimum 1 campaign per day
+        live: Math.floor(adjustedTotal * 0.4),
+        scheduled: Math.floor(adjustedTotal * 0.3),
+        paused: Math.floor(adjustedTotal * 0.3),
+        trafficLevel: adjustedTotal > 18 ? 'Heavy' : adjustedTotal > 15 ? 'Moderate' : 'Light'
+      };
+    });
   }
 
   toggleExpanded(): void {

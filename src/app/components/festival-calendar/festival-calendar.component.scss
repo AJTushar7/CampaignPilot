@@ -2,29 +2,237 @@
   display: block;
 }
 
+:host ::ng-deep .p-card {
+  height: 100%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+}
+
 :host ::ng-deep .p-card .p-card-header {
-  padding: 0;
+  padding: 1.25rem 1.25rem 0.75rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+:host ::ng-deep .p-card .p-card-body {
+  padding: 1.25rem;
+}
+
+:host ::ng-deep .p-card .p-card-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+}
+
+:host ::ng-deep .p-card .p-card-subtitle {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0.25rem 0 0;
+}
+
+.festival-calendar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
 }
 
 .festival-item {
-  padding: 0.75rem;
-  border-radius: 8px;
-  background: #f8fafc;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.25rem;
   transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
   
   &:hover {
-    background: #f1f5f9;
+    border-color: #3b82f6;
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #f59e0b, #ef4444, #8b5cf6);
+  }
+
+  &.diwali::before {
+    background: linear-gradient(90deg, #f59e0b, #ef4444);
+  }
+
+  &.christmas::before {
+    background: linear-gradient(90deg, #10b981, #ef4444);
+  }
+
+  &.holi::before {
+    background: linear-gradient(90deg, #ec4899, #8b5cf6, #06b6d4);
+  }
+
+  &.eid::before {
+    background: linear-gradient(90deg, #10b981, #3b82f6);
   }
 }
 
+.festival-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
 .festival-icon {
-  width: 3rem;
-  height: 3rem;
+  width: 3.5rem;
+  height: 3.5rem;
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  font-size: 1.5rem;
+  background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+  border: 2px solid #e5e7eb;
+
+  &.diwali {
+    background: linear-gradient(135deg, #fef3c7, #fed7aa);
+    border-color: #f59e0b;
+    color: #92400e;
+  }
+
+  &.christmas {
+    background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+    border-color: #10b981;
+    color: #065f46;
+  }
+
+  &.holi {
+    background: linear-gradient(135deg, #fdf2f8, #f3e8ff);
+    border-color: #ec4899;
+    color: #9d174d;
+  }
+
+  &.eid {
+    background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+    border-color: #3b82f6;
+    color: #1e40af;
+  }
+}
+
+.festival-details {
+  flex: 1;
+
+  .festival-name {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0 0 0.25rem;
+  }
+
+  .festival-date {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin: 0 0 0.75rem;
+  }
+}
+
+.festival-metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.metric {
+  text-align: center;
+  padding: 0.75rem;
+  background: #f8fafc;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+
+  .metric-value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1f2937;
+    display: block;
+    margin-bottom: 0.25rem;
+
+    &.revenue {
+      color: #10b981;
+    }
+
+    &.conversion {
+      color: #3b82f6;
+    }
+
+    &.roi {
+      color: #f59e0b;
+    }
+  }
+
+  .metric-label {
+    font-size: 0.75rem;
+    color: #6b7280;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+}
+
+.festival-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #f3f4f6;
+
+  .p-button {
+    flex: 1;
+    font-size: 0.875rem;
+  }
+
+  .p-button-outlined {
+    border-color: #d1d5db;
+    color: #6b7280;
+
+    &:hover {
+      border-color: #3b82f6;
+      color: #3b82f6;
+      background: #f8fafc;
+    }
+  }
+}
+
+.ai-insights {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, #fef3c7, #fef7cd);
+  border: 1px solid #f59e0b;
+  border-radius: 8px;
+
+  .insight-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+
+    i {
+      color: #d97706;
+    }
+
+    .insight-title {
+      font-weight: 600;
+      color: #92400e;
+      font-size: 0.875rem;
+    }
+  }
+
+  .insight-content {
+    font-size: 0.875rem;
+    color: #78350f;
+    line-height: 1.4;
+  }
 }

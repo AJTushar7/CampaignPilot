@@ -98,6 +98,11 @@ export class WeeklyCampaignOverviewComponent implements OnInit {
     this.generateWeekDays();
   }
 
+  // Get current week data filtering Monday to Friday only
+  get currentWeekDays(): WeekDay[] {
+    return this.weekDays.slice(0, 5); // Only Mon-Fri
+  }
+
   generateWeekDays() {
     const today = new Date();
     const currentDay = today.getDay(); // 0 = Sunday, 1 = Monday, etc.
@@ -134,14 +139,14 @@ export class WeeklyCampaignOverviewComponent implements OnInit {
   }
 
   get totalCampaignsWeek(): number {
-    return this.weekDays.reduce((total, day) => total + day.totalCampaigns, 0);
+    return this.currentWeekDays.reduce((total, day) => total + day.totalCampaigns, 0);
   }
 
   get totalActiveWeek(): number {
-    return this.weekDays.reduce((total, day) => total + day.live, 0);
+    return this.currentWeekDays.reduce((total, day) => total + day.live, 0);
   }
 
   get totalScheduledWeek(): number {
-    return this.weekDays.reduce((total, day) => total + day.scheduled, 0);
+    return this.currentWeekDays.reduce((total, day) => total + day.scheduled, 0);
   }
 }

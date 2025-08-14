@@ -4,6 +4,8 @@
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   margin-bottom: 1.5rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
   padding: 1.5rem;
   overflow: hidden;
 
@@ -22,11 +24,6 @@
       font-size: 1.2rem;
       font-weight: 600;
       color: #495057;
-
-      i {
-        color: #3b82f6;
-        font-size: 1.25rem;
-      }
     }
 
     .overview-controls {
@@ -148,7 +145,7 @@
     &.expanded {
       .week-calendar {
         display: grid;
-        grid-template-columns: repeat(7, 1fr);
+        grid-template-columns: repeat(5, 1fr);
         gap: 1rem;
         margin-bottom: 1.5rem;
 

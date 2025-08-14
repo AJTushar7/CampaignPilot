@@ -12,6 +12,9 @@ interface Campaign {
   opened: number;
   clicked: number;
   converted: number;
+  conversions: number;
+  spent: number;
+  budget: number;
   cost: string;
   createdAt: Date;
   startedAt?: Date;
@@ -38,6 +41,9 @@ export class CampaignMonitoringComponent implements OnInit {
       opened: 10234,
       clicked: 3567,
       converted: 1234,
+      conversions: 1234,
+      spent: 1250,
+      budget: 2000,
       cost: '1250.00',
       createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
       startedAt: new Date(Date.now() - 6 * 60 * 60 * 1000)
@@ -54,6 +60,9 @@ export class CampaignMonitoringComponent implements OnInit {
       opened: 0,
       clicked: 0,
       converted: 0,
+      conversions: 0,
+      spent: 189,
+      budget: 500,
       cost: '189.00',
       createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
       scheduledAt: new Date(Date.now() + 18 * 60 * 60 * 1000)
@@ -70,6 +79,9 @@ export class CampaignMonitoringComponent implements OnInit {
       opened: 4567,
       clicked: 1234,
       converted: 456,
+      conversions: 456,
+      spent: 567,
+      budget: 1000,
       cost: '567.00',
       createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
       startedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
@@ -97,14 +109,27 @@ export class CampaignMonitoringComponent implements OnInit {
 
   ngOnInit(): void { }
 
+  get filteredCampaigns(): Campaign[] {
+    let filtered = this.campaigns;
+    
+    // Filter by status
+    if (this.selectedStatus !== 'All Status') {
+      filtered = filtered.filter(campaign => 
+        campaign.status.toLowerCase() === this.selectedStatus.toLowerCase()
+      );
+    }
+    
+    return filtered;
+  }
+
   get paginatedCampaigns(): Campaign[] {
     const startIndex = this.currentPage * this.campaignsPerPage;
     const endIndex = startIndex + this.campaignsPerPage;
-    return this.campaigns.slice(startIndex, endIndex);
+    return this.filteredCampaigns.slice(startIndex, endIndex);
   }
 
   get totalPages(): number {
-    return Math.ceil(this.campaigns.length / this.campaignsPerPage);
+    return Math.ceil(this.filteredCampaigns.length / this.campaignsPerPage);
   }
 
   previousPage(): void {

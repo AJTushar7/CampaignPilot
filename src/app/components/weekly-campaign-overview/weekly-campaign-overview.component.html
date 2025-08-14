@@ -2,7 +2,6 @@
 <section class="weekly-campaign-overview">
   <div class="overview-header">
     <div class="overview-title">
-      <i class="pi pi-calendar-times"></i>
       <span>Weekly Campaign Overview</span>
     </div>
     <div class="overview-controls">
@@ -17,7 +16,7 @@
   <div class="overview-content collapsed" *ngIf="!isExpanded">
     <div class="week-summary">
       <div class="week-days-row">
-        <div class="day-card" *ngFor="let day of weekDays" [class.today]="day.isToday">
+        <div class="day-card" *ngFor="let day of currentWeekDays" [class.today]="day.isToday">
           <div class="day-header">
             <span class="day-name">{{day.name}}</span>
             <span class="day-number" [class.today-number]="day.isToday">{{day.number}}</span>
@@ -38,7 +37,7 @@
   <!-- Expanded View -->
   <div class="overview-content expanded" *ngIf="isExpanded">
     <div class="week-calendar">
-      <div class="calendar-day" *ngFor="let day of weekDays" [class]="'traffic-' + day.trafficLevel.toLowerCase()">
+      <div class="calendar-day" *ngFor="let day of currentWeekDays" [class]="'traffic-' + day.trafficLevel.toLowerCase()">
         <div class="day-header">
           <div class="day-date">
             <span class="day-name">{{day.name}}</span>

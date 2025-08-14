@@ -73,16 +73,19 @@ export class OrchestrationAnalysisComponent implements OnInit {
   }
 
   get filteredStrategies(): FallbackStrategy[] {
-    if (!this.searchQuery) {
-      return this.strategies;
+    let filtered = this.strategies;
+    
+    if (this.searchQuery) {
+      const query = this.searchQuery.toLowerCase();
+      filtered = filtered.filter(strategy => 
+        strategy.fromChannel.toLowerCase().includes(query) ||
+        strategy.toChannel.toLowerCase().includes(query) ||
+        strategy.tags.some(tag => tag.toLowerCase().includes(query))
+      );
     }
     
-    const query = this.searchQuery.toLowerCase();
-    return this.strategies.filter(strategy => 
-      strategy.fromChannel.toLowerCase().includes(query) ||
-      strategy.toChannel.toLowerCase().includes(query) ||
-      strategy.tags.some(tag => tag.toLowerCase().includes(query))
-    );
+    // Limit to 4 cards in single row
+    return filtered.slice(0, 4);
   }
 
   previousStrategies(): void {

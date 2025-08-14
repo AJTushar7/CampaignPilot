@@ -2,7 +2,6 @@
 <section class="orchestration-analysis">
   <div class="section-header">
     <div class="section-title">
-      <i class="pi pi-sitemap"></i>
       <span>Orchestration Analysis</span>
     </div>
     <div class="section-controls">
@@ -16,7 +15,7 @@
   <!-- Fallback Strategies Section -->
   <div class="fallback-strategies">    
     <div class="strategies-grid">
-      <div class="strategy-card" *ngFor="let strategy of filteredStrategies">
+      <div class="strategy-card" *ngFor="let strategy of filteredStrategies; let i = index" [ngClass]="{'d-none': i >= 4}">
         <div class="strategy-flow">
           <div class="channel-icon" [class]="strategy.fromChannel.toLowerCase()">
             <i [class]="strategy.fromIcon"></i>

@@ -331,7 +331,9 @@
               </div>
               <div class="budget-bar-wrapper">
                 <div class="budget-bar-track">
-                  <div class="budget-bar-fill" [style.width.%]="campaign.budgetUsage"></div>
+                  <div class="budget-bar-fill" 
+                       [style.width.%]="campaign.budgetUsage"
+                       [ngClass]="getBudgetUsageClass(campaign.budgetUsage)"></div>
                 </div>
               </div>
             </div>
@@ -605,22 +607,24 @@
                   (click)="selectPlanningOption(festival.name, option.value)">
                   {{ option.label }}
                 </div>
+                <div class="budget-calculator-option" (click)="openBudgetCalculator(festival.name)">
+                  <i class="pi pi-calculator"></i>
+                  Calculate Budget
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Next Campaign Due Section -->
-      <div class="next-campaign-section">
-        <div class="next-campaign-info">
-          <i class="pi pi-clock"></i>
-          <span class="next-campaign-text">Next Campaign Due:</span>
-          <span class="next-campaign-name">Diwali(18 days)</span>
+      <!-- Festival Budget Planning -->
+      <div class="festival-budget-planning">
+        <div class="budget-planning-header">
+          <i class="pi pi-calculator"></i>
+          <span>Budget Calculator Available for Each Festival</span>
         </div>
-        <div class="total-budget-info">
-          <i class="pi pi-chart-line"></i>
-          <span class="budget-text">₹NaNK Total Budget</span>
+        <div class="upcoming-opportunities">
+          <span class="opportunities-text">Plan campaigns 15-60 days in advance for optimal ROI</span>
         </div>
       </div>
     </div>

@@ -397,7 +397,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       target: '134K',
       spent: '₹29K',
       conversions: '1234',
-      budgetUsage: 67.2
+      budgetUsage: 55
     },
     {
       name: 'Weekend Offer',
@@ -425,7 +425,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       target: '54K',
       spent: '₹9K',
       conversions: '89',
-      budgetUsage: 38.7
+      budgetUsage: 25
     },
     {
       name: 'Product Launch',
@@ -453,7 +453,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       target: '180K',
       spent: '₹45K',
       conversions: '2890',
-      budgetUsage: 82.5
+      budgetUsage: 88
     },
     {
       name: 'Black Friday',
@@ -1077,6 +1077,23 @@ export class DashboardComponent implements OnInit, OnDestroy {
     console.log(`Planning ${festivalName} campaign in ${days} days`);
     this.showPlanningDropdown[festivalName] = false;
   }
+
+  openBudgetCalculator(festivalName: string): void {
+    console.log(`Opening budget calculator for ${festivalName}`);
+    this.showPlanningDropdown[festivalName] = false;
+    // Future implementation: Open budget calculator modal
+  }
+
+  getBudgetUsageClass(percentage: number): string {
+    if (percentage >= 80) {
+      return 'budget-critical'; // Red for 80%+
+    } else if (percentage >= 50) {
+      return 'budget-warning'; // Yellow for 50-79%
+    }
+    return 'budget-normal'; // Blue for under 50%
+  }
+
+
 
   // Methods for component functionality
   toggleWeeklyOverview(): void {

@@ -41,7 +41,7 @@ outputType = "webview"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "npm run dev"
+args = "ng serve --host 0.0.0.0 --port 5000 --disable-host-check"
 waitForPort = 5000
 
 [agent]

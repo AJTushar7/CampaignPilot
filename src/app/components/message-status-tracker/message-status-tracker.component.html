@@ -1,0 +1,125 @@
+<div class="message-status-tracker">
+  <div class="tracker-header">
+    <div class="header-left">
+      <h3 class="tracker-title">
+        <i class="pi pi-mobile"></i>
+        Real-time Message Status
+      </h3>
+      <div class="live-indicator">
+        <div class="live-dot"></div>
+        <span>Live Updates</span>
+      </div>
+    </div>
+    <div class="header-controls">
+      <select [(ngModel)]="selectedChannel" (change)="onChannelFilterChange()" class="control-select">
+        <option value="all">All Channels</option>
+        <option value="SMS">SMS</option>
+        <option value="WhatsApp">WhatsApp</option>
+        <option value="Email">Email</option>
+        <option value="Push">Push</option>
+        <option value="RCS">RCS</option>
+      </select>
+      <select [(ngModel)]="selectedStatus" (change)="onStatusFilterChange()" class="control-select">
+        <option value="all">All Status</option>
+        <option value="sent">Sent</option>
+        <option value="delivered">Delivered</option>
+        <option value="read">Read</option>
+        <option value="clicked">Clicked</option>
+        <option value="failed">Failed</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Status Overview Cards -->
+  <div class="status-overview">
+    <div class="status-card sent">
+      <div class="status-icon">
+        <i class="pi pi-send"></i>
+      </div>
+      <div class="status-info">
+        <div class="status-value">{{ statusStats.sent.toLocaleString() }}</div>
+        <div class="status-label">Sent</div>
+      </div>
+    </div>
+    
+    <div class="status-card delivered">
+      <div class="status-icon">
+        <i class="pi pi-check"></i>
+      </div>
+      <div class="status-info">
+        <div class="status-value">{{ statusStats.delivered.toLocaleString() }}</div>
+        <div class="status-label">Delivered</div>
+      </div>
+    </div>
+    
+    <div class="status-card read">
+      <div class="status-icon">
+        <i class="pi pi-eye"></i>
+      </div>
+      <div class="status-info">
+        <div class="status-value">{{ statusStats.read.toLocaleString() }}</div>
+        <div class="status-label">Read</div>
+      </div>
+    </div>
+    
+    <div class="status-card clicked">
+      <div class="status-icon">
+        <i class="pi pi-external-link"></i>
+      </div>
+      <div class="status-info">
+        <div class="status-value">{{ statusStats.clicked.toLocaleString() }}</div>
+        <div class="status-label">Clicked</div>
+      </div>
+    </div>
+    
+    <div class="status-card failed">
+      <div class="status-icon">
+        <i class="pi pi-times-circle"></i>
+      </div>
+      <div class="status-info">
+        <div class="status-value">{{ statusStats.failed.toLocaleString() }}</div>
+        <div class="status-label">Failed</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Messages -->
+  <div class="recent-messages">
+    <h4 class="messages-title">Recent Message Activity</h4>
+    <div class="messages-list">
+      <div class="message-item" *ngFor="let message of getFilteredMessages().slice(0, 10)">
+        <div class="message-left">
+          <div class="channel-icon" [class]="'channel-' + message.channel.toLowerCase()">
+            <i [class]="getChannelIcon(message.channel)"></i>
+          </div>
+          <div class="message-details">
+            <div class="message-campaign">{{ message.campaignName }}</div>
+            <div class="message-content">{{ message.messageContent.substring(0, 60) }}...</div>
+            <div class="message-segment">{{ message.customerSegment }}</div>
+          </div>
+        </div>
+        
+        <div class="message-center">
+          <div class="status-timeline">
+            <div class="timeline-item" 
+                 *ngFor="let event of message.statusHistory" 
+                 [class]="getStatusClass(event.status)">
+              <div class="timeline-icon">
+                <i [class]="getStatusIcon(event.status)"></i>
+              </div>
+              <span class="timeline-label">{{ event.status }}</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="message-right">
+          <div class="current-status" [class]="getStatusClass(message.status)">
+            <i [class]="getStatusIcon(message.status)"></i>
+            <span>{{ message.status | titlecase }}</span>
+          </div>
+          <div class="message-time">{{ getTimeAgo(message.timestamp) }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

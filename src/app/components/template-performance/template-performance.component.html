@@ -1,0 +1,180 @@
+<div class="template-performance">
+  <div class="performance-header">
+    <h3 class="performance-title">
+      <i class="pi pi-file-edit"></i>
+      Template Performance Comparison
+    </h3>
+    <div class="header-controls">
+      <select [(ngModel)]="selectedChannel" (change)="onChannelChange()" class="control-select">
+        <option value="all">All Channels</option>
+        <option value="WhatsApp">WhatsApp</option>
+        <option value="SMS">SMS</option>
+        <option value="Email">Email</option>
+        <option value="Push">Push</option>
+      </select>
+      <select [(ngModel)]="selectedType" (change)="onTypeChange()" class="control-select">
+        <option value="all">All Types</option>
+        <option value="promotional">Promotional</option>
+        <option value="transactional">Transactional</option>
+        <option value="reminder">Reminder</option>
+        <option value="notification">Notification</option>
+      </select>
+      <select [(ngModel)]="sortBy" (change)="onSortChange()" class="control-select">
+        <option value="conversionRate">Conversion Rate</option>
+        <option value="clickRate">Click Rate</option>
+        <option value="openRate">Open Rate</option>
+        <option value="roi">ROI</option>
+        <option value="revenue">Revenue</option>
+      </select>
+      <button class="sort-order-btn" (click)="toggleSortOrder()" [title]="'Sort ' + sortOrder">
+        <i [class]="sortOrder === 'desc' ? 'pi pi-sort-amount-down' : 'pi pi-sort-amount-up'"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- A/B Test Results -->
+  <div class="ab-test-section">
+    <h4 class="section-title">
+      <i class="pi pi-chart-pie"></i>
+      Active A/B Tests
+    </h4>
+    <div class="ab-test-grid">
+      <div class="ab-test-card" *ngFor="let test of abTestResults">
+        <div class="test-header">
+          <div class="test-name">{{ test.testName }}</div>
+          <div class="test-status" [class]="test.status">
+            {{ test.status | titlecase }}
+          </div>
+        </div>
+        
+        <div class="test-comparison">
+          <div class="template-comparison" *ngFor="let template of test.templates">
+            <div class="template-info">
+              <div class="template-name" [class.winner]="template.winner">
+                {{ template.name }}
+                <i class="pi pi-star-fill winner-icon" *ngIf="template.winner"></i>
+              </div>
+              <div class="conversion-rate" [class]="getPerformanceClass(template.conversionRate, 'conversionRate')">
+                {{ formatPercentage(template.conversionRate) }}
+              </div>
+            </div>
+            <div class="performance-bar">
+              <div class="bar-fill" 
+                   [style.width.%]="getBarWidth(template.conversionRate, test.templates)"
+                   [class.winner-bar]="template.winner">
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="test-results">
+          <div class="result-item">
+            <span class="result-label">Statistical Significance:</span>
+            <span class="result-value significance">{{ formatPercentage(test.significance) }}</span>
+          </div>
+          <div class="result-item">
+            <span class="result-label">Performance Improvement:</span>
+            <span class="result-value improvement">{{ test.improvement }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Template Performance Table -->
+  <div class="template-table-section">
+    <h4 class="section-title">
+      <i class="pi pi-table"></i>
+      Template Performance Overview
+    </h4>
+    
+    <div class="performance-table">
+      <div class="table-header">
+        <div class="header-cell template-name">Template</div>
+        <div class="header-cell">Channel</div>
+        <div class="header-cell">Type</div>
+        <div class="header-cell">Sent</div>
+        <div class="header-cell">Open Rate</div>
+        <div class="header-cell">Click Rate</div>
+        <div class="header-cell">Conv. Rate</div>
+        <div class="header-cell">Revenue</div>
+        <div class="header-cell">ROI</div>
+        <div class="header-cell">Status</div>
+      </div>
+      
+      <div class="table-body">
+        <div class="table-row" *ngFor="let template of getFilteredTemplates().slice(0, 10)">
+          <div class="table-cell template-name">
+            <div class="template-info">
+              <div class="template-title">{{ template.name }}</div>
+              <div class="template-meta">
+                Last used: {{ template.lastUsed | date:'MMM d' }}
+              </div>
+            </div>
+          </div>
+          
+          <div class="table-cell channel">
+            <div class="channel-badge">
+              <i [class]="getChannelIcon(template.channel)"></i>
+              <span>{{ template.channel }}</span>
+            </div>
+          </div>
+          
+          <div class="table-cell type">
+            <div class="type-badge">
+              <i [class]="getTypeIcon(template.type)"></i>
+              <span>{{ template.type | titlecase }}</span>
+            </div>
+          </div>
+          
+          <div class="table-cell">
+            <div class="metric-value">{{ formatNumber(template.sent) }}</div>
+          </div>
+          
+          <div class="table-cell">
+            <div class="metric-value" [class]="getPerformanceClass(template.openRate, 'openRate')">
+              {{ formatPercentage(template.openRate) }}
+            </div>
+            <div class="metric-bar">
+              <div class="bar-fill" [style.width.%]="template.openRate"></div>
+            </div>
+          </div>
+          
+          <div class="table-cell">
+            <div class="metric-value" [class]="getPerformanceClass(template.clickRate, 'clickRate')">
+              {{ formatPercentage(template.clickRate) }}
+            </div>
+            <div class="metric-bar">
+              <div class="bar-fill" [style.width.%]="template.clickRate * 4"></div>
+            </div>
+          </div>
+          
+          <div class="table-cell">
+            <div class="metric-value" [class]="getPerformanceClass(template.conversionRate, 'conversionRate')">
+              {{ formatPercentage(template.conversionRate) }}
+            </div>
+            <div class="metric-bar">
+              <div class="bar-fill" [style.width.%]="template.conversionRate * 8"></div>
+            </div>
+          </div>
+          
+          <div class="table-cell">
+            <div class="metric-value revenue">{{ formatCurrency(template.revenue) }}</div>
+          </div>
+          
+          <div class="table-cell">
+            <div class="metric-value" [class]="getPerformanceClass(template.roi, 'roi')">
+              {{ template.roi.toFixed(1) }}x
+            </div>
+          </div>
+          
+          <div class="table-cell">
+            <div class="status-badge" [class]="getStatusClass(template.testStatus)">
+              {{ template.testStatus | titlecase }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

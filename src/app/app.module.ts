@@ -35,7 +35,7 @@ import { CampaignMonitoringComponent } from './components/campaign-monitoring/ca
 import { AiSuggestionsComponent } from './components/ai-suggestions/ai-suggestions.component';
 import { BspComparisonComponent } from './components/bsp-comparison/bsp-comparison.component';
 import { CampaignDataService } from './services/campaign-data.service';
-import { BudgetCalculatorComponent } from './components/budget-calculator/budget-calculator.component';
+
 import { JourneyOrchestrationComponent } from './components/journey-orchestration/journey-orchestration.component';
 import { InactiveCustomersComponent } from './components/inactive-customers/inactive-customers.component';
 import { FestivalCalendarComponent } from './components/festival-calendar/festival-calendar.component';
@@ -43,6 +43,8 @@ import { CampaignNotificationsComponent } from './components/campaign-notificati
 import { WeeklyCampaignOverviewComponent } from './components/weekly-campaign-overview/weekly-campaign-overview.component';
 import { OrchestrationAnalysisComponent } from './components/orchestration-analysis/orchestration-analysis.component';
 import { ExportMenuComponent } from './components/export-menu/export-menu.component';
+import { MessageStatusTrackerComponent } from './components/message-status-tracker/message-status-tracker.component';
+import { TemplatePerformanceComponent } from './components/template-performance/template-performance.component';
 
 @NgModule({
   declarations: [
@@ -54,14 +56,16 @@ import { ExportMenuComponent } from './components/export-menu/export-menu.compon
     CampaignMonitoringComponent,
     AiSuggestionsComponent,
     BspComparisonComponent,
-    BudgetCalculatorComponent,
+
     JourneyOrchestrationComponent,
     InactiveCustomersComponent,
     FestivalCalendarComponent,
     CampaignNotificationsComponent,
     WeeklyCampaignOverviewComponent,
     OrchestrationAnalysisComponent,
-    ExportMenuComponent
+    ExportMenuComponent,
+    MessageStatusTrackerComponent,
+    TemplatePerformanceComponent
   ],
   imports: [
     BrowserModule,

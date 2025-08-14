@@ -438,35 +438,41 @@ export class DashboardComponent implements OnInit, OnDestroy {
   updateKPIData(): void {
     // Update KPIs based on selected channel and date range
     const baseData = {
-      '7d': { campaigns: 12, spend: 95000, revenue: 380000, conversion: 8.5, users: 1800000 },
-      '15d': { campaigns: 18, spend: 185000, revenue: 505000, conversion: 10.7, users: 2400000 }
+      '7d': { campaigns: 148, spend: 1250000, revenue: 5050000, conversion: 10.7, users: 2400000 },
+      '15d': { campaigns: 178, spend: 1580000, revenue: 6250000, conversion: 12.2, users: 2800000 }
     };
     
     const data = baseData[this.selectedDateRange] || baseData['7d'];
     
-    // Apply channel-specific multipliers
-    let multiplier = 1.0;
-    switch(this.selectedChannel) {
-      case 'sms': multiplier = 0.8; break;
-      case 'whatsapp': multiplier = 1.2; break;
-      case 'email': multiplier = 0.9; break;
-      case 'push': multiplier = 0.7; break;
-      case 'rcs': multiplier = 1.1; break;
-      default: multiplier = 1.0; // all channels
+    // Filter campaigns by channel to get realistic counts
+    let filteredCampaigns = this.allCampaignCards;
+    if (this.selectedChannel !== 'all') {
+      filteredCampaigns = this.allCampaignCards.filter(campaign => 
+        campaign.channel.toLowerCase() === this.selectedChannel
+      );
     }
     
-    // Update KPI values
-    this.totalCampaigns = Math.round(data.campaigns * multiplier);
-    this.totalSpend = Math.round(data.spend * multiplier);
+    // Use actual filtered campaign count
+    const campaignCount = filteredCampaigns.length;
+    
+    // Calculate proportional spend and revenue based on campaign count
+    const campaignRatio = campaignCount / this.allCampaignCards.length;
+    const spend = Math.round(data.spend * campaignRatio);
+    const revenue = Math.round(data.revenue * campaignRatio);
+    const users = Math.round(data.users * campaignRatio);
     
     // Update the actual KPI card values in the template
     this.kpiData = {
-      totalCampaigns: this.totalCampaigns,
-      totalSpend: `₹${(this.totalSpend/100000).toFixed(1)}L`,
-      totalRevenue: `₹${(data.revenue * multiplier/100000).toFixed(1)}L`,
-      avgConversion: `${(data.conversion * multiplier).toFixed(1)}%`,
-      activeUsers: `${(data.users * multiplier/1000000).toFixed(1)}M`
+      totalCampaigns: campaignCount,
+      totalSpend: `₹${(spend/100000).toFixed(1)}L`,
+      totalRevenue: `₹${(revenue/100000).toFixed(1)}L`,
+      avgConversion: `${data.conversion.toFixed(1)}%`,
+      activeUsers: `${(users/1000000).toFixed(1)}M`
     };
+    
+    // Update individual properties for backward compatibility
+    this.totalCampaigns = campaignCount;
+    this.totalSpend = spend;
   }
 
 
@@ -475,33 +481,51 @@ export class DashboardComponent implements OnInit, OnDestroy {
     // Update weekly overview data based on selected channel and date range
     console.log('Updating weekly overview data for channel:', this.selectedChannel, 'date range:', this.selectedDateRange);
     
-    // Apply channel and date range filters to weekly data
-    const baseMultiplier = this.selectedDateRange === '7d' ? 0.7 : 1.0;
-    let channelMultiplier = 1.0;
-    
-    switch(this.selectedChannel) {
-      case 'sms': channelMultiplier = 0.8; break;
-      case 'whatsapp': channelMultiplier = 1.2; break;
-      case 'email': channelMultiplier = 0.9; break;
-      case 'push': channelMultiplier = 0.7; break;
-      case 'rcs': channelMultiplier = 1.1; break;
-      default: channelMultiplier = 1.0; // all channels
+    // Filter campaigns by channel
+    let filteredCampaigns = this.allCampaignCards;
+    if (this.selectedChannel !== 'all') {
+      filteredCampaigns = this.allCampaignCards.filter(campaign => 
+        campaign.channel.toLowerCase() === this.selectedChannel
+      );
     }
     
-    const multiplier = baseMultiplier * channelMultiplier;
+    // Calculate campaign counts by status from filtered campaigns
+    const activeCampaigns = filteredCampaigns.filter(c => c.status === 'Executing').length;
+    const scheduledCampaigns = filteredCampaigns.filter(c => c.status === 'Scheduled').length;
+    const pausedCampaigns = filteredCampaigns.filter(c => c.status === 'Paused').length;
+    const totalWeekly = filteredCampaigns.length;
     
-    // Update weekly summary totals
-    this.totalActiveCampaigns = Math.round(14 * multiplier);
-    this.totalScheduledCampaigns = Math.round(19 * multiplier);
-    this.totalWeeklyCampaigns = Math.round(52 * multiplier);
+    // Apply date range multiplier
+    const dateMultiplier = this.selectedDateRange === '7d' ? 0.6 : 1.0;
     
-    // Update individual day data
-    this.weekDays = this.weekDays.map(day => ({
-      ...day,
-      campaignCount: Math.round(day.campaignCount * multiplier),
-      live: Math.round(day.live * multiplier),
-      scheduled: Math.round(day.scheduled * multiplier),
-      paused: Math.round(day.paused * multiplier)
+    // Update weekly summary totals with realistic data
+    this.totalActiveCampaigns = Math.round(activeCampaigns * dateMultiplier);
+    this.totalScheduledCampaigns = Math.round(scheduledCampaigns * dateMultiplier);
+    this.totalWeeklyCampaigns = Math.round(totalWeekly * dateMultiplier);
+    
+    // Reset to base week data and apply channel filtering
+    const baseWeekData = [
+      { name: 'Mon', campaignCount: 8, live: 5, scheduled: 2, paused: 1 },
+      { name: 'Tue', campaignCount: 12, live: 8, scheduled: 3, paused: 1 },
+      { name: 'Wed', campaignCount: 15, live: 10, scheduled: 4, paused: 1 },
+      { name: 'Thu', campaignCount: 18, live: 12, scheduled: 5, paused: 1 },
+      { name: 'Fri', campaignCount: 22, live: 15, scheduled: 6, paused: 1 },
+      { name: 'Sat', campaignCount: 16, live: 11, scheduled: 4, paused: 1 },
+      { name: 'Sun', campaignCount: 10, live: 7, scheduled: 2, paused: 1 }
+    ];
+    
+    // Calculate channel ratio for proportional scaling
+    const channelRatio = filteredCampaigns.length / this.allCampaignCards.length;
+    
+    // Update individual day data with realistic proportions
+    this.weekDays = baseWeekData.map((day, index) => ({
+      name: day.name,
+      number: index + 1,
+      campaignCount: Math.round(day.campaignCount * channelRatio * dateMultiplier),
+      live: Math.round(day.live * channelRatio * dateMultiplier),
+      scheduled: Math.round(day.scheduled * channelRatio * dateMultiplier),
+      paused: Math.round(day.paused * channelRatio * dateMultiplier),
+      status: 'active'
     }));
   }
 

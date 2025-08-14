@@ -12,10 +12,7 @@ interface Campaign {
   opened: number;
   clicked: number;
   converted: number;
-  conversions: number;
   cost: string;
-  spent: number;
-  budget: number;
   createdAt: Date;
   startedAt?: Date;
   scheduledAt?: Date;
@@ -31,83 +28,65 @@ export class CampaignMonitoringComponent implements OnInit {
   campaigns: Campaign[] = [
     {
       id: '1',
-      name: 'Flash Sale Alert',
-      type: 'SMS',
+      name: 'Summer Sale Campaign',
+      type: 'Promotional',
       status: 'active',
-      channels: ['SMS'],
-      targetAudience: 132000,
-      sent: 89000,
-      delivered: 87600,
-      opened: 52000,
-      clicked: 18400,
+      channels: ['SMS', 'Email'],
+      targetAudience: 15234,
+      sent: 15234,
+      delivered: 14892,
+      opened: 10234,
+      clicked: 3567,
       converted: 1234,
-      conversions: 1234,
-      cost: '2580.00',
-      spent: 2290,
-      budget: 2580,
+      cost: '1250.00',
       createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
       startedAt: new Date(Date.now() - 6 * 60 * 60 * 1000)
     },
     {
       id: '2',
-      name: 'Weekend Offer',
-      type: 'WhatsApp',
+      name: 'Welcome Series',
+      type: 'Onboarding',
       status: 'scheduled',
       channels: ['WhatsApp'],
-      targetAudience: 88000,
+      targetAudience: 2457,
       sent: 0,
       delivered: 0,
       opened: 0,
       clicked: 0,
       converted: 0,
-      conversions: 0,
-      cost: '1890.00',
-      spent: 0,
-      budget: 1890,
+      cost: '189.00',
       createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
       scheduledAt: new Date(Date.now() + 18 * 60 * 60 * 1000)
     },
     {
       id: '3',
-      name: 'Service Reminder',
-      type: 'Email',
+      name: 'Product Launch',
+      type: 'Announcement',
       status: 'paused',
-      channels: ['Email'],
-      targetAudience: 54000,
-      sent: 32000,
-      delivered: 31800,
-      opened: 19000,
-      clicked: 6800,
+      channels: ['SMS', 'Email', 'Push'],
+      targetAudience: 8543,
+      sent: 8543,
+      delivered: 8234,
+      opened: 4567,
+      clicked: 1234,
       converted: 456,
-      conversions: 89,
-      cost: '1200.00',
-      spent: 890,
-      budget: 1200,
+      cost: '567.00',
       createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
       startedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
       pausedAt: new Date(Date.now() - 1 * 60 * 60 * 1000)
     }
   ];
 
-  allCampaigns: Campaign[] = [...this.campaigns];
-  filteredCampaigns: Campaign[] = [...this.campaigns];
   currentPage = 0;
   campaignsPerPage = 3;
   selectedStatus = 'All Status';
-  selectedDateFilter = 'Last 7 Days';
   viewMode = 'cards'; // 'cards' or 'table'
 
   statusOptions = [
     { label: 'All Status', value: 'All Status' },
-    { label: 'Active', value: 'active' },
-    { label: 'Paused', value: 'paused' },
-    { label: 'Scheduled', value: 'scheduled' }
-  ];
-
-  dateOptions = [
-    { label: 'Last 7 Days', value: '7d' },
-    { label: 'Last 15 Days', value: '15d' },
-    { label: 'Last 30 Days', value: '30d' }
+    { label: 'Active', value: 'Active' },
+    { label: 'Paused', value: 'Paused' },
+    { label: 'Scheduled', value: 'Scheduled' }
   ];
 
   selectedCampaign: Campaign | null = null;
@@ -116,45 +95,7 @@ export class CampaignMonitoringComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void { 
-    this.filterCampaigns();
-  }
-
-  filterCampaigns(): void {
-    let filtered = [...this.allCampaigns];
-    
-    // Filter by status
-    if (this.selectedStatus !== 'All Status') {
-      filtered = filtered.filter(campaign => 
-        campaign.status.toLowerCase() === this.selectedStatus.toLowerCase()
-      );
-    }
-    
-    // Filter by date (for demo purposes, keeping all campaigns)
-    // In real implementation, this would filter by creation/start date
-    
-    this.filteredCampaigns = filtered;
-  }
-
-  getStatusIcon(status: string): string {
-    switch (status.toLowerCase()) {
-      case 'active': return 'pi pi-play-circle';
-      case 'paused': return 'pi pi-pause-circle';
-      case 'scheduled': return 'pi pi-clock';
-      case 'completed': return 'pi pi-check-circle';
-      default: return 'pi pi-circle';
-    }
-  }
-
-  getProgressPercentage(campaign: Campaign): number {
-    if (campaign.targetAudience === 0) return 0;
-    return Math.round((campaign.sent / campaign.targetAudience) * 100);
-  }
-
-  getBudgetUsagePercentage(campaign: Campaign): number {
-    if (campaign.budget === 0) return 0;
-    return Math.round((campaign.spent / campaign.budget) * 100);
-  }
+  ngOnInit(): void { }
 
   get paginatedCampaigns(): Campaign[] {
     const startIndex = this.currentPage * this.campaignsPerPage;

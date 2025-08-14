@@ -72,9 +72,17 @@ export class OrchestrationAnalysisComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  get visibleStrategies(): FallbackStrategy[] {
-    // Only show first 3 strategies in single row
-    return this.strategies.slice(0, 3);
+  get filteredStrategies(): FallbackStrategy[] {
+    if (!this.searchQuery) {
+      return this.strategies;
+    }
+    
+    const query = this.searchQuery.toLowerCase();
+    return this.strategies.filter(strategy => 
+      strategy.fromChannel.toLowerCase().includes(query) ||
+      strategy.toChannel.toLowerCase().includes(query) ||
+      strategy.tags.some(tag => tag.toLowerCase().includes(query))
+    );
   }
 
   previousStrategies(): void {

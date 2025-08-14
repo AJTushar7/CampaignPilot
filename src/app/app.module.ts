@@ -41,6 +41,7 @@ import { InactiveCustomersComponent } from './components/inactive-customers/inac
 import { FestivalCalendarComponent } from './components/festival-calendar/festival-calendar.component';
 import { CampaignNotificationsComponent } from './components/campaign-notifications/campaign-notifications.component';
 import { WeeklyCampaignOverviewComponent } from './components/weekly-campaign-overview/weekly-campaign-overview.component';
+import { OrchestrationAnalysisComponent } from './components/orchestration-analysis/orchestration-analysis.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { WeeklyCampaignOverviewComponent } from './components/weekly-campaign-ov
     InactiveCustomersComponent,
     FestivalCalendarComponent,
     CampaignNotificationsComponent,
-    WeeklyCampaignOverviewComponent
+    WeeklyCampaignOverviewComponent,
+    OrchestrationAnalysisComponent
   ],
   imports: [
     BrowserModule,

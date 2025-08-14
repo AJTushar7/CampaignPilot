@@ -1,0 +1,181 @@
+<!-- Orchestration Analysis Section -->
+<section class="orchestration-analysis">
+  <div class="section-header">
+    <div class="section-title">
+      <i class="pi pi-sitemap"></i>
+      <span>Orchestration Analysis</span>
+    </div>
+    <div class="section-controls">
+      <div class="metric-badge">
+        <span class="metric-value">76%</span>
+        <span class="metric-label">Success Rate</span>
+      </div>
+      <button class="link-button">
+        <i class="pi pi-map"></i>
+        View Journey Map
+      </button>
+    </div>
+  </div>
+
+  <!-- Top Metrics Row -->
+  <div class="orchestration-metrics">
+    <div class="metric-card">
+      <div class="metric-icon">
+        <i class="pi pi-check-circle"></i>
+      </div>
+      <div class="metric-content">
+        <div class="metric-number">76%</div>
+        <div class="metric-description">Fallback Success Rate</div>
+      </div>
+    </div>
+
+    <div class="metric-card">
+      <div class="metric-icon channels">
+        <i class="pi pi-share-alt"></i>
+      </div>
+      <div class="metric-content">
+        <div class="metric-number">2.3</div>
+        <div class="metric-description">Avg Channels Used</div>
+      </div>
+    </div>
+
+    <div class="metric-card">
+      <div class="metric-icon completion">
+        <i class="pi pi-trophy"></i>
+      </div>
+      <div class="metric-content">
+        <div class="metric-number">89%</div>
+        <div class="metric-description">Journey Completion</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fallback Strategies Section -->
+  <div class="fallback-strategies">
+    <div class="strategies-header">
+      <h4><i class="pi pi-arrow-right"></i> Fallback Strategies</h4>
+    </div>
+    
+    <div class="strategies-grid">
+      <div class="strategy-card">
+        <div class="strategy-flow">
+          <div class="channel-icon sms">
+            <i class="pi pi-comment"></i>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="channel-icon whatsapp">
+            <i class="pi pi-whatsapp"></i>
+          </div>
+        </div>
+        <div class="strategy-stats">
+          <div class="success-rate">84%</div>
+          <div class="strategy-label">SMS → WhatsApp</div>
+          <div class="usage-stat">5% usage</div>
+        </div>
+        <button class="view-details-btn">View Details</button>
+      </div>
+
+      <div class="strategy-card">
+        <div class="strategy-flow">
+          <div class="channel-icon email">
+            <i class="pi pi-envelope"></i>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="channel-icon push">
+            <i class="pi pi-bell"></i>
+          </div>
+        </div>
+        <div class="strategy-stats">
+          <div class="success-rate">72%</div>
+          <div class="strategy-label">Email → Push</div>
+          <div class="usage-stat">3% usage</div>
+        </div>
+        <button class="view-details-btn">View Details</button>
+      </div>
+
+      <div class="strategy-card">
+        <div class="strategy-flow">
+          <div class="channel-icon whatsapp">
+            <i class="pi pi-whatsapp"></i>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="channel-icon sms">
+            <i class="pi pi-comment"></i>
+          </div>
+        </div>
+        <div class="strategy-stats">
+          <div class="success-rate">78%</div>
+          <div class="strategy-label">WhatsApp → SMS</div>
+          <div class="usage-stat">26% usage</div>
+        </div>
+        <button class="view-details-btn">View Details</button>
+      </div>
+
+      <div class="strategy-card">
+        <div class="strategy-flow">
+          <div class="channel-icon push">
+            <i class="pi pi-bell"></i>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="channel-icon email">
+            <i class="pi pi-envelope"></i>
+          </div>
+        </div>
+        <div class="strategy-stats">
+          <div class="success-rate">69%</div>
+          <div class="strategy-label">Push → Email</div>
+          <div class="usage-stat">15% usage</div>
+        </div>
+        <button class="view-details-btn">View Details</button>
+      </div>
+    </div>
+
+    <div class="strategies-navigation">
+      <button class="nav-btn prev" (click)="previousStrategies()">
+        <i class="pi pi-chevron-left"></i>
+      </button>
+      <button class="nav-btn next" (click)="nextStrategies()">
+        <i class="pi pi-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- AI Orchestration Recommendations -->
+  <div class="ai-orchestration-recommendations">
+    <div class="recommendations-header">
+      <h4><i class="pi pi-lightbulb"></i> AI Orchestration Recommendations</h4>
+    </div>
+    
+    <div class="recommendations-list">
+      <div class="recommendation-item">
+        <div class="recommendation-icon">
+          <i class="pi pi-info-circle"></i>
+        </div>
+        <div class="recommendation-text">
+          Use SMS as primary fallback for WhatsApp (84% success)
+        </div>
+        <button class="apply-btn">Apply</button>
+      </div>
+
+      <div class="recommendation-item">
+        <div class="recommendation-icon">
+          <i class="pi pi-clock"></i>
+        </div>
+        <div class="recommendation-text">
+          Implement 2-hour delay between fallback attempts
+        </div>
+        <button class="apply-btn">Apply</button>
+      </div>
+
+      <div class="recommendation-item">
+        <div class="recommendation-icon">
+          <i class="pi pi-users"></i>
+        </div>
+        <div class="recommendation-text">
+          Consider Push notifications for young demographics
+        </div>
+        <button class="apply-btn">Apply</button>
+      </div>
+    </div>
+  </div>
+</section>

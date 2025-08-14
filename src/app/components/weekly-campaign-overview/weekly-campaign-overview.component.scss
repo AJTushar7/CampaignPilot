@@ -96,6 +96,28 @@
               font-size: 1.5rem;
               font-weight: 700;
               color: #3b82f6;
+
+              &.today-count {
+                background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+                color: white;
+                padding: 0.25rem 0.5rem;
+                border-radius: 6px;
+                font-weight: 800;
+              }
+            }
+
+            &.today {
+              background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+              border: 2px solid #3b82f6;
+              box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+
+              .day-number.today-number {
+                background: #3b82f6;
+                color: white;
+                padding: 0.25rem 0.5rem;
+                border-radius: 50%;
+                font-weight: 800;
+              }
             }
           }
         }

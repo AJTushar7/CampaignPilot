@@ -8,6 +8,7 @@ interface WeekDay {
   scheduled: number;
   paused: number;
   trafficLevel: string;
+  isToday: boolean;
 }
 
 @Component({
@@ -26,7 +27,8 @@ export class WeeklyCampaignOverviewComponent implements OnInit {
       live: 2,
       scheduled: 4,
       paused: 0,
-      trafficLevel: 'Moderate'
+      trafficLevel: 'Moderate',
+      isToday: true  // Today is Thursday 14th
     },
     {
       name: 'Fri',
@@ -35,7 +37,8 @@ export class WeeklyCampaignOverviewComponent implements OnInit {
       live: 2,
       scheduled: 1,
       paused: 4,
-      trafficLevel: 'Moderate'
+      trafficLevel: 'Moderate',
+      isToday: false
     },
     {
       name: 'Sat',
@@ -44,7 +47,8 @@ export class WeeklyCampaignOverviewComponent implements OnInit {
       live: 3,
       scheduled: 5,
       paused: 2,
-      trafficLevel: 'Heavy'
+      trafficLevel: 'Heavy',
+      isToday: false
     },
     {
       name: 'Sun',
@@ -53,7 +57,8 @@ export class WeeklyCampaignOverviewComponent implements OnInit {
       live: 1,
       scheduled: 2,
       paused: 5,
-      trafficLevel: 'Heavy'
+      trafficLevel: 'Heavy',
+      isToday: false
     },
     {
       name: 'Mon',
@@ -62,7 +67,8 @@ export class WeeklyCampaignOverviewComponent implements OnInit {
       live: 4,
       scheduled: 1,
       paused: 0,
-      trafficLevel: 'Moderate'
+      trafficLevel: 'Moderate',
+      isToday: false
     },
     {
       name: 'Tue',
@@ -71,7 +77,8 @@ export class WeeklyCampaignOverviewComponent implements OnInit {
       live: 1,
       scheduled: 2,
       paused: 4,
-      trafficLevel: 'Moderate'
+      trafficLevel: 'Moderate',
+      isToday: false
     },
     {
       name: 'Wed',
@@ -80,7 +87,8 @@ export class WeeklyCampaignOverviewComponent implements OnInit {
       live: 2,
       scheduled: 3,
       paused: 5,
-      trafficLevel: 'Heavy'
+      trafficLevel: 'Heavy',
+      isToday: false
     }
   ];
 

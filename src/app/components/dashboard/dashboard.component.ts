@@ -343,6 +343,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   // Campaign Table Data - initialized after allCampaignCards
   campaignTableData: any[] = [];
+  
+  // KPI Data object for template binding
+  kpiData = {
+    totalCampaigns: 148,
+    totalSpend: '₹12.5L',
+    totalRevenue: '₹50.5L',
+    avgConversion: '10.7%',
+    activeUsers: '2.4M'
+  };
 
   constructor(private campaignDataService: CampaignDataService) {}
 
@@ -366,16 +375,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   onChannelChange() {
     console.log('Channel changed to:', this.selectedChannel);
-    // Only update KPIs and Weekly Overview - NOT channel performance to prevent layout issues
+    // Update KPIs based on selected channel
     this.updateKPIData();
+    // Update weekly overview based on selected channel
     this.updateWeeklyOverviewData();
-    
-    // Do NOT call applyFilters() which affects channel performance and causes horizontal scrollbar
   }
 
   onDateRangeChange() {
     console.log('Date range changed to:', this.selectedDateRange);
-    this.applyFilters();
+    // Update KPIs based on selected date range
+    this.updateKPIData();
+    // Update weekly overview based on selected date range
+    this.updateWeeklyOverviewData();
   }
 
   onTimeFilterChange(): void {
@@ -403,8 +414,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
       );
     }
     
-    // Always show max 3 cards
-    this.visibleCampaignCards = filteredCards.slice(0, 3);
+    // Show all filtered cards (up to 10)
+    this.visibleCampaignCards = filteredCards;
   }
 
   applyFilters(): void {
@@ -425,28 +436,76 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   updateKPIData(): void {
-    // Mock filtering logic - in real app, this would call API with filters
-    if (this.selectedDateRange === '7d') {
-      // Show last 7 days data
-      this.totalCampaigns = 12;
-      this.totalSpend = 95000;
-    } else {
-      // Show last 15 days data  
-      this.totalCampaigns = 18;
-      this.totalSpend = 185000;
+    // Update KPIs based on selected channel and date range
+    const baseData = {
+      '7d': { campaigns: 12, spend: 95000, revenue: 380000, conversion: 8.5, users: 1800000 },
+      '15d': { campaigns: 18, spend: 185000, revenue: 505000, conversion: 10.7, users: 2400000 }
+    };
+    
+    const data = baseData[this.selectedDateRange] || baseData['7d'];
+    
+    // Apply channel-specific multipliers
+    let multiplier = 1.0;
+    switch(this.selectedChannel) {
+      case 'sms': multiplier = 0.8; break;
+      case 'whatsapp': multiplier = 1.2; break;
+      case 'email': multiplier = 0.9; break;
+      case 'push': multiplier = 0.7; break;
+      case 'rcs': multiplier = 1.1; break;
+      default: multiplier = 1.0; // all channels
     }
+    
+    // Update KPI values
+    this.totalCampaigns = Math.round(data.campaigns * multiplier);
+    this.totalSpend = Math.round(data.spend * multiplier);
+    
+    // Update the actual KPI card values in the template
+    this.kpiData = {
+      totalCampaigns: this.totalCampaigns,
+      totalSpend: `₹${(this.totalSpend/100000).toFixed(1)}L`,
+      totalRevenue: `₹${(data.revenue * multiplier/100000).toFixed(1)}L`,
+      avgConversion: `${(data.conversion * multiplier).toFixed(1)}%`,
+      activeUsers: `${(data.users * multiplier/1000000).toFixed(1)}M`
+    };
   }
 
+
+
   updateWeeklyOverviewData(): void {
-    // Filter weekly overview data based on selected channel and date range
-    console.log('Updating weekly overview data for channel:', this.selectedChannel);
+    // Update weekly overview data based on selected channel and date range
+    console.log('Updating weekly overview data for channel:', this.selectedChannel, 'date range:', this.selectedDateRange);
     
-    // This would update the weekly campaign overview charts/data
-    // For now, just log the filtering - in real app, this would update specific datasets
-    if (this.selectedChannel !== 'all') {
-      console.log('Filtering weekly overview for channel:', this.selectedChannel);
+    // Apply channel and date range filters to weekly data
+    const baseMultiplier = this.selectedDateRange === '7d' ? 0.7 : 1.0;
+    let channelMultiplier = 1.0;
+    
+    switch(this.selectedChannel) {
+      case 'sms': channelMultiplier = 0.8; break;
+      case 'whatsapp': channelMultiplier = 1.2; break;
+      case 'email': channelMultiplier = 0.9; break;
+      case 'push': channelMultiplier = 0.7; break;
+      case 'rcs': channelMultiplier = 1.1; break;
+      default: channelMultiplier = 1.0; // all channels
     }
+    
+    const multiplier = baseMultiplier * channelMultiplier;
+    
+    // Update weekly summary totals
+    this.totalActiveCampaigns = Math.round(14 * multiplier);
+    this.totalScheduledCampaigns = Math.round(19 * multiplier);
+    this.totalWeeklyCampaigns = Math.round(52 * multiplier);
+    
+    // Update individual day data
+    this.weekDays = this.weekDays.map(day => ({
+      ...day,
+      campaignCount: Math.round(day.campaignCount * multiplier),
+      live: Math.round(day.live * multiplier),
+      scheduled: Math.round(day.scheduled * multiplier),
+      paused: Math.round(day.paused * multiplier)
+    }));
   }
+
+
 
   updateHeatmapData(): void {
     // Update heatmap based on date range

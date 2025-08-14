@@ -51,14 +51,33 @@ export class ExportMenuComponent implements OnInit {
     this.isExporting = true;
     try {
       console.log('Starting PDF export...');
-      this.campaignDataService.getCampaigns().subscribe(campaigns => {
-        console.log('Campaign data received, transforming...');
-        const campaignData = this.transformCampaignData(campaigns);
-        console.log('Data transformed, generating PDF...');
-        this.exportService.exportDashboardToPDF(this.kpiData, campaignData, this.channelData);
-        this.showExportMenu = false;
-        this.isExporting = false;
-      });
+      
+      // Use setTimeout to ensure UI updates before starting heavy operation
+      setTimeout(() => {
+        this.campaignDataService.getCampaigns().subscribe({
+          next: (campaigns) => {
+            console.log('Campaign data received, transforming...');
+            const campaignData = this.transformCampaignData(campaigns);
+            console.log('Data transformed, generating PDF...');
+            
+            try {
+              this.exportService.exportDashboardToPDF(this.kpiData, campaignData, this.channelData);
+              console.log('PDF generation completed successfully');
+              this.showExportMenu = false;
+            } catch (pdfError) {
+              console.error('PDF generation error:', pdfError);
+              alert('PDF generation failed. Please try again.');
+            } finally {
+              this.isExporting = false;
+            }
+          },
+          error: (error) => {
+            console.error('Campaign data error:', error);
+            alert('Failed to load campaign data. Please try again.');
+            this.isExporting = false;
+          }
+        });
+      }, 100);
     } catch (error) {
       console.error('Error exporting PDF:', error);
       alert('PDF export failed. Please try again.');

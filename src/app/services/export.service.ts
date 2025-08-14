@@ -197,8 +197,13 @@ export class ExportService {
 
     // Save PDF with immediate download
     console.log('Saving PDF...');
-    doc.save(`Campaign_Dashboard_Report_${this.formatDate(new Date())}.pdf`);
-    console.log('PDF download initiated');
+    try {
+      doc.save(`Campaign_Dashboard_Report_${this.formatDate(new Date())}.pdf`);
+      console.log('PDF download initiated successfully');
+    } catch (saveError) {
+      console.error('Error saving PDF:', saveError);
+      throw new Error('Failed to save PDF file');
+    }
   }
 
   // Export Campaign Data to Excel

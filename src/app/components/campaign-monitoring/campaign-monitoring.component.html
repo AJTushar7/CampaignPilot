@@ -1,160 +1,98 @@
-<p-card header="Real-time Campaign Monitoring">
-  <ng-template pTemplate="header">
-    <div class="flex align-items-center justify-content-between p-4">
-      <h3 class="text-lg font-semibold m-0">Real-time Campaign Monitoring</h3>
-      <div class="flex align-items-center gap-4">
-        <p-dropdown 
-          [options]="statusOptions" 
-          [(ngModel)]="selectedStatus"
-          optionLabel="label"
-          optionValue="value"
-          [style]="{'min-width': '120px'}">
-        </p-dropdown>
-        <div class="flex bg-surface-100 border-round-lg p-1">
-          <p-button 
-            label="Cards" 
-            icon="pi pi-th-large"
-            styleClass="p-button-sm"
-            [class]="viewMode === 'cards' ? 'p-button-primary' : 'p-button-outlined'"
-            (onClick)="viewMode = 'cards'">
-          </p-button>
-          <p-button 
-            label="Table" 
-            icon="pi pi-list"
-            styleClass="p-button-sm"
-            [class]="viewMode === 'table' ? 'p-button-primary' : 'p-button-outlined'"
-            (onClick)="viewMode = 'table'">
-          </p-button>
-        </div>
+<!-- Real-time Campaign Monitor -->
+<section class="real-time-monitor">
+  <div class="monitor-header">
+    <div class="monitor-title">
+      <i class="pi pi-eye"></i>
+      <span>Real-time Campaign Monitor</span>
+    </div>
+    <div class="monitor-controls">
+      <div class="view-toggle">
+        <button [class.active]="viewMode === 'cards'" (click)="viewMode = 'cards'">Cards</button>
+        <button [class.active]="viewMode === 'table'" (click)="viewMode = 'table'">Table</button>
       </div>
-    </div>
-  </ng-template>
-
-  <!-- Pagination Controls -->
-  <div class="flex align-items-center justify-content-between mb-4">
-    <div class="flex align-items-center gap-2">
-      <p-button 
-        icon="pi pi-chevron-left"
-        styleClass="p-button-outlined p-button-sm"
-        [disabled]="currentPage === 0"
-        (onClick)="previousPage()">
-      </p-button>
-      <span class="text-sm text-600">
-        {{currentPage * campaignsPerPage + 1}}-{{Math.min((currentPage + 1) * campaignsPerPage, campaigns.length)}} of {{campaigns.length}} campaigns
-      </span>
-      <p-button 
-        icon="pi pi-chevron-right"
-        styleClass="p-button-outlined p-button-sm"
-        [disabled]="currentPage >= totalPages - 1"
-        (onClick)="nextPage()">
-      </p-button>
-    </div>
-    <div class="text-sm text-500 flex align-items-center">
-      <i class="pi pi-clock mr-1"></i>
-      Last updated: 2 min ago
+      <p-dropdown 
+        [options]="statusOptions" 
+        [(ngModel)]="selectedStatus"
+        optionLabel="label"
+        optionValue="value"
+        placeholder="All Status"
+        (onChange)="filterCampaigns()"
+        [style]="{'min-width': '120px'}">
+      </p-dropdown>
+      <p-dropdown 
+        [options]="dateOptions" 
+        [(ngModel)]="selectedDateFilter"
+        optionLabel="label"
+        optionValue="value"
+        placeholder="Last 7 Days"
+        (onChange)="filterCampaigns()"
+        [style]="{'min-width': '120px'}">
+      </p-dropdown>
     </div>
   </div>
 
-  <!-- Cards View -->
-  <div *ngIf="viewMode === 'cards'" class="grid">
-    <div class="col-12 md:col-6 lg:col-4" *ngFor="let campaign of paginatedCampaigns">
-      <div class="campaign-card">
-        <div class="flex align-items-start justify-content-between mb-4">
-          <div>
-            <h4 class="font-semibold text-900 m-0 mb-1">{{campaign.name}}</h4>
-            <p class="text-sm text-600 m-0">
-              {{campaign.type}} • {{campaign.channels.join(' + ')}}
-            </p>
+  <!-- Campaign Cards -->
+  <div class="monitor-content">
+    <div class="campaigns-container" *ngIf="viewMode === 'cards'">
+      <div class="campaign-card-item" *ngFor="let campaign of filteredCampaigns">
+        <div class="campaign-header">
+          <div class="campaign-info">
+            <div class="campaign-name">{{campaign.name}}</div>
+            <div class="campaign-details">{{campaign.type}} Campaign</div>
           </div>
-          <div class="flex align-items-center gap-2">
-            <p-tag 
-              [value]="campaign.status" 
-              [ngClass]="getStatusClass(campaign.status)"
-              styleClass="text-xs">
-            </p-tag>
-            <p-button 
-              *ngIf="campaign.status === 'active'"
-              icon="pi pi-pause"
-              styleClass="p-button-text p-button-sm"
-              (onClick)="toggleCampaignStatus(campaign)">
-            </p-button>
-            <p-button 
-              *ngIf="campaign.status === 'paused'"
-              icon="pi pi-play"
-              styleClass="p-button-text p-button-sm"
-              (onClick)="toggleCampaignStatus(campaign)">
-            </p-button>
+          <div class="campaign-status">
+            <span class="status-badge" [ngClass]="'status-' + campaign.status.toLowerCase()">
+              <i [class]="getStatusIcon(campaign.status)"></i>
+              {{campaign.status | titlecase}}
+            </span>
           </div>
         </div>
         
-        <div class="flex flex-column gap-3">
-          <div *ngIf="campaign.status !== 'scheduled'">
-            <div class="flex justify-content-between text-sm mb-2">
-              <span class="text-600">Sent</span>
-              <span class="font-medium">{{campaign.sent | number}}</span>
+        <div class="campaign-progress">
+          <div class="progress-item">
+            <div class="progress-label">Progress</div>
+            <div class="progress-bar">
+              <div class="progress-fill" [style.width.%]="getProgressPercentage(campaign)"></div>
             </div>
-            <div class="flex justify-content-between text-sm mb-2">
-              <span class="text-600">Delivered</span>
-              <span class="font-medium">{{campaign.delivered | number}} ({{getDeliveryRate(campaign)}}%)</span>
+            <div class="progress-percentage">{{getProgressPercentage(campaign)}}%</div>
+          </div>
+        </div>
+        
+        <div class="campaign-metrics">
+          <div class="metric-row">
+            <div class="metric">
+              <span class="metric-value">{{campaign.sent | number}}</span>
+              <span class="metric-label">Sent</span>
             </div>
-            <div class="flex justify-content-between text-sm mb-2">
-              <span class="text-600">Opened</span>
-              <span class="font-medium">{{campaign.opened | number}} ({{getOpenRate(campaign)}}%)</span>
-            </div>
-            <div class="flex justify-content-between text-sm">
-              <span class="text-600">Clicked</span>
-              <span class="font-medium">{{campaign.clicked | number}} ({{getClickRate(campaign)}}%)</span>
+            <div class="metric">
+              <span class="metric-value">{{campaign.targetAudience | number}}</span>
+              <span class="metric-label">Target</span>
             </div>
           </div>
           
-          <div *ngIf="campaign.status === 'scheduled'">
-            <div class="flex justify-content-between text-sm mb-2">
-              <span class="text-600">Target Audience</span>
-              <span class="font-medium">{{campaign.targetAudience | number}}</span>
+          <div class="metric-row">
+            <div class="metric">
+              <span class="metric-value">₹{{campaign.spent | number}}</span>
+              <span class="metric-label">Spent</span>
             </div>
-            <div class="flex justify-content-between text-sm">
-              <span class="text-600">Estimated Cost</span>
-              <span class="font-medium">${{campaign.cost}}</span>
-            </div>
-            <div *ngIf="campaign.scheduledAt" class="bg-surface-50 border-round-lg p-3 mt-3">
-              <div class="text-xs text-600 mb-1">Scheduled for:</div>
-              <div class="text-sm font-medium text-900">
-                {{campaign.scheduledAt | date:'short'}}
-              </div>
+            <div class="metric">
+              <span class="metric-value">{{campaign.conversions}}</span>
+              <span class="metric-label">Conversions</span>
             </div>
           </div>
-
-          <div *ngIf="campaign.status === 'paused'" class="bg-orange-50 border-round-lg p-3 border-1 border-orange-200">
-            <div class="text-xs text-orange-700 font-medium mb-1 flex align-items-center">
-              <i class="pi pi-pause mr-1"></i>
-              Campaign Paused
+          
+          <div class="budget-usage">
+            <span class="budget-label">Budget Usage</span>
+            <div class="budget-bar">
+              <div class="budget-fill" [style.width.%]="getBudgetUsagePercentage(campaign)"></div>
             </div>
-            <div class="text-xs text-orange-600">Paused due to low engagement</div>
+            <span class="budget-percentage">{{getBudgetUsagePercentage(campaign)}}%</span>
           </div>
-        </div>
-        
-        <div class="mt-4 pt-4 border-top-1 border-200 flex align-items-center justify-content-between">
-          <div class="text-xs text-500">
-            {{campaign.status === 'scheduled' ? 'Created' : 
-              campaign.status === 'paused' ? 'Paused' : 'Started'}}: 
-            <span>
-              {{formatTimeAgo(
-                campaign.status === 'scheduled' ? campaign.createdAt :
-                campaign.status === 'paused' ? (campaign.pausedAt || campaign.createdAt) :
-                (campaign.startedAt || campaign.createdAt)
-              )}}
-            </span>
-          </div>
-          <p-button 
-            label="View Details" 
-            styleClass="p-button-text p-button-sm text-primary"
-            (onClick)="viewCampaignDetails(campaign)">
-          </p-button>
         </div>
       </div>
     </div>
   </div>
-</p-card>
+</section>
 
 <!-- Campaign Details Modal -->
 <p-dialog 

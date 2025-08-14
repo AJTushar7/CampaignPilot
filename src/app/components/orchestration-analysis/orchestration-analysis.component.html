@@ -1,22 +1,13 @@
 <!-- Orchestration Analysis Section -->
 <section class="orchestration-analysis">
   <div class="section-header">
-    <div class="section-title">
-      <i class="pi pi-sitemap"></i>
-      <span>Orchestration Analysis</span>
-    </div>
-    <div class="section-controls">
-      <div class="search-box">
-        <i class="pi pi-search"></i>
-        <input type="text" placeholder="Search strategies..." [(ngModel)]="searchQuery">
-      </div>
-    </div>
+    <h3 class="section-title">Orchestration Analysis</h3>
   </div>
 
-  <!-- Fallback Strategies Section -->
+  <!-- Fallback Strategies Section - Single Row -->
   <div class="fallback-strategies">    
     <div class="strategies-grid">
-      <div class="strategy-card" *ngFor="let strategy of filteredStrategies">
+      <div class="strategy-card" *ngFor="let strategy of visibleStrategies">
         <div class="strategy-flow">
           <div class="channel-icon" [class]="strategy.fromChannel.toLowerCase()">
             <i [class]="strategy.fromIcon"></i>
@@ -29,62 +20,9 @@
         <div class="strategy-stats">
           <div class="success-rate">{{strategy.successRate}}%</div>
           <div class="strategy-label">{{strategy.fromChannel}} → {{strategy.toChannel}}</div>
-          <div class="usage-stat">{{strategy.usage}}% usage</div>
         </div>
-        <div class="strategy-tags">
-          <span class="tag recommended" *ngIf="strategy.isRecommended">Recommended</span>
-          <span class="tag" [class]="strategy.tagClass" *ngFor="let tag of strategy.tags">{{tag}}</span>
-        </div>
-        <button class="view-details-btn">View Details</button>
-      </div>
-    </div>
-
-    <div class="strategies-navigation">
-      <button class="nav-btn prev" (click)="previousStrategies()">
-        <i class="pi pi-chevron-left"></i>
-      </button>
-      <button class="nav-btn next" (click)="nextStrategies()">
-        <i class="pi pi-chevron-right"></i>
-      </button>
-    </div>
-  </div>
-
-  <!-- AI Orchestration Recommendations -->
-  <div class="ai-orchestration-recommendations">
-    <div class="recommendations-header">
-      <h4><i class="pi pi-lightbulb"></i> AI Orchestration Recommendations</h4>
-    </div>
-    
-    <div class="recommendations-list">
-      <div class="recommendation-item">
-        <div class="recommendation-icon">
-          <i class="pi pi-info-circle"></i>
-        </div>
-        <div class="recommendation-text">
-          Use SMS as primary fallback for WhatsApp (84% success)
-        </div>
-        <button class="apply-btn">Apply</button>
-      </div>
-
-      <div class="recommendation-item">
-        <div class="recommendation-icon">
-          <i class="pi pi-clock"></i>
-        </div>
-        <div class="recommendation-text">
-          Implement 2-hour delay between fallback attempts
-        </div>
-        <button class="apply-btn">Apply</button>
-      </div>
-
-      <div class="recommendation-item">
-        <div class="recommendation-icon">
-          <i class="pi pi-users"></i>
-        </div>
-        <div class="recommendation-text">
-          Consider Push notifications for young demographics
-        </div>
-        <button class="apply-btn">Apply</button>
       </div>
     </div>
   </div>
+
 </section>

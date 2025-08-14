@@ -152,15 +152,81 @@
     }
   }
 
-  .weekly-overview-content {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease;
+  .weekly-overview-collapsed {
+    padding: 1rem 1.5rem;
 
-    &.expanded {
-      max-height: 500px;
-      padding: 1.5rem;
+    .collapsed-summary {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .summary-stats {
+        display: flex;
+        gap: 2rem;
+
+        .stat-item {
+          text-align: center;
+
+          .stat-value {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.25rem;
+          }
+
+          .stat-label {
+            font-size: 0.875rem;
+            color: #64748b;
+          }
+        }
+      }
+
+      .weekly-status-indicators {
+        display: flex;
+        gap: 1.5rem;
+
+        .status-dot-group {
+          text-align: center;
+
+          .day-label {
+            display: block;
+            font-size: 0.75rem;
+            color: #64748b;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+          }
+
+          .status-dots-mini {
+            display: flex;
+            justify-content: center;
+            gap: 0.125rem;
+
+            .mini-dot {
+              width: 6px;
+              height: 6px;
+              border-radius: 50%;
+              
+              &.live {
+                background-color: #22c55e;
+              }
+              
+              &.scheduled {
+                background-color: #3b82f6;
+              }
+              
+              &.paused {
+                background-color: #f59e0b;
+              }
+            }
+          }
+        }
+      }
     }
+  }
+
+  .weekly-overview-content {
+    padding: 1.5rem;
 
     .week-calendar {
       display: grid;
@@ -265,6 +331,408 @@
         margin-left: auto;
         font-size: 0.875rem;
         color: #64748b;
+      }
+    }
+  }
+}
+
+/* Analytics Row - Channel Performance & Heatmap */
+.analytics-row {
+  margin-bottom: 1.5rem;
+
+  .analytics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+
+    .channel-performance-card,
+    .engagement-heatmap-card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid #e2e8f0;
+
+        .header-title {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          font-weight: 600;
+          color: #1e293b;
+
+          i {
+            color: #3b82f6;
+          }
+        }
+
+        .performance-filter {
+          padding: 0.375rem 0.75rem;
+          border: 1px solid #e2e8f0;
+          border-radius: 6px;
+          font-size: 0.875rem;
+          background: white;
+          color: #64748b;
+        }
+
+        .live-data-btn {
+          display: flex;
+          align-items: center;
+          gap: 0.375rem;
+          padding: 0.375rem 0.75rem;
+          background: #dcfce7;
+          color: #166534;
+          border: none;
+          border-radius: 6px;
+          font-size: 0.875rem;
+          font-weight: 500;
+
+          i {
+            color: #22c55e;
+            font-size: 0.625rem;
+          }
+        }
+      }
+    }
+
+    .channel-performance-card {
+      .channel-metrics {
+        padding: 1rem 1.5rem;
+
+        .channel-item {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 0.75rem 0;
+          border-bottom: 1px solid #f1f5f9;
+
+          &:last-child {
+            border-bottom: none;
+          }
+
+          .channel-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+
+            .channel-icon {
+              width: 32px;
+              height: 32px;
+              border-radius: 6px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+
+              i {
+                color: white;
+                font-size: 0.875rem;
+              }
+            }
+
+            .channel-details {
+              .channel-name {
+                font-weight: 500;
+                color: #1e293b;
+                margin-bottom: 0.125rem;
+              }
+
+              .channel-value {
+                font-size: 0.875rem;
+                color: #64748b;
+              }
+            }
+          }
+
+          .channel-performance {
+            text-align: right;
+            min-width: 120px;
+
+            .performance-bar {
+              width: 80px;
+              height: 6px;
+              background: #f1f5f9;
+              border-radius: 3px;
+              margin-bottom: 0.375rem;
+              margin-left: auto;
+
+              .performance-fill {
+                height: 100%;
+                border-radius: 3px;
+                transition: width 0.3s ease;
+              }
+            }
+
+            .performance-stats {
+              display: flex;
+              justify-content: space-between;
+              font-size: 0.75rem;
+
+              .percentage {
+                color: #1e293b;
+                font-weight: 600;
+              }
+
+              .trend {
+                font-weight: 500;
+
+                &.positive {
+                  color: #059669;
+                }
+
+                &.negative {
+                  color: #dc2626;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .channel-kpis {
+        padding: 1rem 1.5rem;
+        background: #f8fafc;
+        border-top: 1px solid #e2e8f0;
+
+        .kpi-summary-row {
+          display: flex;
+          justify-content: space-between;
+
+          .kpi-summary-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+
+            .kpi-summary-icon {
+              width: 36px;
+              height: 36px;
+              border-radius: 8px;
+              background: white;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+
+              i {
+                color: #3b82f6;
+                font-size: 1rem;
+              }
+            }
+
+            .kpi-summary-data {
+              .kpi-summary-value {
+                font-size: 1.125rem;
+                font-weight: 700;
+                color: #1e293b;
+                margin-bottom: 0.125rem;
+              }
+
+              .kpi-summary-label {
+                font-size: 0.75rem;
+                color: #64748b;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .engagement-heatmap-card {
+      .heatmap-container {
+        padding: 1rem 1.5rem;
+
+        .heatmap-grid {
+          margin-bottom: 1rem;
+
+          .heatmap-header {
+            display: grid;
+            grid-template-columns: 60px repeat(4, 1fr);
+            gap: 0.25rem;
+            margin-bottom: 0.25rem;
+
+            .time-slot {
+              text-align: center;
+              font-size: 0.75rem;
+              color: #64748b;
+              font-weight: 500;
+            }
+          }
+
+          .heatmap-row {
+            display: grid;
+            grid-template-columns: 60px repeat(4, 1fr);
+            gap: 0.25rem;
+            margin-bottom: 0.25rem;
+
+            .day-label {
+              display: flex;
+              align-items: center;
+              font-size: 0.75rem;
+              color: #64748b;
+              font-weight: 500;
+            }
+
+            .heatmap-cell {
+              aspect-ratio: 1;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-size: 0.75rem;
+              font-weight: 600;
+              border-radius: 4px;
+              cursor: pointer;
+              transition: transform 0.2s ease;
+
+              &:hover {
+                transform: scale(1.05);
+              }
+
+              &.intensity-low {
+                background: #dbeafe;
+                color: #1e40af;
+              }
+
+              &.intensity-medium {
+                background: #93c5fd;
+                color: #1e3a8a;
+              }
+
+              &.intensity-high {
+                background: #3b82f6;
+                color: white;
+              }
+
+              &.intensity-highest {
+                background: #1d4ed8;
+                color: white;
+              }
+            }
+          }
+        }
+
+        .heatmap-legend {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+          margin-bottom: 1rem;
+
+          .legend-label {
+            font-size: 0.75rem;
+            color: #64748b;
+          }
+
+          .legend-gradient {
+            display: flex;
+            gap: 0.25rem;
+
+            .legend-dot {
+              width: 12px;
+              height: 12px;
+              border-radius: 2px;
+
+              &.intensity-low {
+                background: #dbeafe;
+              }
+
+              &.intensity-medium {
+                background: #93c5fd;
+              }
+
+              &.intensity-high {
+                background: #3b82f6;
+              }
+
+              &.intensity-highest {
+                background: #1d4ed8;
+              }
+            }
+          }
+        }
+
+        .ai-suggestions {
+          margin-bottom: 1rem;
+
+          .suggestions-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+
+            i {
+              color: #f59e0b;
+            }
+          }
+
+          .suggestions-list {
+            .suggestion-item {
+              font-size: 0.75rem;
+              color: #64748b;
+              margin-bottom: 0.25rem;
+              line-height: 1.4;
+            }
+          }
+        }
+
+        .peak-hours {
+          .peak-hours-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.75rem;
+
+            i {
+              color: #3b82f6;
+            }
+          }
+
+          .peak-hours-list {
+            .peak-hour-item {
+              display: flex;
+              align-items: center;
+              gap: 0.75rem;
+              margin-bottom: 0.5rem;
+
+              .hour-time {
+                font-size: 0.75rem;
+                color: #64748b;
+                min-width: 40px;
+              }
+
+              .hour-bar {
+                flex: 1;
+                height: 8px;
+                background: #f1f5f9;
+                border-radius: 4px;
+                overflow: hidden;
+
+                .hour-fill {
+                  height: 100%;
+                  background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+                  border-radius: 4px;
+                  transition: width 0.3s ease;
+                }
+              }
+
+              .hour-percentage {
+                font-size: 0.75rem;
+                color: #1e293b;
+                font-weight: 600;
+                min-width: 30px;
+                text-align: right;
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -378,8 +846,22 @@
     }
   }
 
+  .weekly-overview-collapsed .collapsed-summary {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+
+    .weekly-status-indicators {
+      gap: 1rem;
+    }
+  }
+
   .weekly-overview-content .week-calendar {
     grid-template-columns: repeat(3, 1fr);
+  }
+
+  .analytics-row .analytics-grid {
+    grid-template-columns: 1fr;
   }
 
   .kpi-section .kpi-grid {
@@ -400,5 +882,15 @@
 @media (max-width: 480px) {
   .weekly-overview-content .week-calendar {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .weekly-overview-collapsed .weekly-status-indicators {
+    grid-template-columns: repeat(4, 1fr);
+    display: grid;
+  }
+
+  .analytics-row .heatmap-grid .heatmap-header,
+  .analytics-row .heatmap-grid .heatmap-row {
+    grid-template-columns: 40px repeat(4, 1fr);
   }
 }

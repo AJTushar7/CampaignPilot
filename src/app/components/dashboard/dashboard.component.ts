@@ -605,6 +605,22 @@ export class DashboardComponent implements OnInit, OnDestroy {
     return Array(count).fill(0).map((_, i) => i);
   }
 
+  getLimitedDotsArray(count: number, maxDots: number): number[] {
+    const limitedCount = Math.min(count, maxDots);
+    return Array(limitedCount).fill(0).map((_, i) => i);
+  }
+
+  getChannelIcon(channelName: string): string {
+    const iconMap: { [key: string]: string } = {
+      'SMS': 'comment',
+      'WhatsApp': 'whatsapp',
+      'Email': 'envelope',
+      'Push': 'bell',
+      'RCS': 'comments'
+    };
+    return iconMap[channelName] || 'chart-bar';
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

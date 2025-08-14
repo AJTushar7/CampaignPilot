@@ -16,7 +16,8 @@
                      optionLabel="label" 
                      optionValue="value"
                      placeholder="All Channels"
-                     [style]="{'min-width': '140px'}">
+                     [style]="{'min-width': '140px'}"
+                     (onChange)="onChannelChange()">
           </p-dropdown>
         </div>
         <div class="search-container">
@@ -230,13 +231,15 @@
                    [(ngModel)]="selectedStatusFilter"
                    optionLabel="label" 
                    optionValue="value"
-                   placeholder="All Status">
+                   placeholder="All Status"
+                   (onChange)="onStatusFilterChange()">
         </p-dropdown>
         <p-dropdown [options]="timeFilterOptions" 
                    [(ngModel)]="selectedTimeFilter"
                    optionLabel="label" 
                    optionValue="value"
-                   placeholder="Last 7 Days">
+                   placeholder="Last 7 Days"
+                   (onChange)="onTimeFilterChange()">
         </p-dropdown>
       </div>
     </div>

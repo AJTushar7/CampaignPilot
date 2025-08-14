@@ -55,17 +55,6 @@ export class OrchestrationAnalysisComponent implements OnInit {
       tagClass: 'primary'
     },
     {
-      fromChannel: 'Push',
-      toChannel: 'Email',
-      fromIcon: 'pi pi-bell',
-      toIcon: 'pi pi-envelope',
-      successRate: 69,
-      usage: 15,
-      isRecommended: false,
-      tags: ['Detailed', 'Follow-up'],
-      tagClass: 'warning'
-    },
-    {
       fromChannel: 'RCS',
       toChannel: 'SMS',
       fromIcon: 'pi pi-mobile',
@@ -75,17 +64,6 @@ export class OrchestrationAnalysisComponent implements OnInit {
       isRecommended: true,
       tags: ['Premium', 'High Convert'],
       tagClass: 'success'
-    },
-    {
-      fromChannel: 'Voice',
-      toChannel: 'WhatsApp',
-      fromIcon: 'pi pi-phone',
-      toIcon: 'pi pi-whatsapp',
-      successRate: 65,
-      usage: 2,
-      isRecommended: false,
-      tags: ['Personal', 'Urgent'],
-      tagClass: 'secondary'
     }
   ];
 

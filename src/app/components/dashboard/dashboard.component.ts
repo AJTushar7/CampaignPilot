@@ -265,10 +265,102 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
   ];
 
+  // Store all campaign cards for filtering
+  allCampaignCards = [
+    {
+      name: 'Flash Sale Alert',
+      channel: 'SMS',
+      status: 'Executing',
+      statusClass: 'executing',
+      statusIcon: 'pi pi-play',
+      icon: 'pi pi-mobile',
+      progressPercentage: 67,
+      sent: '89K',
+      target: '134K',
+      spent: '₹29K',
+      conversions: '1234',
+      budgetUsage: 67.2
+    },
+    {
+      name: 'Weekend Offer',
+      channel: 'WhatsApp',
+      status: 'Scheduled',
+      statusClass: 'scheduled',
+      statusIcon: 'pi pi-clock',
+      icon: 'pi pi-whatsapp',
+      progressPercentage: 0,
+      sent: '0K',
+      target: '88K',
+      spent: '₹0K',
+      conversions: '0',
+      budgetUsage: 0.0
+    },
+    {
+      name: 'Service Reminder',
+      channel: 'Email Campaign',
+      status: 'Paused',
+      statusClass: 'paused',
+      statusIcon: 'pi pi-pause',
+      icon: 'pi pi-envelope',
+      progressPercentage: 23,
+      sent: '12K',
+      target: '54K',
+      spent: '₹9K',
+      conversions: '89',
+      budgetUsage: 38.7
+    },
+    {
+      name: 'Product Launch',
+      channel: 'Push',
+      status: 'Failed',
+      statusClass: 'failed',
+      statusIcon: 'pi pi-times',
+      icon: 'pi pi-bell',
+      progressPercentage: 12,
+      sent: '3K',
+      target: '25K',
+      spent: '₹2K',
+      conversions: '12',
+      budgetUsage: 8.0
+    }
+  ];
+
   constructor(private campaignDataService: CampaignDataService) {}
 
   ngOnInit(): void {
-    // Initialize component
+    this.updateCampaignDataFilters();
+  }
+
+  onChannelChange() {
+    console.log('Channel changed to:', this.selectedChannel);
+  }
+
+  onTimeFilterChange(): void {
+    this.updateCampaignDataFilters();
+  }
+
+  onStatusFilterChange(): void {
+    this.updateCampaignDataFilters();
+  }
+
+  updateCampaignDataFilters(): void {
+    let filteredCards = [...this.allCampaignCards];
+    
+    // Filter by status
+    if (this.selectedStatusFilter !== 'all') {
+      filteredCards = filteredCards.filter(campaign => 
+        campaign.statusClass === this.selectedStatusFilter
+      );
+    }
+    
+    // Filter by time (simplified logic)
+    if (this.selectedTimeFilter === 'today') {
+      filteredCards = filteredCards.filter(campaign => 
+        campaign.statusClass === 'executing'
+      );
+    }
+    
+    this.visibleCampaignCards = filteredCards.slice(0, 3);
   }
 
   ngOnDestroy(): void {

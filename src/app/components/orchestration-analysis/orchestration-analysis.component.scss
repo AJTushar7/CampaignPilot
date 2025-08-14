@@ -4,23 +4,24 @@
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   margin-bottom: 1.5rem;
+  padding: 1.5rem;
   overflow: hidden;
 
   .section-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1.25rem 1.5rem;
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
     border-bottom: 1px solid #e9ecef;
-    background: #f8f9fa;
 
     .section-title {
       display: flex;
       align-items: center;
       gap: 0.75rem;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       font-weight: 600;
-      color: #2c3e50;
+      color: #495057;
 
       i {
         color: #3b82f6;
@@ -59,12 +60,13 @@
   }
 
   .fallback-strategies {
-    padding: 1.5rem;
     border-bottom: 1px solid #e9ecef;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
 
     .strategies-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 1rem;
       margin-bottom: 1rem;
 
@@ -256,7 +258,6 @@
   }
 
   .ai-orchestration-recommendations {
-    padding: 1.5rem;
 
     .recommendations-header {
       margin-bottom: 1rem;

@@ -95,6 +95,38 @@ export class WeeklyCampaignOverviewComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    this.generateWeekDays();
+  }
+
+  generateWeekDays() {
+    const today = new Date();
+    const currentDay = today.getDay(); // 0 = Sunday, 1 = Monday, etc.
+    const monday = new Date(today);
+    
+    // Calculate Monday of current week
+    const diff = today.getDate() - currentDay + (currentDay === 0 ? -6 : 1);
+    monday.setDate(diff);
+    
+    this.weekDays = [];
+    const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+    
+    for (let i = 0; i < 5; i++) {
+      const currentDate = new Date(monday);
+      currentDate.setDate(monday.getDate() + i);
+      
+      const isToday = currentDate.toDateString() === today.toDateString();
+      
+      this.weekDays.push({
+        name: dayNames[i],
+        number: currentDate.getDate(),
+        totalCampaigns: Math.floor(Math.random() * 15) + 3,
+        live: Math.floor(Math.random() * 8) + 1,
+        scheduled: Math.floor(Math.random() * 6) + 2,
+        paused: Math.floor(Math.random() * 2),
+        trafficLevel: ['Light', 'Moderate', 'Heavy'][Math.floor(Math.random() * 3)],
+        isToday: isToday
+      });
+    }
   }
 
   toggleExpanded(): void {

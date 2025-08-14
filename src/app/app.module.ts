@@ -40,6 +40,7 @@ import { JourneyOrchestrationComponent } from './components/journey-orchestratio
 import { InactiveCustomersComponent } from './components/inactive-customers/inactive-customers.component';
 import { FestivalCalendarComponent } from './components/festival-calendar/festival-calendar.component';
 import { CampaignNotificationsComponent } from './components/campaign-notifications/campaign-notifications.component';
+import { WeeklyCampaignOverviewComponent } from './components/weekly-campaign-overview/weekly-campaign-overview.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { CampaignNotificationsComponent } from './components/campaign-notificati
     JourneyOrchestrationComponent,
     InactiveCustomersComponent,
     FestivalCalendarComponent,
-    CampaignNotificationsComponent
+    CampaignNotificationsComponent,
+    WeeklyCampaignOverviewComponent
   ],
   imports: [
     BrowserModule,

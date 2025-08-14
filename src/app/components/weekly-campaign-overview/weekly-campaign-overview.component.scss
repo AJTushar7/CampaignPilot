@@ -1,0 +1,320 @@
+/* Weekly Campaign Overview Component Styles */
+.weekly-campaign-overview {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+
+  .overview-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid #e9ecef;
+    background: #f8f9fa;
+
+    .overview-title {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #2c3e50;
+
+      i {
+        color: #3b82f6;
+        font-size: 1.25rem;
+      }
+    }
+
+    .overview-controls {
+      .collapse-toggle {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        background: #3b82f6;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover {
+          background: #2563eb;
+          transform: translateY(-1px);
+        }
+
+        i {
+          font-size: 0.75rem;
+        }
+      }
+    }
+  }
+
+  .overview-content {
+    padding: 1.5rem;
+
+    /* Collapsed View Styles */
+    &.collapsed {
+      .week-summary {
+        .week-days-row {
+          display: flex;
+          gap: 1rem;
+          margin-bottom: 1rem;
+
+          .day-card {
+            flex: 1;
+            text-align: center;
+            padding: 1rem 0.5rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+
+            .day-header {
+              margin-bottom: 0.5rem;
+
+              .day-name {
+                display: block;
+                font-size: 0.875rem;
+                font-weight: 500;
+                color: #6c757d;
+              }
+
+              .day-number {
+                display: block;
+                font-size: 1.25rem;
+                font-weight: 600;
+                color: #2c3e50;
+              }
+            }
+
+            .campaign-count {
+              font-size: 1.5rem;
+              font-weight: 700;
+              color: #3b82f6;
+            }
+          }
+        }
+
+        .summary-footer {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding-top: 1rem;
+          border-top: 1px solid #e9ecef;
+
+          .summary-stats {
+            display: flex;
+            gap: 1.5rem;
+
+            .stat {
+              font-size: 0.875rem;
+              font-weight: 500;
+              color: #6c757d;
+            }
+          }
+
+          .total-count {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #2c3e50;
+          }
+        }
+      }
+    }
+
+    /* Expanded View Styles */
+    &.expanded {
+      .week-calendar {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+
+        .calendar-day {
+          background: #f8f9fa;
+          border: 1px solid #e9ecef;
+          border-radius: 8px;
+          padding: 1rem;
+          min-height: 160px;
+          transition: all 0.2s ease;
+
+          &:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+          }
+
+          &.traffic-moderate {
+            border-left: 4px solid #ffc107;
+          }
+
+          &.traffic-heavy {
+            border-left: 4px solid #dc3545;
+          }
+
+          .day-header {
+            margin-bottom: 1rem;
+            text-align: center;
+
+            .day-date {
+              .day-name {
+                display: block;
+                font-size: 0.875rem;
+                font-weight: 500;
+                color: #6c757d;
+                margin-bottom: 0.25rem;
+              }
+
+              .day-number {
+                display: block;
+                font-size: 1.5rem;
+                font-weight: 700;
+                color: #2c3e50;
+              }
+            }
+          }
+
+          .day-content {
+            .campaign-total {
+              text-align: center;
+              font-size: 1.25rem;
+              font-weight: 600;
+              color: #3b82f6;
+              margin-bottom: 1rem;
+            }
+
+            .status-breakdown {
+              margin-bottom: 1rem;
+
+              .status-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.25rem 0;
+                font-size: 0.875rem;
+
+                .count {
+                  font-weight: 600;
+                }
+
+                .label {
+                  color: #6c757d;
+                }
+
+                &.live .count {
+                  color: #28a745;
+                }
+
+                &.scheduled .count {
+                  color: #17a2b8;
+                }
+
+                &.paused .count {
+                  color: #ffc107;
+                }
+              }
+            }
+
+            .traffic-indicator {
+              text-align: center;
+              padding: 0.5rem;
+              border-radius: 6px;
+              font-size: 0.75rem;
+              font-weight: 600;
+              text-transform: uppercase;
+
+              &.level-moderate {
+                background: #fff3cd;
+                color: #856404;
+                border: 1px solid #ffeaa7;
+              }
+
+              &.level-heavy {
+                background: #f8d7da;
+                color: #721c24;
+                border: 1px solid #f1959b;
+              }
+            }
+          }
+        }
+      }
+
+      .expanded-summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+
+        .summary-stats {
+          display: flex;
+          gap: 1.5rem;
+
+          .stat {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #6c757d;
+          }
+        }
+
+        .total-count {
+          font-size: 0.875rem;
+          font-weight: 600;
+          color: #2c3e50;
+        }
+      }
+    }
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .weekly-campaign-overview {
+    .overview-content.expanded {
+      .week-calendar {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .weekly-campaign-overview {
+    .overview-content {
+      &.collapsed {
+        .week-summary .week-days-row {
+          grid-template-columns: repeat(4, 1fr);
+        }
+      }
+
+      &.expanded {
+        .week-calendar {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .weekly-campaign-overview {
+    .overview-content {
+      &.collapsed {
+        .week-summary .week-days-row {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      &.expanded {
+        .week-calendar {
+          grid-template-columns: 1fr;
+        }
+      }
+    }
+  }
+}

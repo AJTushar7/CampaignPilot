@@ -1,0 +1,82 @@
+<!-- Weekly Campaign Overview Component -->
+<section class="weekly-campaign-overview">
+  <div class="overview-header">
+    <div class="overview-title">
+      <i class="pi pi-calendar-times"></i>
+      <span>Weekly Campaign Overview</span>
+    </div>
+    <div class="overview-controls">
+      <button class="collapse-toggle" (click)="toggleExpanded()">
+        <span>{{isExpanded ? 'Collapse' : 'Expand'}}</span>
+        <i [class]="isExpanded ? 'pi pi-chevron-up' : 'pi pi-chevron-down'"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Collapsed View -->
+  <div class="overview-content collapsed" *ngIf="!isExpanded">
+    <div class="week-summary">
+      <div class="week-days-row">
+        <div class="day-card" *ngFor="let day of weekDays">
+          <div class="day-header">
+            <span class="day-name">{{day.name}}</span>
+            <span class="day-number">{{day.number}}</span>
+          </div>
+          <div class="campaign-count">{{day.totalCampaigns}}</div>
+        </div>
+      </div>
+      <div class="summary-footer">
+        <div class="summary-stats">
+          <span class="stat">{{totalActiveWeek}} Active</span>
+          <span class="stat">{{totalScheduledWeek}} Scheduled</span>
+        </div>
+        <div class="total-count">Total: {{totalCampaignsWeek}} campaigns this week</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Expanded View -->
+  <div class="overview-content expanded" *ngIf="isExpanded">
+    <div class="week-calendar">
+      <div class="calendar-day" *ngFor="let day of weekDays" [class]="'traffic-' + day.trafficLevel.toLowerCase()">
+        <div class="day-header">
+          <div class="day-date">
+            <span class="day-name">{{day.name}}</span>
+            <span class="day-number">{{day.number}}</span>
+          </div>
+        </div>
+        
+        <div class="day-content">
+          <div class="campaign-total">{{day.totalCampaigns}} campaigns</div>
+          
+          <div class="status-breakdown">
+            <div class="status-item live" *ngIf="day.live > 0">
+              <span class="count">{{day.live}}</span>
+              <span class="label">Live</span>
+            </div>
+            <div class="status-item scheduled" *ngIf="day.scheduled > 0">
+              <span class="count">{{day.scheduled}}</span>
+              <span class="label">Scheduled</span>
+            </div>
+            <div class="status-item paused" *ngIf="day.paused > 0">
+              <span class="count">{{day.paused}}</span>
+              <span class="label">Paused</span>
+            </div>
+          </div>
+          
+          <div class="traffic-indicator" [class]="'level-' + day.trafficLevel.toLowerCase()">
+            {{day.trafficLevel}}
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="expanded-summary">
+      <div class="summary-stats">
+        <span class="stat">{{totalActiveWeek}} Active</span>
+        <span class="stat">{{totalScheduledWeek}} Scheduled</span>
+      </div>
+      <div class="total-count">Total: {{totalCampaignsWeek}} campaigns this week</div>
+    </div>
+  </div>
+</section>

@@ -195,14 +195,22 @@ export class ExportService {
       });
     }
 
-    // Save PDF with immediate download
-    console.log('Saving PDF...');
+    // Save PDF with proper error handling
     try {
-      doc.save(`Campaign_Dashboard_Report_${this.formatDate(new Date())}.pdf`);
-      console.log('PDF download initiated successfully');
-    } catch (saveError) {
-      console.error('Error saving PDF:', saveError);
-      throw new Error('Failed to save PDF file');
+      const fileName = `Campaign_Dashboard_Report_${this.formatDate(new Date())}.pdf`;
+      doc.save(fileName);
+      console.log('PDF exported successfully:', fileName);
+    } catch (error) {
+      console.error('PDF export failed:', error);
+      // Fallback: try alternative method
+      try {
+        const blob = doc.output('blob');
+        saveAs(blob, `Campaign_Dashboard_Report_${this.formatDate(new Date())}.pdf`);
+        console.log('PDF exported via blob method');
+      } catch (fallbackError) {
+        console.error('PDF export completely failed:', fallbackError);
+        alert('PDF export failed. Please try again or contact support.');
+      }
     }
   }
 

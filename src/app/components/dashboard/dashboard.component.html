@@ -30,8 +30,9 @@
                      [(ngModel)]="selectedDateRange"
                      optionLabel="label" 
                      optionValue="value"
-                     placeholder="Last 30 Days"
-                     [style]="{'min-width': '140px'}">
+                     placeholder="Last 7 Days"
+                     [style]="{'min-width': '140px'}"
+                     (onChange)="onDateRangeChange()">
           </p-dropdown>
         </div>
       </div>
@@ -163,11 +164,14 @@
           <button class="link-button">Live Data</button>
         </div>
         <div class="heatmap-content">
-          <div class="time-labels">
-            <span>12 AM</span>
-            <span>6 AM</span>
-            <span>12 PM</span>
-            <span>6 PM</span>
+          <div class="heatmap-header">
+            <span class="day-label-header"></span>
+            <div class="time-labels">
+              <span>12 AM</span>
+              <span>6 AM</span>
+              <span>12 PM</span>
+              <span>6 PM</span>
+            </div>
           </div>
           <div class="heatmap-grid">
             <div class="day-row" *ngFor="let day of heatmapData">
@@ -247,7 +251,7 @@
     <!-- Cards View -->
     <div class="campaign-cards-view" *ngIf="viewMode === 'cards'">
       <div class="campaign-carousel">
-        <div class="campaign-card" *ngFor="let campaign of visibleCampaignCards">
+        <div class="campaign-card" *ngFor="let campaign of visibleCampaignCards; let i = index; trackBy: trackByCampaignName">
           <div class="card-header">
             <div class="campaign-icon" [class]="campaign.statusClass">
               <i [class]="campaign.icon"></i>
@@ -375,96 +379,288 @@
     </div>
   </section>
 
-  <!-- AI Optimization & Enhancement Section -->
-  <section class="ai-optimization-section">
-    <div class="optimization-header">
-      <div class="optimization-title">
-        <i class="pi pi-lightbulb"></i>
-        <span>AI Optimization & Enhancement</span>
+  <!-- BSP Performance, Festival Timeline, Budget Analysis Sections -->
+  <section class="enhanced-analytics-section">
+    
+    <!-- BSP Performance Section -->
+    <div class="analytics-card bsp-performance">
+      <div class="card-header">
+        <div class="header-left">
+          <h3 class="card-title">
+            <i class="pi pi-chart-bar"></i>
+            BSP Performance
+          </h3>
+          <button class="optimize-btn">
+            <i class="pi pi-cog"></i>
+            Optimize
+          </button>
+        </div>
       </div>
-      <div class="optimization-controls">
-        <span class="auto-learning-tag">
-          <i class="pi pi-sync"></i>
-          Auto Learning
-        </span>
+      
+      <div class="bsp-content">
+        <!-- Channel Tabs -->
+        <div class="channel-tabs">
+          <button class="tab-btn active">SMS</button>
+          <button class="tab-btn">WHATSAPP</button>
+          <button class="tab-btn">EMAIL</button>
+          <button class="tab-btn">PUSH</button>
+          <button class="tab-btn">RCS</button>
+        </div>
+        
+        <!-- BSP Performance Cards -->
+        <div class="bsp-cards">
+          <!-- Airtel IQ Card -->
+          <div class="bsp-card highlighted">
+            <div class="bsp-header">
+              <div class="bsp-badge recommended">
+                <i class="pi pi-star"></i>
+                Best
+              </div>
+            </div>
+            <h4 class="bsp-name">Airtel IQ</h4>
+            <div class="bsp-metrics">
+              <div class="metric-row">
+                <span class="metric-label">Delivery</span>
+                <span class="metric-value primary">94%</span>
+              </div>
+              <div class="metric-row">
+                <span class="metric-label">Cost</span>
+                <span class="metric-value">₹0.1</span>
+              </div>
+              <div class="metric-row">
+                <span class="metric-label">Score</span>
+                <span class="metric-value">Recommended</span>
+              </div>
+            </div>
+            <div class="performance-score">
+              <span class="score-label">Performance Score</span>
+              <div class="score-bar">
+                <div class="score-fill" style="width: 94%"></div>
+              </div>
+              <span class="score-text">94/100</span>
+            </div>
+          </div>
+          
+          <!-- Jio Platform Card -->
+          <div class="bsp-card">
+            <div class="bsp-header">
+              <div class="bsp-badge good">good</div>
+            </div>
+            <h4 class="bsp-name">Jio Platform</h4>
+            <div class="bsp-metrics">
+              <div class="metric-row">
+                <span class="metric-label">Delivery</span>
+                <span class="metric-value">91%</span>
+              </div>
+              <div class="metric-row">
+                <span class="metric-label">Cost</span>
+                <span class="metric-value">₹0.14</span>
+              </div>
+              <div class="metric-row">
+                <span class="metric-label">Score</span>
+                <span class="metric-value">Uptime</span>
+              </div>
+            </div>
+            <div class="performance-score">
+              <span class="score-label">Performance Score</span>
+              <div class="score-bar">
+                <div class="score-fill" style="width: 75%"></div>
+              </div>
+              <span class="score-text">75/100</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="optimization-content">
-      <div class="optimization-grid">
-        <!-- Card 1: Inactive Customer Management -->
-        <div class="optimization-card">
-          <div class="card-header">
-            <div class="card-icon">
-              <i class="pi pi-exclamation-triangle"></i>
-            </div>
-            <div class="priority-badge high">HIGH</div>
-          </div>
-          <div class="card-body">
-            <h4>Inactive Customer Management</h4>
-            <p>33,842 customers haven't engaged in 90+ days</p>
-            <div class="savings-info">
-              <span class="savings-text">Save ₹1.2L</span>
-              <span class="savings-period">monthly</span>
-            </div>
-            <button class="action-btn primary">Create Exclusion List</button>
+    <!-- Festival Timeline Section -->
+    <div class="analytics-card festival-timeline">
+      <div class="card-header">
+        <div class="header-left">
+          <h3 class="card-title">
+            <i class="pi pi-calendar"></i>
+            Festival Timeline
+          </h3>
+          <div class="timeline-badge">
+            <i class="pi pi-sparkles"></i>
+            Upcoming Opportunities
           </div>
         </div>
+        <div class="header-right">
+          <button class="add-btn">
+            <i class="pi pi-plus"></i>
+            Add
+          </button>
+        </div>
+      </div>
+      
+      <div class="festival-content">
+        <div class="festival-cards">
+          <!-- Diwali Card -->
+          <div class="festival-card upcoming">
+            <div class="festival-icon">
+              <i class="pi pi-bolt" style="color: #ff6b35;"></i>
+            </div>
+            <div class="festival-info">
+              <h4 class="festival-name">Diwali</h4>
+              <p class="festival-status">Soon</p>
+              <div class="festival-metrics">
+                <div class="festival-metric">
+                  <span class="metric-number">18</span>
+                  <span class="metric-unit">days left</span>
+                </div>
+                <div class="festival-metric">
+                  <span class="metric-number">72</span>
+                  <span class="metric-unit">days left</span>
+                </div>
+              </div>
+              <div class="campaign-planning">
+                <span class="planning-label">Campaign Planning</span>
+                <div class="planning-sections">
+                  <div class="planning-item">
+                    <span class="item-label">NaNav</span>
+                    <span class="item-value">Reach</span>
+                  </div>
+                  <div class="planning-item">
+                    <span class="item-label">NaNav</span>
+                    <span class="item-value">Budget</span>
+                  </div>
+                  <div class="planning-item">
+                    <span class="item-label">NaNav</span>
+                    <span class="item-value">Return</span>
+                  </div>
+                  <div class="planning-item">
+                    <span class="item-label">NaNav</span>
+                    <span class="item-value">Budget</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="dropdown-container">
+              <p-dropdown [options]="[{label: 'Plan Campaign', value: 'plan'}]" 
+                         placeholder="Plan Campaign">
+              </p-dropdown>
+            </div>
+          </div>
+          
+          <!-- Christmas Card -->
+          <div class="festival-card upcoming">
+            <div class="festival-icon">
+              <i class="pi pi-gift" style="color: #28a745;"></i>
+            </div>
+            <div class="festival-info">
+              <h4 class="festival-name">Christmas</h4>
+              <p class="festival-status">Plan</p>
+              <div class="festival-metrics">
+                <div class="festival-metric">
+                  <span class="metric-number">72</span>
+                  <span class="metric-unit">days left</span>
+                </div>
+              </div>
+              <div class="campaign-planning">
+                <span class="planning-label">Campaign Planning</span>
+                <div class="planning-sections">
+                  <div class="planning-item">
+                    <span class="item-label">NaNav</span>
+                    <span class="item-value">Return</span>
+                  </div>
+                  <div class="planning-item">
+                    <span class="item-label">NaNav</span>
+                    <span class="item-value">Budget</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="dropdown-container">
+              <p-dropdown [options]="[{label: 'Plan Campaign', value: 'plan'}]" 
+                         placeholder="Plan Campaign">
+              </p-dropdown>
+            </div>
+          </div>
+        </div>
+        
+        <div class="next-campaign-info">
+          <i class="pi pi-info-circle"></i>
+          <span class="info-text">Next Campaign Due: <strong>Diwali</strong> (18 days)</span>
+          <span class="budget-info">+ <strong>NaNav</strong> Total Budget</span>
+        </div>
+      </div>
+    </div>
 
-        <!-- Card 2: Channel Cost Optimization -->
-        <div class="optimization-card">
-          <div class="card-header">
-            <div class="card-icon">
+    <!-- Budget Analysis Section -->
+    <div class="analytics-card budget-analysis">
+      <div class="card-header">
+        <div class="header-left">
+          <h3 class="card-title">
+            <i class="pi pi-wallet"></i>
+            Budget Analysis
+          </h3>
+          <div class="analysis-tabs">
+            <button class="tab-btn active">Pre</button>
+            <button class="tab-btn">Post</button>
+            <button class="tab-btn">
+              <i class="pi pi-robot"></i>
+              AI
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="budget-content">
+        <div class="budget-header">
+          <h4 class="budget-title">Diwali Festival Offer</h4>
+          <p-dropdown [options]="[{label: 'Diwali Festival Offer', value: 'diwali'}]" 
+                     placeholder="Select Campaign">
+          </p-dropdown>
+        </div>
+        
+        <div class="budget-metrics">
+          <div class="budget-metric primary">
+            <div class="metric-icon">
               <i class="pi pi-dollar"></i>
             </div>
-            <div class="priority-badge medium">MEDIUM</div>
-          </div>
-          <div class="card-body">
-            <h4>Channel Cost Optimization</h4>
-            <p>WhatsApp shows 34% better ROI than SMS</p>
-            <div class="savings-info">
-              <span class="savings-text">Increase ROI by</span>
-              <span class="savings-period">23%</span>
+            <div class="metric-info">
+              <span class="metric-value">₹180</span>
+              <span class="metric-label">Predicted CPA</span>
             </div>
-            <button class="action-btn secondary">Reallocate Budget</button>
+            <div class="metric-trend positive">
+              <i class="pi pi-arrow-up"></i>
+              <span>4.2x</span>
+              <span class="trend-label">Predicted ROI</span>
+            </div>
+          </div>
+          
+          <div class="budget-metric">
+            <div class="metric-info">
+              <span class="metric-value">150K</span>
+              <span class="metric-label">Predicted Reach</span>
+            </div>
+            <div class="metric-trend positive">
+              <span class="trend-value">85%</span>
+              <span class="trend-label">Confidence</span>
+            </div>
           </div>
         </div>
-
-        <!-- Card 3: Send Time Optimization -->
-        <div class="optimization-card">
-          <div class="card-header">
-            <div class="card-icon">
-              <i class="pi pi-clock"></i>
+        
+        <div class="ai-prediction">
+          <div class="prediction-header">
+            <i class="pi pi-info-circle"></i>
+            <span class="prediction-label">AI Prediction</span>
+            <span class="confidence-badge">High Confidence</span>
+          </div>
+          <p class="prediction-text">Ready to optimize!</p>
+          
+          <div class="budget-usage">
+            <span class="usage-label">Budget Usage</span>
+            <div class="usage-bar">
+              <div class="usage-fill" style="width: 75.8%"></div>
             </div>
-            <div class="priority-badge high">HIGH</div>
+            <span class="usage-percentage">75.8%</span>
           </div>
-          <div class="card-body">
-            <h4>Send Time Optimization</h4>
-            <p>Campaigns sent at 8 PM get 65% more engagement</p>
-            <div class="savings-info">
-              <span class="savings-text">Boost</span>
-              <span class="savings-period">engagement by 65%</span>
-            </div>
-            <button class="action-btn primary">Schedule Optimizer</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="optimization-summary">
-        <div class="summary-left">
-          <h4>Total Potential Savings</h4>
-          <div class="total-amount">₹2.8L</div>
-          <div class="period-text">per month with AI optimizations</div>
-        </div>
-        <div class="summary-right">
-          <div class="pending-count">
-            <span class="count">3</span>
-            <span class="label">optimizations pending</span>
-          </div>
-          <button class="apply-all-btn">Apply All</button>
         </div>
       </div>
     </div>
+
   </section>
 
   <!-- Orchestration Analysis -->

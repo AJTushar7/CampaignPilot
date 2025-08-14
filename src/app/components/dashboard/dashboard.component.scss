@@ -534,17 +534,23 @@
         .heatmap-content {
           margin-bottom: 20px;
           
-          .time-labels {
+          .heatmap-header {
             display: grid;
-            grid-template-columns: 60px repeat(4, 1fr);
+            grid-template-columns: 60px 1fr;
             gap: 4px;
             margin-bottom: 8px;
-            font-size: 12px;
-            color: #6c757d;
-            text-align: center;
             
-            span:first-child {
-              opacity: 0;
+            .day-label-header {
+              opacity: 0; // Spacer for alignment
+            }
+            
+            .time-labels {
+              display: grid;
+              grid-template-columns: repeat(4, 1fr);
+              gap: 4px;
+              font-size: 12px;
+              color: #6c757d;
+              text-align: center;
             }
           }
           
@@ -1556,6 +1562,507 @@
         background: #007bff;
         color: white;
       }
+    }
+  }
+
+  // Enhanced Analytics Section - BSP Performance, Festival Timeline, Budget Analysis  
+  .enhanced-analytics-section {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    padding: 24px;
+    max-width: 1400px;
+    margin: 0 auto;
+
+    .analytics-card {
+      background: white;
+      border-radius: 12px;
+      border: 1px solid #e9ecef;
+      padding: 24px;
+
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 20px;
+
+        .header-left {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+
+          .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            i {
+              color: #007bff;
+            }
+          }
+
+          .timeline-badge, .analysis-tabs {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 12px;
+            color: #6c757d;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+          }
+
+          .analysis-tabs {
+            .tab-btn {
+              background: transparent;
+              border: none;
+              padding: 6px 12px;
+              border-radius: 18px;
+              font-size: 12px;
+              color: #6c757d;
+              cursor: pointer;
+
+              &.active {
+                background: #007bff;
+                color: white;
+              }
+            }
+          }
+        }
+
+        .header-right {
+          .add-btn, .optimize-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+          }
+
+          .optimize-btn {
+            background: #f8f9fa;
+            color: #007bff;
+            border: 1px solid #dee2e6;
+          }
+        }
+      }
+
+      // BSP Performance styles
+      &.bsp-performance {
+        .channel-tabs {
+          display: flex;
+          gap: 8px;
+          margin-bottom: 20px;
+
+          .tab-btn {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+
+            &.active {
+              background: #007bff;
+              color: white;
+            }
+          }
+        }
+
+        .bsp-cards {
+          display: flex;
+          gap: 16px;
+
+          .bsp-card {
+            flex: 1;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 16px;
+            background: #fafafa;
+
+            &.highlighted {
+              background: #f0f8ff;
+              border-color: #007bff;
+            }
+
+            .bsp-header {
+              display: flex;
+              justify-content: flex-end;
+              margin-bottom: 12px;
+
+              .bsp-badge {
+                padding: 4px 8px;
+                border-radius: 12px;
+                font-size: 10px;
+                font-weight: 600;
+                text-transform: uppercase;
+
+                &.recommended {
+                  background: #d4edda;
+                  color: #155724;
+                  display: flex;
+                  align-items: center;
+                  gap: 4px;
+                }
+
+                &.good {
+                  background: #f8f9fa;
+                  color: #6c757d;
+                }
+              }
+            }
+
+            .bsp-name {
+              font-size: 16px;
+              font-weight: 600;
+              color: #2c3e50;
+              margin: 0 0 16px 0;
+            }
+
+            .bsp-metrics {
+              margin-bottom: 16px;
+
+              .metric-row {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 8px;
+
+                .metric-label {
+                  font-size: 12px;
+                  color: #6c757d;
+                }
+
+                .metric-value {
+                  font-size: 14px;
+                  font-weight: 600;
+                  color: #2c3e50;
+
+                  &.primary {
+                    color: #007bff;
+                  }
+                }
+              }
+            }
+
+            .performance-score {
+              .score-label {
+                font-size: 12px;
+                color: #6c757d;
+                margin-bottom: 4px;
+                display: block;
+              }
+
+              .score-bar {
+                background: #e9ecef;
+                height: 4px;
+                border-radius: 2px;
+                margin-bottom: 4px;
+                overflow: hidden;
+
+                .score-fill {
+                  height: 100%;
+                  background: linear-gradient(90deg, #28a745, #007bff);
+                }
+              }
+
+              .score-text {
+                font-size: 12px;
+                color: #6c757d;
+                font-weight: 500;
+              }
+            }
+          }
+        }
+      }
+
+      // Festival Timeline styles  
+      &.festival-timeline {
+        .festival-content {
+          .festival-cards {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+
+            .festival-card {
+              flex: 1;
+              border: 1px solid #dee2e6;
+              border-radius: 8px;
+              padding: 16px;
+              display: flex;
+              gap: 12px;
+
+              .festival-icon {
+                width: 40px;
+                height: 40px;
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 18px;
+              }
+
+              .festival-info {
+                flex: 1;
+
+                .festival-name {
+                  font-size: 16px;
+                  font-weight: 600;
+                  color: #2c3e50;
+                  margin: 0 0 4px 0;
+                }
+
+                .festival-status {
+                  font-size: 12px;
+                  color: #6c757d;
+                  margin: 0 0 12px 0;
+                }
+
+                .festival-metrics {
+                  display: flex;
+                  gap: 16px;
+                  margin-bottom: 12px;
+
+                  .festival-metric {
+                    text-align: center;
+
+                    .metric-number {
+                      display: block;
+                      font-size: 18px;
+                      font-weight: 600;
+                      color: #2c3e50;
+                    }
+
+                    .metric-unit {
+                      display: block;
+                      font-size: 10px;
+                      color: #6c757d;
+                    }
+                  }
+                }
+
+                .campaign-planning {
+                  .planning-label {
+                    font-size: 12px;
+                    color: #6c757d;
+                    margin-bottom: 8px;
+                    display: block;
+                  }
+
+                  .planning-sections {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 8px;
+
+                    .planning-item {
+                      display: flex;
+                      justify-content: space-between;
+                      font-size: 11px;
+
+                      .item-label {
+                        color: #6c757d;
+                      }
+
+                      .item-value {
+                        color: #2c3e50;
+                        font-weight: 500;
+                      }
+                    }
+                  }
+                }
+              }
+
+              .dropdown-container {
+                width: 120px;
+              }
+            }
+          }
+
+          .next-campaign-info {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #6c757d;
+
+            i {
+              color: #007bff;
+            }
+          }
+        }
+      }
+
+      // Budget Analysis styles
+      &.budget-analysis {
+        .budget-content {
+          .budget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #f1f3f5;
+
+            .budget-title {
+              font-size: 16px;
+              font-weight: 600;
+              color: #2c3e50;
+              margin: 0;
+            }
+          }
+
+          .budget-metrics {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+
+            .budget-metric {
+              flex: 1;
+              border: 1px solid #dee2e6;
+              border-radius: 8px;
+              padding: 16px;
+              background: #fafafa;
+
+              &.primary {
+                background: #f0f8ff;
+                border-color: #007bff;
+              }
+
+              .metric-icon {
+                width: 32px;
+                height: 32px;
+                border-radius: 6px;
+                background: #007bff;
+                color: white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 12px;
+                font-size: 14px;
+              }
+
+              .metric-info {
+                .metric-value {
+                  font-size: 24px;
+                  font-weight: 600;
+                  color: #2c3e50;
+                  display: block;
+                  margin-bottom: 4px;
+                }
+
+                .metric-label {
+                  font-size: 12px;
+                  color: #6c757d;
+                  display: block;
+                }
+              }
+
+              .metric-trend {
+                margin-top: 12px;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+
+                &.positive {
+                  color: #28a745;
+                }
+
+                .trend-value {
+                  font-size: 18px;
+                  font-weight: 600;
+                }
+
+                .trend-label {
+                  font-size: 11px;
+                  color: #6c757d;
+                }
+              }
+            }
+          }
+
+          .ai-prediction {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 16px;
+
+            .prediction-header {
+              display: flex;
+              align-items: center;
+              gap: 8px;
+              margin-bottom: 8px;
+
+              .prediction-label {
+                font-size: 14px;
+                font-weight: 500;
+                color: #2c3e50;
+              }
+
+              .confidence-badge {
+                background: #d4edda;
+                color: #155724;
+                padding: 2px 8px;
+                border-radius: 12px;
+                font-size: 10px;
+                font-weight: 600;
+                margin-left: auto;
+              }
+            }
+
+            .prediction-text {
+              font-size: 12px;
+              color: #6c757d;
+              margin: 0 0 16px 0;
+            }
+
+            .budget-usage {
+              .usage-label {
+                font-size: 12px;
+                color: #6c757d;
+                margin-bottom: 6px;
+                display: block;
+              }
+
+              .usage-bar {
+                background: #e9ecef;
+                height: 6px;
+                border-radius: 3px;
+                margin-bottom: 6px;
+                overflow: hidden;
+
+                .usage-fill {
+                  height: 100%;
+                  background: linear-gradient(90deg, #007bff, #0056b3);
+                }
+              }
+
+              .usage-percentage {
+                font-size: 12px;
+                color: #2c3e50;
+                font-weight: 600;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    @media (max-width: 1200px) {
+      grid-template-columns: 1fr;
+      gap: 16px;
     }
   }
 }

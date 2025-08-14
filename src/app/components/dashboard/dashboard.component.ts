@@ -10,14 +10,10 @@ import { CampaignDataService } from '../../services/campaign-data.service';
 export class DashboardComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  // Date range and filter options
+  // Date range and filter options - Only 2 options as requested
   dateRangeOptions = [
     { label: 'Last 7 Days', value: '7d' },
-    { label: 'Last 15 Days', value: '15d' },
-    { label: 'Last 30 Days', value: '30d' },
-    { label: 'Last 45 Days', value: '45d' },
-    { label: 'Last 60 Days', value: '60d' },
-    { label: 'Last 90 Days', value: '90d' }
+    { label: 'Last 15 Days', value: '15d' }
   ];
 
   channelOptions = [
@@ -36,7 +32,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     { label: 'Revenue', value: 'revenue' }
   ];
   
-  selectedDateRange = '30d';
+  selectedDateRange = '7d';
   selectedChannel = 'all';
   selectedPerformanceMetric = 'conversions';
   
@@ -333,6 +329,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   onChannelChange() {
     console.log('Channel changed to:', this.selectedChannel);
+    this.applyFilters();
+  }
+
+  onDateRangeChange() {
+    console.log('Date range changed to:', this.selectedDateRange);
+    this.applyFilters();
   }
 
   onTimeFilterChange(): void {
@@ -360,7 +362,66 @@ export class DashboardComponent implements OnInit, OnDestroy {
       );
     }
     
+    // Always show max 3 cards
     this.visibleCampaignCards = filteredCards.slice(0, 3);
+  }
+
+  applyFilters(): void {
+    // Apply global filters to KPIs, weekly overview, and channel performance
+    console.log('Applying filters - Channel:', this.selectedChannel, 'Date Range:', this.selectedDateRange);
+    
+    // Update KPIs based on filters
+    this.updateKPIData();
+    
+    // Update channel performance data
+    this.updateChannelPerformanceData();
+    
+    // Update heatmap data
+    this.updateHeatmapData();
+    
+    // Update campaign data
+    this.updateCampaignDataFilters();
+  }
+
+  updateKPIData(): void {
+    // Mock filtering logic - in real app, this would call API with filters
+    if (this.selectedDateRange === '7d') {
+      // Show last 7 days data
+      this.totalCampaigns = 12;
+      this.totalSpend = 95000;
+    } else {
+      // Show last 15 days data  
+      this.totalCampaigns = 18;
+      this.totalSpend = 185000;
+    }
+  }
+
+  updateChannelPerformanceData(): void {
+    // Filter channel performance based on selected channel
+    if (this.selectedChannel === 'all') {
+      this.channelPerformanceData = [
+        { name: 'SMS', icon: 'pi pi-mobile', iconClass: 'sms', percentage: 100, value: '15,709', colorClass: 'blue' },
+        { name: 'WhatsApp', icon: 'pi pi-whatsapp', iconClass: 'whatsapp', percentage: 75, value: '11,304', colorClass: 'green' },
+        { name: 'Email', icon: 'pi pi-envelope', iconClass: 'email', percentage: 55, value: '8,762', colorClass: 'purple' },
+        { name: 'Push', icon: 'pi pi-bell', iconClass: 'push', percentage: 40, value: '5,977', colorClass: 'orange' }
+      ];
+    } else {
+      // Filter to show only selected channel
+      this.channelPerformanceData = this.channelPerformanceData.filter(channel => 
+        channel.name.toLowerCase() === this.selectedChannel.toLowerCase()
+      );
+    }
+  }
+
+  updateHeatmapData(): void {
+    // Update heatmap based on date range
+    if (this.selectedDateRange === '7d') {
+      // Show last 7 days heatmap data
+      console.log('Updating heatmap for last 7 days');
+    } else {
+      // Show last 15 days heatmap data
+      console.log('Updating heatmap for last 15 days');
+    }
   }
 
   ngOnDestroy(): void {
@@ -451,5 +512,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   // Helper methods
   getLimitedDotsArray(count: number, limit: number): number[] {
     return Array(Math.min(count, limit)).fill(0);
+  }
+
+  trackByCampaignName(index: number, campaign: any): string {
+    return campaign.name;
   }
 }
